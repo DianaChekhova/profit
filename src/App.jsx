@@ -1,15 +1,8 @@
-import {useState} from 'react';
-
 import './App.css';
+import Navigator from './navigator/navigator.jsx';
 
 function App() {
-  const [count, setCount] = useState(12);
-
-  return (
-    <>
-      <button onClick={() => setCount(count)}></button>
-    </>
-  );
+  return <Navigator />;
 }
 
 export default App;
