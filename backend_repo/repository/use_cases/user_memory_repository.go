@@ -2,6 +2,7 @@ package use_cases
 
 import (
 	"errors"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"sync"
 
 	"profit/models"
@@ -9,15 +10,15 @@ import (
 
 // Для тестирования
 type UserMemoryRepository struct {
-	data   map[int]*models.User
+	data   map[primitive.ObjectID]*models.User
 	mu     sync.RWMutex
-	nextID int
+	nextID primitive.ObjectID
 }
 
 func NewUserMemoryRepository() *UserMemoryRepository {
 	return &UserMemoryRepository{
-		data:   make(map[int]*models.User),
-		nextID: 1,
+		data:   make(map[primitive.ObjectID]*models.User),
+		nextID: primitive.NewObjectID(),
 	}
 }
 
@@ -26,12 +27,12 @@ func (r *UserMemoryRepository) Create(user *models.User) error {
 	defer r.mu.Unlock()
 
 	user.ID = r.nextID
-	r.nextID++
+	r.nextID = primitive.NewObjectID()
 	r.data[user.ID] = user
 	return nil
 }
 
-func (r *UserMemoryRepository) GetByID(id int) (*models.User, error) {
+func (r *UserMemoryRepository) GetByID(id primitive.ObjectID) (*models.User, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
@@ -53,7 +54,7 @@ func (r *UserMemoryRepository) Update(user *models.User) error {
 	return nil
 }
 
-func (r *UserMemoryRepository) Delete(id int) error {
+func (r *UserMemoryRepository) Delete(id primitive.ObjectID) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 

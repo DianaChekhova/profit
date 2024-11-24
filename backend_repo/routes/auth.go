@@ -17,7 +17,7 @@ func (ctrl *UseCaseController) RegisterHandler(w http.ResponseWriter, r *http.Re
 		return
 	}
 
-	// Валидация данных (например, можно использовать сторонние библиотеки для валидации)
+	// Здесь идет валидация данных.
 	if err := user.Validate(); err != nil {
 		logs.Logger.Errorf("validate err: %v", err)
 		http.Error(w, "Invalid input", http.StatusBadRequest)
@@ -33,11 +33,9 @@ func (ctrl *UseCaseController) RegisterHandler(w http.ResponseWriter, r *http.Re
 	user.Password = string(hashedPassword)
 	user.CreatedAt = time.Now()
 
-	// Сохранение в базу данных
-	//if err := repositories.CreateUser(user); err != nil {
-	//	http.Error(w, "Failed to create user", http.StatusInternalServerError)
-	//	return
-	//}
+	if err := ctrl.userDbRepo.Create(&user); err != nil {
+		http.Error(w, "Error creating user", http.StatusInternalServerError)
+	}
 
 	w.WriteHeader(http.StatusCreated)
 	err = json.NewEncoder(w).Encode(map[string]string{"message": "User registered successfully"})

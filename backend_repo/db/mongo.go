@@ -2,8 +2,8 @@ package db
 
 import (
 	"context"
-	"go.mongodb.org/mongo-driver/v2/mongo"
-	"go.mongodb.org/mongo-driver/v2/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	log "profit/logs"
 	"time"
 )
@@ -16,25 +16,28 @@ type MongoClient struct {
 var mongoInstance *MongoClient
 
 // ConnectMongoDB устанавливает подключение к MongoDB.
-func ConnectMongoDB(uri string, dbName string) *MongoClient {
+func ConnectMongoDB(uri string, dbName string) (*MongoClient, error) {
 	if mongoInstance != nil {
-		return mongoInstance // Возвращаем существующий экземпляр (синглтон)
+		return mongoInstance, nil // Возвращаем существующий экземпляр (синглтон)
 	}
-	// Настраиваем контекст
+
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
+	clientOptions := options.Client().ApplyURI(uri) // TODO: вынести в константы
 
-	clientOptions := options.Client().ApplyURI(uri) //todo вынести в константы
-
-	client, err := mongo.Connect(clientOptions)
+	client, err := mongo.Connect(ctx, clientOptions)
 	if err != nil {
-		log.Logger.Errorf("Failed to create MongoDB client: %v", err)
+		log.Logger.Errorf("Failed to connect to MongoDB: %v", err)
+		cancel() // Завершаем контекст в случае ошибки
+		return nil, err
 	}
 
 	// Проверяем подключение
 	err = client.Ping(ctx, nil)
 	if err != nil {
 		log.Logger.Errorf("Failed to ping MongoDB: %v", err)
+		cancel() // Завершаем контекст в случае ошибки
+		return nil, err
 	}
 
 	log.Logger.Println("Successfully connected to MongoDB")
@@ -44,7 +47,8 @@ func ConnectMongoDB(uri string, dbName string) *MongoClient {
 		Client: client,
 		DB:     client.Database(dbName),
 	}
-	return mongoInstance
+
+	return mongoInstance, nil
 }
 
 // DisconnectMongoDB закрывает подключение к MongoDB.
