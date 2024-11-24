@@ -1,20 +1,30 @@
 import {Box} from '@chakra-ui/react';
-// eslint-disable-next-line react/prop-types
-function Navigator({ScrollToSubscriptions, ScrollToCoaches, ScrollToGroups, ScrollToContacts}) {
+import {Avatar} from '../components/ui/avatar.jsx';
+import styles from './navigator.module.scss';
+
+function Navigator() {
   return (
-    <Box
-      width='100%'
-      height='5vh'
-      display='flex'
-      justifyContent='center'
-      alignItems='center'
-      padding='4'
-    >
-      <div onClick={() => ScrollToSubscriptions()}>Абонименты</div>
-      <div onClick={() => ScrollToCoaches()}>Групповые занятия</div>
-      <div onClick={() => ScrollToGroups()}>Тренеры</div>
-      <div onClick={() => ScrollToContacts()}>Контакты</div>
-    </Box>
+    <div className={`${styles.wrapper} ${styles.flex}`}>
+      <p className={styles.logo}>PROFIT</p>
+      <Box
+        gap='32px'
+        className={`${styles.text} ${styles.flex}`}
+      >
+        <p>Абонименты</p>
+        <p>Тренеры</p>
+        <p>Групповые занятия</p>
+        <p>Контакты</p>
+      </Box>
+      <div className={styles.flex}>
+        <div className={styles.loginText}>Войти</div>
+        <Avatar
+          name='Sasuke Uchiha'
+          src='https://bit.ly/broken-link'
+          colorPalette='teal'
+          marginLeft='16px'
+        />
+      </div>
+    </div>
   );
 }
 

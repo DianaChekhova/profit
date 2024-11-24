@@ -4,7 +4,7 @@ function Coaches(props, ref) {
   return (
     <Box
       width='100%'
-      height='2500px'
+      height='500px'
       display='flex'
       justifyContent='center'
       alignItems='center'
