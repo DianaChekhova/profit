@@ -1,23 +1,19 @@
-import {Box, Tabs} from '@chakra-ui/react';
-function Navigator() {
+import {Box} from '@chakra-ui/react';
+// eslint-disable-next-line react/prop-types
+function Navigator({ScrollToSubscriptions, ScrollToCoaches, ScrollToGroups, ScrollToContacts}) {
   return (
     <Box
-      background='tomato'
       width='100%'
-      height='100px'
+      height='5vh'
       display='flex'
       justifyContent='center'
       alignItems='center'
       padding='4'
-      color='white'
     >
-      <Tabs.Root variant='plain'>
-        <Tabs.List gap='20px'>
-          <Tabs.Trigger value='tab-3'>Tab 3</Tabs.Trigger>
-          <Tabs.Trigger value='tab-3'>Tab 3</Tabs.Trigger>
-          <Tabs.Trigger value='tab-3'>Tab 3</Tabs.Trigger>
-        </Tabs.List>
-      </Tabs.Root>
+      <div onClick={() => ScrollToSubscriptions()}>Абонименты</div>
+      <div onClick={() => ScrollToCoaches()}>Групповые занятия</div>
+      <div onClick={() => ScrollToGroups()}>Тренеры</div>
+      <div onClick={() => ScrollToContacts()}>Контакты</div>
     </Box>
   );
 }

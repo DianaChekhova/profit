@@ -1,8 +1,8 @@
 import './App.css';
-import Navigator from './navigator/navigator.jsx';
+import MainPage from './pages/main/index.jsx';
 
 function App() {
-  return <Navigator />;
+  return <MainPage />;
 }
 
 export default App;
