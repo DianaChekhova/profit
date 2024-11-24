@@ -17,7 +17,6 @@ func main() {
 	// Инициализируем логирование
 	logs.Init()
 
-	// Устанавливаем контекст
 	ctx := context.Background()
 
 	// Подключаемся к MongoDB 27017
