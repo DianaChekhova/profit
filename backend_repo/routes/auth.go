@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
-	"profit/logs"
 	"profit/models"
+	log "profit/object_log"
 	"time"
 )
 
@@ -19,7 +19,7 @@ func (ctrl *UseCaseController) RegisterHandler(w http.ResponseWriter, r *http.Re
 
 	// Здесь идет валидация данных.
 	if err := user.Validate(); err != nil {
-		logs.Logger.Errorf("validate err: %v", err)
+		log.Logger.Errorf("validate err: %v", err)
 		http.Error(w, "Invalid input", http.StatusBadRequest)
 	}
 

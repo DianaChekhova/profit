@@ -7,8 +7,8 @@ import (
 )
 
 var (
-	MongoUri   string
-	ServerPort string
+	MongoUri   string = "mongodb://localhost"
+	ServerPort string = "27017"
 )
 
 func init() {

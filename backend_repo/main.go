@@ -3,11 +3,10 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
 	"net/http"
 	"profit/cfg"
 	"profit/db"
-	"profit/logs"
+	log "profit/object_log"
 	"profit/repository/use_cases"
 	"profit/repository/use_cases/dbs_repositories"
 	"profit/routes"
@@ -15,20 +14,20 @@ import (
 
 func main() {
 	// Инициализируем логирование
-	logs.Init()
+	log.Init()
 
 	ctx := context.Background()
 
 	// Подключаемся к MongoDB 27017
 	mongoClient, err := db.ConnectMongoDB(fmt.Sprintf("%s:%s", cfg.MongoUri, cfg.ServerPort), "members")
 	if err != nil {
-		logs.Logger.Fatal(err.Error())
+		log.Logger.Fatal(err.Error())
 	}
 
 	defer func() {
 		err := mongoClient.Client.Disconnect(ctx)
 		if err != nil {
-			logs.Logger.Fatal(err.Error())
+			log.Logger.Fatal(err.Error())
 		}
 	}()
 
@@ -47,6 +46,6 @@ func main() {
 	http.HandleFunc("/api/register", useCasesController.RegisterHandler)
 
 	// Запускаем HTTP-сервер
-	logs.Logger.Println("Starting server on :8080...")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Logger.Println("Starting server on :8080...")
+	log.Logger.Fatal(http.ListenAndServe(":8080", nil))
 }
