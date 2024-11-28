@@ -7,7 +7,6 @@ import (
 	"profit/cfg"
 	"profit/db"
 	log "profit/object_log"
-	"profit/repository/use_cases"
 	"profit/repository/use_cases/dbs_repositories"
 	"profit/routes"
 )
@@ -34,16 +33,19 @@ func main() {
 	// Создаем на данный момент две репы. Для работы с юзерами через монгу и через оперативу ( для тестов)
 	mongoUserRepository := dbs_repositories.NewUserMongoRepository(mongoClient.DB, ctx)
 
-	memoryRepo := use_cases.NewUserMemoryRepository()
-
 	// Создаем контроллеры
-	useCasesController := routes.NewUseCasesControllers(mongoUserRepository, memoryRepo)
+	useCasesController := routes.NewUseCasesControllers(mongoUserRepository)
+	mux := http.NewServeMux()
+
+	// Открытые маршруты
+	mux.HandleFunc("/api/login", useCasesController.LoginHandler)
 
 	// Регистрируем маршруты
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "Hello Egor Lykov") // Отправляем ответ клиенту
 	})
-	http.HandleFunc("/api/register", useCasesController.RegisterHandler)
+	
+	mux.HandleFunc("/api/register", useCasesController.RegisterHandler)
 
 	// Запускаем HTTP-сервер
 	log.Logger.Println("Starting server on :8080...")

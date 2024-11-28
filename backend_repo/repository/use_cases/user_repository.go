@@ -12,4 +12,5 @@ type UserRepository interface {
 	Update(user *models.User) error
 	Delete(id primitive.ObjectID) error
 	List() ([]*models.User, error)
+	FindUserByUserName(username string) (models.User, error)
 }

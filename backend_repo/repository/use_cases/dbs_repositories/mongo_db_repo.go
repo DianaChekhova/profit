@@ -28,6 +28,16 @@ func (repo *UserMongoRepository) Create(user *models.User) error {
 	return err
 }
 
+func (repo *UserMongoRepository) FindUserByUserName(name string) (models.User, error) {
+	var user models.User
+	result := repo.collection.FindOne(repo.ctx, bson.M{"name": name})
+	if err := result.Decode(&user); err != nil {
+		return models.User{}, err
+	}
+
+	return user, result.Err()
+}
+
 func (repo *UserMongoRepository) GetByID(id primitive.ObjectID) (*models.User, error) {
 	filter := bson.M{"_id": id}
 	result := repo.collection.FindOne(repo.ctx, filter)
