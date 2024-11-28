@@ -1,5 +1,4 @@
 import {Box} from '@chakra-ui/react';
-import {forwardRef} from 'react';
 
 function Subscriptions(props, ref) {
   return (
@@ -11,10 +10,8 @@ function Subscriptions(props, ref) {
       alignItems='center'
       padding='4'
       background='green'
-    >
-      <h1 ref={ref}></h1>
-    </Box>
+    ></Box>
   );
 }
 
-export default forwardRef(Subscriptions);
+export default Subscriptions;

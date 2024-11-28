@@ -1,0 +1,22 @@
+.loginText {
+  font-size: 18px;
+  font-weight: 400;
+  font-family: Roboto, sans-serif ;
+  cursor: pointer;
+  letter-spacing: -1.5%;
+}
+.loginText:hover {
+  color: #805AD5;
+}
+.flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modalWrapper {
+  min-width: 100%;
+  min-height: 100%;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+}

@@ -1,7 +1,6 @@
 import {Box} from '@chakra-ui/react';
-import {forwardRef} from 'react';
 
-function Contacts(props, ref) {
+function Contacts(props) {
   return (
     <Box
       width='100%'
@@ -11,10 +10,8 @@ function Contacts(props, ref) {
       alignItems='center'
       padding='4'
       background='grey'
-    >
-      <h1 ref={ref}></h1>
-    </Box>
+    ></Box>
   );
 }
 
-export default forwardRef(Contacts);
+export default Contacts;

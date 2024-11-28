@@ -1,7 +1,6 @@
 import {Box} from '@chakra-ui/react';
-import {forwardRef} from 'react';
 
-function GroupTraining(props, ref) {
+function Coaches() {
   return (
     <Box
       width='100%'
@@ -10,11 +9,9 @@ function GroupTraining(props, ref) {
       justifyContent='center'
       alignItems='center'
       padding='4'
-      background='red'
-    >
-      <h1 ref={ref}></h1>
-    </Box>
+      background='yellow'
+    ></Box>
   );
 }
 
-export default forwardRef(GroupTraining);
+export default Coaches;
