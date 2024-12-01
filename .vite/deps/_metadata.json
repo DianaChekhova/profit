@@ -1,0 +1,43 @@
+{
+  "hash": "85261d47",
+  "configHash": "9388498a",
+  "lockfileHash": "e3b0c442",
+  "browserHash": "5c9d07f1",
+  "optimized": {
+    "@chakra-ui/react": {
+      "src": "../../node_modules/@chakra-ui/react/dist/esm/index.js",
+      "file": "@chakra-ui_react.js",
+      "fileHash": "c259db56",
+      "needsInterop": false
+    },
+    "@chakra-ui/react/preset": {
+      "src": "../../node_modules/@chakra-ui/react/dist/esm/preset.js",
+      "file": "@chakra-ui_react_preset.js",
+      "fileHash": "e12176ae",
+      "needsInterop": false
+    },
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "761da336",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "87f1703a",
+      "needsInterop": true
+    }
+  },
+  "chunks": {
+    "chunk-35GP23MF": {
+      "file": "chunk-35GP23MF.js"
+    },
+    "chunk-YBFRUR3B": {
+      "file": "chunk-YBFRUR3B.js"
+    },
+    "chunk-JRE55LYH": {
+      "file": "chunk-JRE55LYH.js"
+    }
+  }
+}

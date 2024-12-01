@@ -1,7 +1,7 @@
 import {useCallback, useState} from 'react';
 import styles from './user.module.scss';
 import {Avatar} from '../ui/avatar.jsx';
-import {Portal} from '@chakra-ui/react';
+import AuthModal from './authentication/modal/index.jsx';
 
 function UserLogin() {
   const [openModal, setModalOpen] = useState(false);
@@ -29,14 +29,7 @@ function UserLogin() {
           marginLeft='16px'
         />
       </div>
-      {openModal && (
-        <Portal>
-          <div
-            className={styles.modalWrapper}
-            onClick={closeModalHandler}
-          ></div>
-        </Portal>
-      )}
+      {openModal && <AuthModal closeModalHandler={closeModalHandler} />}
     </>
   );
 }

@@ -1,6 +1,19 @@
 .modalWrapper {
-  min-width: 100vw;
-  min-height: 100vh;
-  position: sticky;
-  background-color: rgba(251, 0, 0, 0.5);
+  min-width: 100%;
+  min-height: 100%;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modalForm {
+  position: absolute;
+  margin: auto 0 ;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.modalTabs {
+  width: 180px;
+  padding-left: 0;
 }
