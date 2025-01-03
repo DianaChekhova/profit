@@ -14,7 +14,6 @@ type AuthBody struct {
 	Username string `json:"username"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
-	Role     string `json:"role"`
 }
 
 // LoginHandler обрабатывает POST-запрос для входа пользователя
@@ -45,7 +44,12 @@ func (ctrl *AdminCaseController) LoginHandler(w http.ResponseWriter, r *http.Req
 }
 
 func (ctrl *AdminCaseController) loginByRole(ctx context.Context, req AuthBody) (string, error, int) {
-	switch req.Role {
+	role, ok := ctx.Value("role").(models.Role)
+	if !ok {
+		return "", errors.New("role not found"), http.StatusBadRequest
+	}
+
+	switch role {
 	case models.UserRole:
 		return ctrl.loginUser(ctx, req)
 	case models.AdminRole:

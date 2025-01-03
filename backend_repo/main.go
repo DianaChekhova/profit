@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"profit/config"
 	"profit/db"
@@ -23,8 +24,8 @@ func main() {
 	router := routes.InitRoutes(mongoClient.DB, ctx)
 
 	// Запускаем HTTP-сервер
-	log.Logger.Println("Starting server on", cfg.ServerPort)
-	log.Logger.Println(http.ListenAndServe(cfg.ServerPort, router))
+	fmt.Println("Starting server on", cfg.ServerPort)
+	fmt.Println(http.ListenAndServe(fmt.Sprintf("localhost:%s", cfg.ServerPort), router))
 }
 
 func initDatabase(cfg config.Config) (*db.MongoClient, context.Context) {
