@@ -2,12 +2,10 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"net/http"
-	"profit/cfg"
+	"profit/config"
 	"profit/db"
 	log "profit/object_log"
-	"profit/repository/use_cases/dbs_repositories"
 	"profit/routes"
 )
 
@@ -15,39 +13,25 @@ func main() {
 	// Инициализируем логирование
 	log.Init()
 
-	ctx := context.Background()
+	// Загружаем конфигурацию
+	cfg := config.Load()
 
-	// Подключаемся к MongoDB 27017
-	mongoClient, err := db.ConnectMongoDB(fmt.Sprintf("%s:%s", cfg.MongoUri, cfg.ServerPort), "members")
-	if err != nil {
-		log.Logger.Fatal(err.Error())
-	}
+	// Подключаемся к базе данных
+	mongoClient, ctx := initDatabase(cfg)
 
-	defer func() {
-		err := mongoClient.Client.Disconnect(ctx)
-		if err != nil {
-			log.Logger.Fatal(err.Error())
-		}
-	}()
-
-	// Создаем на данный момент две репы. Для работы с юзерами через монгу и через оперативу ( для тестов)
-	mongoUserRepository := dbs_repositories.NewUserMongoRepository(mongoClient.DB, ctx)
-
-	// Создаем контроллеры
-	useCasesController := routes.NewUseCasesControllers(mongoUserRepository)
-	mux := http.NewServeMux()
-
-	// Открытые маршруты
-	mux.HandleFunc("/api/login", useCasesController.LoginHandler)
-
-	// Регистрируем маршруты
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintln(w, "Hello Egor Lykov") // Отправляем ответ клиенту
-	})
-	
-	mux.HandleFunc("/api/register", useCasesController.RegisterHandler)
+	// Создаем маршруты
+	router := routes.InitRoutes(mongoClient.DB, ctx)
 
 	// Запускаем HTTP-сервер
-	log.Logger.Println("Starting server on :8080...")
-	log.Logger.Fatal(http.ListenAndServe(":8080", nil))
+	log.Logger.Println("Starting server on", cfg.ServerPort)
+	log.Logger.Println(http.ListenAndServe(cfg.ServerPort, router))
+}
+
+func initDatabase(cfg config.Config) (*db.MongoClient, context.Context) {
+	ctx := context.Background()
+	mongoClient, err := db.ConnectMongoDB(cfg.MongoURI, "members")
+	if err != nil {
+		log.Logger.Fatal(err)
+	}
+	return mongoClient, ctx
 }

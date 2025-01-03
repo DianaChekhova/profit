@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	log "profit/object_log"
@@ -57,4 +58,23 @@ func (m *MongoClient) DisconnectMongoDB(ctx context.Context) {
 		log.Logger.Errorf("Failed to disconnect from MongoDB: %v", err)
 	}
 	log.Logger.Println("Successfully disconnected from MongoDB")
+}
+
+// EnsureIndexes создает уникальный индекс для поля username
+func EnsureIndexes(collection *mongo.Collection) error {
+	indexModel := mongo.IndexModel{
+		Keys: bson.D{
+			{Key: "email", Value: 1}},
+		Options: options.Index().SetUnique(true), // Уникальность
+	}
+
+	// Создаем индекс
+	_, err := collection.Indexes().CreateOne(context.TODO(), indexModel)
+	if err != nil {
+		log.Logger.Printf("Не удалось создать уникальный индекс: %v", err)
+		return err
+	}
+
+	log.Logger.Println("Уникальный индекс успешно создан")
+	return nil
 }
