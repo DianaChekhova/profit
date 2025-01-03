@@ -130,6 +130,9 @@ const docTemplate = `{
         "handlers.AuthBody": {
             "type": "object",
             "properties": {
+                "email": {
+                    "type": "string"
+                },
                 "password": {
                     "type": "string"
                 },
