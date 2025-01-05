@@ -12,7 +12,7 @@ type User struct {
 	Email        string       `json:"email" validate:"required,email" bson:"email"`
 	Password     string       `json:"password" validate:"required,min=6" bson:"password"`
 	CreatedAt    time.Time    `json:"created_at" bson:"created_at"`
-	Role         string       `json:"role" bson:"role" validate:"required"`
+	Role         string       `json:"role" bson:"role"`
 	Schedule     []Workout    `json:"schedule" bson:"schedule"`
 	Subscription Subscription `json:"subscription"  validate:"required" bson:"subscription"`
 }

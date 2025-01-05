@@ -47,6 +47,7 @@ func (ctrl *AdminCaseController) RegisterHandler(w http.ResponseWriter, r *http.
 		http.Error(w, err.Error(), code)
 		return
 	}
+	
 }
 
 func (ctrl *AdminCaseController) registerUserByRole(ctx context.Context, request RegisterBody) (error, int) {

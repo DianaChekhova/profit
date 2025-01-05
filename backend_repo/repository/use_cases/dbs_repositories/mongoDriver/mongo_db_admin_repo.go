@@ -135,14 +135,9 @@ func (repo *AdminMongoRepository) UpdateUser(ctx context.Context, user *models.U
 }
 
 func (repo *AdminMongoRepository) CreateUser(ctx context.Context, user *models.User) error {
-	oid, err := primitive.ObjectIDFromHex(user.ID)
-	if err != nil {
-		return err
-	}
-
-	filter := bson.M{"_id": oid}
+	filter := bson.M{"email": user.Email}
 	update := bson.M{"$set": user}
-	_, err = repo.collection.UpdateOne(ctx, filter, update)
+	_, err := repo.collection.UpdateOne(ctx, filter, update)
 	return err
 }
 
