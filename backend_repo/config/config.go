@@ -7,10 +7,12 @@ type Config struct {
 	ServerPort string
 }
 
-func Load() Config {
-	return Config{
+var Conf Config
+
+func Load() {
+	Conf = Config{
 		MongoURI:   getEnv("MONGO_URI", "mongodb://localhost:27017"),
-		ServerPort: getEnv("SERVER_PORT", "8081"),
+		ServerPort: getEnv("SERVER_PORT", "8080"),
 	}
 }
 

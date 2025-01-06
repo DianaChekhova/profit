@@ -1,4 +1,4 @@
-package handlers
+package base_handlers
 
 import (
 	"context"
@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"profit/models"
 	"profit/routes/auth/jwt_token"
+	"profit/routes/handlers/backendController"
 )
 
 type AuthBody struct {
@@ -28,22 +29,36 @@ type AuthBody struct {
 // @Failure 401 {string} string "Неверное имя пользователя или пароль"
 // @Failure 500 {string} string "Ошибка генерации токена"
 // @Router /api/login [post]
-func (ctrl *AdminCaseController) LoginHandler(w http.ResponseWriter, r *http.Request) {
+func (ctrl *BaseController) LoginHandler(w http.ResponseWriter, r *http.Request) {
 	var req AuthBody
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "Invalid input", http.StatusBadRequest)
+		backendController.WriteJSONResponse(
+			w,
+			http.StatusBadRequest,
+			"Invalid input",
+		)
 		return
 	}
 
 	token, err, code := ctrl.loginByRole(r.Context(), req)
 	if err != nil {
-		http.Error(w, err.Error(), code)
+		backendController.WriteJSONResponse(
+			w,
+			code,
+			"Invalid input",
+		)
 	}
+
 	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(map[string]string{"token": token})
+
+	backendController.WriteJSONResponse(
+		w,
+		http.StatusOK,
+		map[string]string{"token": token},
+	)
 }
 
-func (ctrl *AdminCaseController) loginByRole(ctx context.Context, req AuthBody) (string, error, int) {
+func (ctrl *BaseController) loginByRole(ctx context.Context, req AuthBody) (string, error, int) {
 	role, ok := ctx.Value("role").(models.Role)
 	if !ok {
 		return "", errors.New("role not found"), http.StatusBadRequest
@@ -61,8 +76,8 @@ func (ctrl *AdminCaseController) loginByRole(ctx context.Context, req AuthBody) 
 	}
 }
 
-func (ctrl *AdminCaseController) loginUser(ctx context.Context, req AuthBody) (token string, err error, code int) {
-	user, err := ctrl.adminRepo.GetUserByEmail(ctx, req.Email)
+func (ctrl *BaseController) loginUser(ctx context.Context, req AuthBody) (token string, err error, code int) {
+	user, err := ctrl.userRepo.GetUserByEmail(ctx, req.Email)
 	if err != nil {
 		return "", err, http.StatusServiceUnavailable
 	}
@@ -79,8 +94,8 @@ func (ctrl *AdminCaseController) loginUser(ctx context.Context, req AuthBody) (t
 	return token, nil, http.StatusOK
 }
 
-func (ctrl *AdminCaseController) loginAdmin(ctx context.Context, req AuthBody) (token string, err error, code int) {
-	admin, err := ctrl.superUserRepo.GetAdminByEmail(ctx, req.Email)
+func (ctrl *BaseController) loginAdmin(ctx context.Context, req AuthBody) (token string, err error, code int) {
+	admin, err := ctrl.adminRepo.GetAdminByEmail(ctx, req.Email)
 	if err != nil {
 		return "", err, http.StatusServiceUnavailable
 	}
@@ -97,8 +112,8 @@ func (ctrl *AdminCaseController) loginAdmin(ctx context.Context, req AuthBody) (
 	return token, nil, http.StatusOK
 }
 
-func (ctrl *AdminCaseController) loginTrainer(ctx context.Context, req AuthBody) (token string, err error, code int) {
-	trainer, err := ctrl.adminRepo.GetTrainerByEmail(ctx, req.Email)
+func (ctrl *BaseController) loginTrainer(ctx context.Context, req AuthBody) (token string, err error, code int) {
+	trainer, err := ctrl.trainerRepo.GetTrainerByEmail(ctx, req.Email)
 	if err != nil {
 		return "", err, http.StatusServiceUnavailable
 	}
