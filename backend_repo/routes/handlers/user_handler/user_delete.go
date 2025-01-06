@@ -16,12 +16,12 @@ type userDeleteReq struct {
 // @Tags Trainers
 // @Accept json
 // @Produce json
-// @Param id body deleteHandler true "Идентификатор пользователя для удаления"
+// @Param id body userDeleteReq true "Идентификатор пользователя для удаления"
 // @Success 204 {string} string "Тренер успешно удален"
 // @Failure 400 {string} string "Неверный ввод"
 // @Failure 404 {string} string "Тренер не найден"
 // @Failure 500 {string} string "Ошибка сервера при удалении пользователя"
-// @Router /api/trainers [delete]
+// @Router /api/user [delete]
 func (uc *UserController) UserDelete(w http.ResponseWriter, r *http.Request) {
 	var req userDeleteReq
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {

@@ -24,7 +24,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.AuthBody"
+                            "$ref": "#/definitions/base_handlers.AuthBody"
                         }
                     }
                 ],
@@ -79,7 +79,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.RegisterBody"
+                            "$ref": "#/definitions/base_handlers.RegisterBody"
                         }
                     }
                 ],
@@ -113,10 +113,380 @@
                     }
                 }
             }
+        },
+        "/api/trainer": {
+            "put": {
+                "description": "Позволяет обновить информацию о тренере",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Trainers"
+                ],
+                "summary": "Обновляет данные тренера",
+                "parameters": [
+                    {
+                        "description": "Информация о тренере для обновления",
+                        "name": "trainer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/trainer_handlers.trainerUpdateReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Обновление выполнено успешно",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный ввод",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера при обновлении",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Позволяет добавить нового тренера в систему",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Trainers"
+                ],
+                "summary": "Добавление нового тренера",
+                "parameters": [
+                    {
+                        "description": "Данные тренера",
+                        "name": "trainer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/trainer_handlers.trainerReqHandler"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Тренер успешно создан",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный ввод",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка при создании тренера",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Удаляет тренера по его идентификатору",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Trainers"
+                ],
+                "summary": "Удаление тренера",
+                "parameters": [
+                    {
+                        "description": "Идентификатор тренера для удаления",
+                        "name": "id",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/trainer_handlers.deleteHandler"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Тренер успешно удален",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный ввод",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Тренер не найден",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера при удалении тренера",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/trainers": {
+            "get": {
+                "description": "Позволяет получить список всех тренеров",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Trainers"
+                ],
+                "summary": "Возвращает список тренеров",
+                "responses": {
+                    "200": {
+                        "description": "Список тренеров",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/trainer_handlers.trainerAliace"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный ввод",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка при получении списка тренеров",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user": {
+            "put": {
+                "description": "Позволяет обновить информацию о пользователя",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Trainers"
+                ],
+                "summary": "Обновляет данные тренера",
+                "parameters": [
+                    {
+                        "description": "Информация о пользователя для обновления",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_handler.userUpdateReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Обновление выполнено успешно",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный ввод",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера при обновлении",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Позволяет добавить нового пользователя в систему",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Добавление нового пользователя",
+                "parameters": [
+                    {
+                        "description": "Данные Юзера",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_handler.userReqHandler"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Пользователь успешно создан",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный ввод",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка при создании пользователя",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Удаляет пользователя по его идентификатору",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Trainers"
+                ],
+                "summary": "Удаление пользователя",
+                "parameters": [
+                    {
+                        "description": "Идентификатор пользователя для удаления",
+                        "name": "id",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_handler.userDeleteReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Тренер успешно удален",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный ввод",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Тренер не найден",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера при удалении пользователя",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users": {
+            "get": {
+                "description": "Позволяет получить список всех пользователей",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Возвращает список пользователей",
+                "responses": {
+                    "200": {
+                        "description": "Список пользователей",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/user_handler.usersAliaceType"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный ввод",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка при получении списка пользователей",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
-        "handlers.AuthBody": {
+        "base_handlers.AuthBody": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "base_handlers.RegisterBody": {
             "type": "object",
             "properties": {
                 "email": {
@@ -133,20 +503,150 @@
                 }
             }
         },
-        "handlers.RegisterBody": {
+        "models.Subscription": {
+            "type": "object",
+            "properties": {
+                "duration": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Workout": {
+            "type": "object",
+            "required": [
+                "description",
+                "max_participants",
+                "min_participants",
+                "title"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 3
+                },
+                "end_time": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "isEnable": {
+                    "type": "boolean"
+                },
+                "max_participants": {
+                    "type": "integer"
+                },
+                "min_participants": {
+                    "type": "integer"
+                },
+                "participants": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "start_time": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 3
+                }
+            }
+        },
+        "trainer_handlers.deleteHandler": {
+            "type": "object"
+        },
+        "trainer_handlers.trainerAliace": {
             "type": "object",
             "properties": {
                 "email": {
                     "type": "string"
                 },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
                 "password": {
                     "type": "string"
+                },
+                "schedule": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Workout"
+                    }
+                },
+                "specialty": {
+                    "type": "string"
+                }
+            }
+        },
+        "trainer_handlers.trainerReqHandler": {
+            "type": "object"
+        },
+        "trainer_handlers.trainerUpdateReq": {
+            "type": "object"
+        },
+        "user_handler.userDeleteReq": {
+            "type": "object"
+        },
+        "user_handler.userReqHandler": {
+            "type": "object"
+        },
+        "user_handler.userUpdateReq": {
+            "type": "object"
+        },
+        "user_handler.usersAliaceType": {
+            "type": "object",
+            "required": [
+                "email",
+                "name",
+                "password",
+                "subscription"
+            ],
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 3
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 6
                 },
                 "role": {
                     "type": "string"
                 },
-                "username": {
-                    "type": "string"
+                "schedule": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Workout"
+                    }
+                },
+                "subscription": {
+                    "$ref": "#/definitions/models.Subscription"
                 }
             }
         }

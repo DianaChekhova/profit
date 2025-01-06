@@ -21,7 +21,7 @@ type deleteHandler struct {
 // @Failure 400 {string} string "Неверный ввод"
 // @Failure 404 {string} string "Тренер не найден"
 // @Failure 500 {string} string "Ошибка сервера при удалении тренера"
-// @Router /api/trainers [delete]
+// @Router /api/trainer [delete]
 func (bc *TrainerController) TrainerDelete(w http.ResponseWriter, r *http.Request) {
 	var req deleteHandler
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {

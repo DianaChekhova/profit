@@ -1,5 +1,14 @@
 definitions:
-  handlers.AuthBody:
+  base_handlers.AuthBody:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  base_handlers.RegisterBody:
     properties:
       email:
         type: string
@@ -10,16 +19,106 @@ definitions:
       username:
         type: string
     type: object
-  handlers.RegisterBody:
+  models.Subscription:
+    properties:
+      duration:
+        type: number
+      id:
+        type: string
+      price:
+        type: number
+      type:
+        type: string
+    type: object
+  models.Workout:
+    properties:
+      description:
+        maxLength: 20
+        minLength: 3
+        type: string
+      end_time:
+        type: string
+      id:
+        type: string
+      isEnable:
+        type: boolean
+      max_participants:
+        type: integer
+      min_participants:
+        type: integer
+      participants:
+        additionalProperties:
+          type: string
+        type: object
+      start_time:
+        type: string
+      title:
+        maxLength: 20
+        minLength: 3
+        type: string
+    required:
+    - description
+    - max_participants
+    - min_participants
+    - title
+    type: object
+  trainer_handlers.deleteHandler:
+    type: object
+  trainer_handlers.trainerAliace:
     properties:
       email:
         type: string
+      id:
+        type: string
+      name:
+        type: string
       password:
+        type: string
+      schedule:
+        items:
+          $ref: '#/definitions/models.Workout'
+        type: array
+      specialty:
+        type: string
+    type: object
+  trainer_handlers.trainerReqHandler:
+    type: object
+  trainer_handlers.trainerUpdateReq:
+    type: object
+  user_handler.userDeleteReq:
+    type: object
+  user_handler.userReqHandler:
+    type: object
+  user_handler.userUpdateReq:
+    type: object
+  user_handler.usersAliaceType:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        maxLength: 20
+        minLength: 3
+        type: string
+      password:
+        minLength: 6
         type: string
       role:
         type: string
-      username:
-        type: string
+      schedule:
+        items:
+          $ref: '#/definitions/models.Workout'
+        type: array
+      subscription:
+        $ref: '#/definitions/models.Subscription'
+    required:
+    - email
+    - name
+    - password
+    - subscription
     type: object
 info:
   contact: {}
@@ -36,7 +135,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/handlers.AuthBody'
+          $ref: '#/definitions/base_handlers.AuthBody'
       produces:
       - application/json
       responses:
@@ -73,7 +172,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/handlers.RegisterBody'
+          $ref: '#/definitions/base_handlers.RegisterBody'
       produces:
       - application/json
       responses:
@@ -98,4 +197,238 @@ paths:
       summary: Регистрация пользователя
       tags:
       - Register
+  /api/trainer:
+    delete:
+      consumes:
+      - application/json
+      description: Удаляет тренера по его идентификатору
+      parameters:
+      - description: Идентификатор тренера для удаления
+        in: body
+        name: id
+        required: true
+        schema:
+          $ref: '#/definitions/trainer_handlers.deleteHandler'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Тренер успешно удален
+          schema:
+            type: string
+        "400":
+          description: Неверный ввод
+          schema:
+            type: string
+        "404":
+          description: Тренер не найден
+          schema:
+            type: string
+        "500":
+          description: Ошибка сервера при удалении тренера
+          schema:
+            type: string
+      summary: Удаление тренера
+      tags:
+      - Trainers
+    post:
+      consumes:
+      - application/json
+      description: Позволяет добавить нового тренера в систему
+      parameters:
+      - description: Данные тренера
+        in: body
+        name: trainer
+        required: true
+        schema:
+          $ref: '#/definitions/trainer_handlers.trainerReqHandler'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Тренер успешно создан
+          schema:
+            type: string
+        "400":
+          description: Неверный ввод
+          schema:
+            type: string
+        "500":
+          description: Ошибка при создании тренера
+          schema:
+            type: string
+      summary: Добавление нового тренера
+      tags:
+      - Trainers
+    put:
+      consumes:
+      - application/json
+      description: Позволяет обновить информацию о тренере
+      parameters:
+      - description: Информация о тренере для обновления
+        in: body
+        name: trainer
+        required: true
+        schema:
+          $ref: '#/definitions/trainer_handlers.trainerUpdateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Обновление выполнено успешно
+          schema:
+            type: string
+        "400":
+          description: Неверный ввод
+          schema:
+            type: string
+        "500":
+          description: Ошибка сервера при обновлении
+          schema:
+            type: string
+      summary: Обновляет данные тренера
+      tags:
+      - Trainers
+  /api/trainers:
+    get:
+      consumes:
+      - application/json
+      description: Позволяет получить список всех тренеров
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список тренеров
+          schema:
+            items:
+              $ref: '#/definitions/trainer_handlers.trainerAliace'
+            type: array
+        "400":
+          description: Неверный ввод
+          schema:
+            type: string
+        "500":
+          description: Ошибка при получении списка тренеров
+          schema:
+            type: string
+      summary: Возвращает список тренеров
+      tags:
+      - Trainers
+  /api/user:
+    delete:
+      consumes:
+      - application/json
+      description: Удаляет пользователя по его идентификатору
+      parameters:
+      - description: Идентификатор пользователя для удаления
+        in: body
+        name: id
+        required: true
+        schema:
+          $ref: '#/definitions/user_handler.userDeleteReq'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Тренер успешно удален
+          schema:
+            type: string
+        "400":
+          description: Неверный ввод
+          schema:
+            type: string
+        "404":
+          description: Тренер не найден
+          schema:
+            type: string
+        "500":
+          description: Ошибка сервера при удалении пользователя
+          schema:
+            type: string
+      summary: Удаление пользователя
+      tags:
+      - Trainers
+    post:
+      consumes:
+      - application/json
+      description: Позволяет добавить нового пользователя в систему
+      parameters:
+      - description: Данные Юзера
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user_handler.userReqHandler'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Пользователь успешно создан
+          schema:
+            type: string
+        "400":
+          description: Неверный ввод
+          schema:
+            type: string
+        "500":
+          description: Ошибка при создании пользователя
+          schema:
+            type: string
+      summary: Добавление нового пользователя
+      tags:
+      - Users
+    put:
+      consumes:
+      - application/json
+      description: Позволяет обновить информацию о пользователя
+      parameters:
+      - description: Информация о пользователя для обновления
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user_handler.userUpdateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Обновление выполнено успешно
+          schema:
+            type: string
+        "400":
+          description: Неверный ввод
+          schema:
+            type: string
+        "500":
+          description: Ошибка сервера при обновлении
+          schema:
+            type: string
+      summary: Обновляет данные тренера
+      tags:
+      - Trainers
+  /api/users:
+    get:
+      consumes:
+      - application/json
+      description: Позволяет получить список всех пользователей
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список пользователей
+          schema:
+            items:
+              $ref: '#/definitions/user_handler.usersAliaceType'
+            type: array
+        "400":
+          description: Неверный ввод
+          schema:
+            type: string
+        "500":
+          description: Ошибка при получении списка пользователей
+          schema:
+            type: string
+      summary: Возвращает список пользователей
+      tags:
+      - Users
 swagger: "2.0"
