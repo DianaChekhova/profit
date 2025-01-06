@@ -8,7 +8,26 @@ import {useContext, useState} from 'react';
 import {InputGroup} from '../../../../ui/input-group.jsx';
 import {GoLock} from 'react-icons/go';
 import {Context} from '../../../../../main.jsx';
+import * as yup from 'yup';
 import styles from './tabs.module.scss';
+
+const REGISTRATION_SCHEMA = yup.object().shape({
+  retryPassword: yup
+    .string()
+    .required('Введите пароль снова')
+    .min(4, 'Длинна поля должна быть больше 4-х символов')
+    .max(25, 'Длинна поля должна быть менее 25 символов'),
+  password: yup
+    .string()
+    .required('Введите пароль')
+    .min(4, 'Длинна поля должна быть больше 4-х символов')
+    .max(25, 'Длинна поля должна быть менее 25 символов'),
+  login: yup
+    .string()
+    .required('Введите логин')
+    .min(4, 'Длинна поля должна быть больше 4-х символов')
+    .max(25, 'Длинна поля должна быть менее 25 символов'),
+});
 
 function RegistrationTab() {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,6 +41,11 @@ function RegistrationTab() {
     login: '',
     password: '',
     retryPassword: '',
+  });
+
+  const [errorForm, setErrorForm] = useState({
+    type: '',
+    text: '',
   });
 
   const changeLoginForm = (e, type) => {
@@ -43,12 +67,24 @@ function RegistrationTab() {
   };
 
   const handleSubmit = () => {
-    if (loginForm.password === loginForm.retryPassword) {
-      setLoading(true);
-      store.registration(loginForm.login, loginForm.password).then(() => setLoading(false));
-    } else {
-      setLoading(false);
-    }
+    setLoading(true);
+    REGISTRATION_SCHEMA.validate(loginForm)
+      .then(() => {
+        if (loginForm.password !== loginForm.retryPassword) {
+          setErrorForm({type: 'bothPass', text: 'Пароли должны совпадать!'});
+        } else {
+          setErrorForm({type: '', text: ''});
+          store.registration(loginForm.login, loginForm.password).then(() => setLoading(false));
+        }
+      })
+      .catch((err) => {
+        setErrorForm({type: err.path, text: err.message});
+      })
+      .finally(() =>
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000)
+      );
   };
 
   return (
@@ -58,7 +94,7 @@ function RegistrationTab() {
         mb={'16px'}
         startElement={<FiUser />}
       >
-        <Field>
+        <Field invalid={errorForm.type === 'login'}>
           <Input
             className={styles.formInput}
             type='login'
@@ -85,7 +121,7 @@ function RegistrationTab() {
           )
         }
       >
-        <Field>
+        <Field invalid={errorForm.type === 'password' || errorForm.type === 'bothPass'}>
           <Input
             className={styles.formInput}
             type={showPassword ? 'text' : 'password'}
@@ -112,7 +148,7 @@ function RegistrationTab() {
           )
         }
       >
-        <Field>
+        <Field invalid={errorForm.type === 'retryPassword' || errorForm.type === 'bothPass'}>
           <Input
             className={styles.formInput}
             type={showPassword ? 'text' : 'password'}
@@ -122,13 +158,14 @@ function RegistrationTab() {
         </Field>
       </InputGroup>
       <Flex
-        justify='flex-end'
+        justify='space-between'
         alignItems='center'
       >
         <Field
-          invalid
+          className={styles.errorField}
+          invalid={Boolean(errorForm.text)}
           align='center'
-          errorText={'Пароли должны повторятся!'}
+          errorText={errorForm.text}
         />
         <Button
           type='submit'

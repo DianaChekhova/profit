@@ -9,6 +9,20 @@ import {GoLock} from 'react-icons/go';
 import {Context} from '../../../../../main.jsx';
 import {Field} from '../../../../ui/field.jsx';
 import styles from './tabs.module.scss';
+import * as yup from 'yup';
+
+const LOGIN_SCHEMA = yup.object().shape({
+  password: yup
+    .string()
+    .required('Введите пароль')
+    .min(4, 'Длинна поля должна быть больше 4-х символов')
+    .max(25, 'Длинна поля должна быть менее 25 символов'),
+  login: yup
+    .string()
+    .required('Введите логин')
+    .min(4, 'Длинна поля должна быть больше 4-х символов')
+    .max(25, 'Длинна поля должна быть менее 25 символов'),
+});
 
 function LoginTab() {
   const [showPassword, setShowPassword] = useState(false);
@@ -17,6 +31,11 @@ function LoginTab() {
   const [loginForm, setLoginForm] = useState({
     login: '',
     password: '',
+  });
+
+  const [errorForm, setErrorForm] = useState({
+    type: '',
+    text: '',
   });
 
   const {store} = useContext(Context);
@@ -38,7 +57,19 @@ function LoginTab() {
 
   const handleSubmit = () => {
     setLoading(true);
-    store.login(loginForm.login, loginForm.password).then(() => setLoading(false));
+    LOGIN_SCHEMA.validate(loginForm)
+      .then(() => {
+        setErrorForm({type: '', text: ''});
+        store.login(loginForm.login, loginForm.password).then(() => setLoading(false));
+      })
+      .catch((err) => {
+        setErrorForm({type: err.path, text: err.message});
+      })
+      .finally(() =>
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000)
+      );
   };
 
   return (
@@ -48,7 +79,7 @@ function LoginTab() {
         mb={'16px'}
         startElement={<FiUser />}
       >
-        <Field>
+        <Field invalid={errorForm.type === 'login'}>
           <Input
             className={styles.formInput}
             type='login'
@@ -75,7 +106,7 @@ function LoginTab() {
           )
         }
       >
-        <Field>
+        <Field invalid={errorForm.type === 'password'}>
           <Input
             className={styles.formInput}
             type={showPassword ? 'text' : 'password'}
@@ -85,13 +116,14 @@ function LoginTab() {
         </Field>
       </InputGroup>
       <Flex
-        justify='flex-end'
+        justify='space-between'
         alignItems='center'
       >
         <Field
-          invalid
+          className={styles.errorField}
+          invalid={Boolean(errorForm.text)}
           align='center'
-          errorText={'Пароли должны повторятся!'}
+          errorText={errorForm.text}
         />
         <Button
           type='submit'
