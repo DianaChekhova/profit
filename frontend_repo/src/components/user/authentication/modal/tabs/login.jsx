@@ -7,8 +7,10 @@ import {useContext, useState} from 'react';
 import {InputGroup} from '../../../../ui/input-group.jsx';
 import {GoLock} from 'react-icons/go';
 import {Context} from '../../../../../main.jsx';
+import {Field} from '../../../../ui/field.jsx';
+import styles from './tabs.module.scss';
 
-function LoginTab(props) {
+function LoginTab() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -40,17 +42,20 @@ function LoginTab(props) {
   };
 
   return (
-    <Stack>
+    <Stack mt={2}>
       <InputGroup
         flex={1}
         mb={'16px'}
         startElement={<FiUser />}
       >
-        <Input
-          type='login'
-          placeholder='Введите логин'
-          onChange={(e) => changeLoginForm(e, 'login')}
-        />
+        <Field>
+          <Input
+            className={styles.formInput}
+            type='login'
+            placeholder='Введите логин'
+            onChange={(e) => changeLoginForm(e, 'login')}
+          />
+        </Field>
       </InputGroup>
       <InputGroup
         flex={1}
@@ -70,13 +75,24 @@ function LoginTab(props) {
           )
         }
       >
-        <Input
-          type={showPassword ? 'text' : 'password'}
-          onChange={(e) => changeLoginForm(e, 'password')}
-          placeholder='Введите пароль'
-        />
+        <Field>
+          <Input
+            className={styles.formInput}
+            type={showPassword ? 'text' : 'password'}
+            onChange={(e) => changeLoginForm(e, 'password')}
+            placeholder='Введите пароль'
+          />
+        </Field>
       </InputGroup>
-      <Flex justify='flex-end'>
+      <Flex
+        justify='flex-end'
+        alignItems='center'
+      >
+        <Field
+          invalid
+          align='center'
+          errorText={'Пароли должны повторятся!'}
+        />
         <Button
           type='submit'
           width='80px'
