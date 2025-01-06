@@ -7,6 +7,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"profit/models"
+	"profit/routes/auth/jwt_token"
 	"profit/routes/handlers/backendController"
 	"time"
 )
@@ -54,8 +55,13 @@ func (ctrl *BaseController) RegisterHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
+	token, err := jwt_token.GenerateToken(models.TrainerRole)
+	if err != nil {
+		backendController.WriteJSONResponse(w, code, map[string]string{"error": err.Error()})
+		return
+	}
 	// Успешный ответ
-	backendController.WriteJSONResponse(w, http.StatusOK, map[string]string{"message": "User registered successfully"})
+	backendController.WriteJSONResponse(w, http.StatusOK, map[string]string{"token": token})
 }
 
 func (ctrl *BaseController) registerUserByRole(ctx context.Context, request RegisterBody) (error, int) {

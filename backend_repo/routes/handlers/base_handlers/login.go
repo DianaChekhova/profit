@@ -87,7 +87,7 @@ func (ctrl *BaseController) loginUser(ctx context.Context, req AuthBody) (token 
 		return "", errors.New("invalid password"), http.StatusBadRequest
 	}
 
-	token, err = jwt_token.GenerateToken(user.ID, models.UserRole)
+	token, err = jwt_token.GenerateToken(models.UserRole)
 	if err != nil {
 		return "", err, http.StatusInternalServerError
 	}
@@ -104,7 +104,7 @@ func (ctrl *BaseController) loginAdmin(ctx context.Context, req AuthBody) (token
 		return "", errors.New("invalid password"), http.StatusBadRequest
 	}
 
-	token, err = jwt_token.GenerateToken(admin.ID, models.AdminRole)
+	token, err = jwt_token.GenerateToken(models.AdminRole)
 	if err != nil {
 		return "", err, http.StatusInternalServerError
 	}
@@ -121,7 +121,7 @@ func (ctrl *BaseController) loginTrainer(ctx context.Context, req AuthBody) (tok
 	if err != nil {
 		return "", errors.New("invalid password"), http.StatusBadRequest
 	}
-	token, err = jwt_token.GenerateToken(trainer.ID, models.TrainerRole)
+	token, err = jwt_token.GenerateToken(models.TrainerRole)
 	if err != nil {
 		return "", err, http.StatusInternalServerError
 	}

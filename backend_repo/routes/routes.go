@@ -44,12 +44,12 @@ func InitRoutes(database *mongo.Database, ctx context.Context) *chi.Mux {
 		protected.Get("/api/trainers", trainerController.TrainerList)
 		protected.Put("/api/trainer", trainerController.TrainerUpdate)
 		protected.Delete("/api/trainer", trainerController.TrainerDelete)
-		protected.Post("api/trainer", trainerController.AddTrainer)
+		protected.Post("/api/trainer", trainerController.AddTrainer)
 
 		protected.Get("/api/users", userController.UserList)
 		protected.Put("/api/user", userController.UserUpdate)
 		protected.Delete("/api/user", userController.UserDelete)
-		protected.Post("/api/trainer", userController.AddUser)
+		protected.Post("/api/user", userController.AddUser)
 		//protected.Get("/api/profile", baseController.GetProfile)
 	})
 
