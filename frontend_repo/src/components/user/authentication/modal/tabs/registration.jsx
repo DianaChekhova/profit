@@ -1,11 +1,12 @@
-import {Stack, Input, Flex} from '@chakra-ui/react';
+import {Stack, Input, Flex, HStack} from '@chakra-ui/react';
 import {Field} from '../../../../ui/field.jsx';
-import {FiUser} from 'react-icons/fi';
+import {FiMail, FiUser} from 'react-icons/fi';
 import {FaRegEyeSlash} from 'react-icons/fa6';
 import {FaRegEye} from 'react-icons/fa6';
 import {Button} from '../../../../ui/button.jsx';
 import {useContext, useState} from 'react';
 import {InputGroup} from '../../../../ui/input-group.jsx';
+import {RadioGroup, Radio} from '../../../../ui/radio.jsx';
 import {GoLock} from 'react-icons/go';
 import {Context} from '../../../../../main.jsx';
 import * as yup from 'yup';
@@ -27,6 +28,12 @@ const REGISTRATION_SCHEMA = yup.object().shape({
     .required('Введите логин')
     .min(4, 'Длинна поля должна быть больше 4-х символов')
     .max(25, 'Длинна поля должна быть менее 25 символов'),
+  mail: yup
+    .string()
+    .required('Введите почту')
+    .min(4, 'Длинна поля должна быть больше 4-х символов')
+    .max(25, 'Длинна поля должна быть менее 25 символов')
+    .matches(/^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim, 'Некорректный формат'),
 });
 
 function RegistrationTab() {
@@ -38,6 +45,7 @@ function RegistrationTab() {
   const handleShowClick = () => setShowPassword(!showPassword);
 
   const [loginForm, setLoginForm] = useState({
+    mail: '',
     login: '',
     password: '',
     retryPassword: '',
@@ -62,6 +70,11 @@ function RegistrationTab() {
     if (type === 'login') {
       setLoginForm((prevState) => {
         return {...prevState, login: e.target.value};
+      });
+    }
+    if (type === 'mail') {
+      setLoginForm((prevState) => {
+        return {...prevState, mail: e.target.value};
       });
     }
   };
@@ -89,6 +102,44 @@ function RegistrationTab() {
 
   return (
     <Stack mt={2}>
+      <RadioGroup
+        defaultValue='1'
+        variant='subtle'
+        mb='4'
+      >
+        <HStack
+          color='black'
+          gap='2'
+        >
+          <Radio value='1'>Админ</Radio>
+          <Radio
+            disabled
+            value='2'
+          >
+            Тренер
+          </Radio>
+          <Radio
+            disabled
+            value='3'
+          >
+            Пользователь
+          </Radio>
+        </HStack>
+      </RadioGroup>
+      <InputGroup
+        flex={1}
+        mb={'16px'}
+        startElement={<FiMail />}
+      >
+        <Field invalid={errorForm.type === 'mail'}>
+          <Input
+            className={styles.formInput}
+            type='mail'
+            onChange={(e) => changeLoginForm(e, 'mail')}
+            placeholder='Введите почту'
+          />
+        </Field>
+      </InputGroup>
       <InputGroup
         flex={1}
         mb={'16px'}
