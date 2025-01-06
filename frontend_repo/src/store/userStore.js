@@ -18,7 +18,6 @@ export default class UserStore {
   }
 
   async login(login, password) {
-    console.log('jjj');
     try {
       const response = await AuthService.login(login, password);
       localStorage.setItem('token', response.data.accessToken);

@@ -1,7 +1,8 @@
 import styles from './modal.module.scss';
-import {Box, Portal, Stack, Tabs, Theme} from '@chakra-ui/react';
+import {Box, Flex, Portal, Stack, Tabs, Theme} from '@chakra-ui/react';
 import RegistrationTab from './tabs/registration.jsx';
 import LoginTab from './tabs/login.jsx';
+import {RxCross2} from 'react-icons/rx';
 
 function AuthModal(props) {
   const {closeModalHandler} = props;
@@ -17,7 +18,7 @@ function AuthModal(props) {
       >
         <Stack
           spacing={4}
-          p='28px'
+          p='24px'
           backgroundColor='white'
           boxShadow='md'
         >
@@ -26,15 +27,20 @@ function AuthModal(props) {
             unmountOnExit
             defaultValue='tab-1'
           >
-            <Theme
-              p='4'
-              pl='0'
-              colorPalette='purple'
-            >
-              <Tabs.List className={styles.modalTabs}>
-                <Tabs.Trigger value='tab-1'>Вход</Tabs.Trigger>
-                <Tabs.Trigger value='tab-2'>Регистрация</Tabs.Trigger>
-              </Tabs.List>
+            <Theme colorPalette='purple'>
+              <Flex
+                direction='row'
+                justify='space-between'
+              >
+                <Tabs.List className={styles.modalTabs}>
+                  <Tabs.Trigger value='tab-1'>Вход</Tabs.Trigger>
+                  <Tabs.Trigger value='tab-2'>Регистрация</Tabs.Trigger>
+                </Tabs.List>
+                <RxCross2
+                  cursor='pointer'
+                  onClick={closeModalHandler}
+                />
+              </Flex>
             </Theme>
             <Tabs.Content value='tab-1'>
               <LoginTab />
