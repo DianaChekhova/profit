@@ -1,4 +1,4 @@
-package handlers
+package base_handlers
 
 import (
 	"context"
@@ -7,6 +7,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"profit/models"
+	"profit/routes/handlers/backendController"
 	"time"
 )
 
@@ -29,28 +30,35 @@ type RegisterBody struct {
 // @Failure 500 {string} string "Ошибка генерации пароля"
 // @Failure 503 {string} string "Серверная ошибка регистрация пользователя"
 // @Router /api/register [post]
-func (ctrl *AdminCaseController) RegisterHandler(w http.ResponseWriter, r *http.Request) {
+func (ctrl *BaseController) RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	var req RegisterBody
+
+	// Декодируем входящие данные
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "Invalid input", http.StatusBadRequest)
+		backendController.WriteJSONResponse(w, http.StatusBadRequest, map[string]string{"error": "Invalid input"})
 		return
 	}
+
+	// Хэшируем пароль
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
-		http.Error(w, "Error hashing password", http.StatusInternalServerError)
+		backendController.WriteJSONResponse(w, http.StatusInternalServerError, map[string]string{"error": "Error hashing password"})
 		return
 	}
 	req.Password = string(hashedPassword)
 
+	// Регистрируем пользователя
 	err, code := ctrl.registerUserByRole(r.Context(), req)
 	if err != nil {
-		http.Error(w, err.Error(), code)
+		backendController.WriteJSONResponse(w, code, map[string]string{"error": err.Error()})
 		return
 	}
-	
+
+	// Успешный ответ
+	backendController.WriteJSONResponse(w, http.StatusOK, map[string]string{"message": "User registered successfully"})
 }
 
-func (ctrl *AdminCaseController) registerUserByRole(ctx context.Context, request RegisterBody) (error, int) {
+func (ctrl *BaseController) registerUserByRole(ctx context.Context, request RegisterBody) (error, int) {
 	switch request.Role {
 	case models.UserRole:
 		return ctrl.registerUser(ctx, request)
@@ -63,7 +71,7 @@ func (ctrl *AdminCaseController) registerUserByRole(ctx context.Context, request
 	}
 }
 
-func (ctrl *AdminCaseController) registerUser(ctx context.Context, request RegisterBody) (error, int) {
+func (ctrl *BaseController) registerUser(ctx context.Context, request RegisterBody) (error, int) {
 	var user models.User
 	user.Email = request.Email
 	user.Password = request.Password
@@ -74,31 +82,31 @@ func (ctrl *AdminCaseController) registerUser(ctx context.Context, request Regis
 		return err, http.StatusBadRequest
 	}
 
-	if err := ctrl.adminRepo.CreateUser(ctx, &user); err != nil {
+	if err := ctrl.userRepo.CreateUser(ctx, &user); err != nil {
 		return err, http.StatusServiceUnavailable
 	}
 
 	return nil, http.StatusCreated
 }
 
-func (ctrl *AdminCaseController) registerAdminByRole(ctx context.Context, request RegisterBody) (error, int) {
+func (ctrl *BaseController) registerAdminByRole(ctx context.Context, request RegisterBody) (error, int) {
 	var admin models.Admin
 	admin.Email = request.Email
 	admin.Password = request.Password
 	admin.Name = request.Username
-	if err := ctrl.superUserRepo.CreateAdmin(ctx, admin); err != nil {
+	if err := ctrl.adminRepo.CreateAdmin(ctx, admin); err != nil {
 		return err, http.StatusServiceUnavailable
 	}
 
 	return nil, http.StatusCreated
 }
 
-func (ctrl *AdminCaseController) registerTrainerByRole(ctx context.Context, request RegisterBody) (error, int) {
+func (ctrl *BaseController) registerTrainerByRole(ctx context.Context, request RegisterBody) (error, int) {
 	var trainer models.Trainer
 	trainer.Email = request.Email
 	trainer.Password = request.Password
 	trainer.Name = request.Username
-	if err := ctrl.adminRepo.CreateTrainer(ctx, &trainer); err != nil {
+	if err := ctrl.trainerRepo.CreateTrainer(ctx, &trainer); err != nil {
 		return err, http.StatusServiceUnavailable
 	}
 	return nil, http.StatusCreated

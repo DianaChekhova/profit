@@ -15,22 +15,22 @@ func main() {
 	log.Init()
 
 	// Загружаем конфигурацию
-	cfg := config.Load()
+	config.Load()
 
 	// Подключаемся к базе данных
-	mongoClient, ctx := initDatabase(cfg)
+	mongoClient, ctx := initDatabase()
 
 	// Создаем маршруты
 	router := routes.InitRoutes(mongoClient.DB, ctx)
 
 	// Запускаем HTTP-сервер
-	fmt.Println("Starting server on", cfg.ServerPort)
-	fmt.Println(http.ListenAndServe(fmt.Sprintf("localhost:%s", cfg.ServerPort), router))
+	fmt.Println("Starting server on", config.Conf.ServerPort)
+	fmt.Println(http.ListenAndServe(fmt.Sprintf("localhost:%s", config.Conf.ServerPort), router))
 }
 
-func initDatabase(cfg config.Config) (*db.MongoClient, context.Context) {
+func initDatabase() (*db.MongoClient, context.Context) {
 	ctx := context.Background()
-	mongoClient, err := db.ConnectMongoDB(cfg.MongoURI, "members")
+	mongoClient, err := db.ConnectMongoDB(config.Conf.MongoURI, "members")
 	if err != nil {
 		log.Logger.Fatal(err)
 	}

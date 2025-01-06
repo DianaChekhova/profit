@@ -9,9 +9,10 @@ import (
 	"log"
 	"net/http"
 	"profit/db"
-	"profit/repository/use_cases/dbs_repositories/mongoDriver"
 	"profit/routes/auth/protection"
-	"profit/routes/handlers"
+	"profit/routes/handlers/base_handlers"
+	"profit/routes/handlers/trainer_handlers"
+	"profit/routes/handlers/user_handler"
 )
 
 func InitRoutes(database *mongo.Database, ctx context.Context) *chi.Mux {
@@ -27,18 +28,29 @@ func InitRoutes(database *mongo.Database, ctx context.Context) *chi.Mux {
 	r.Use(CORS)
 	r.Get("/swagger/*", httpSwagger.Handler())
 	// Инициализация хендлеров
-	adminRepo := mongoDriver.NewAdminMongoRepository(database, ctx)
 
-	adminHandler := handlers.NewAdminCaseController(adminRepo)
+	baseController := base_handlers.NewBaseController(ctx, database)
+	userController := user_handler.NewUserController(ctx, database)
+	trainerController := trainer_handlers.NewTrainerController(ctx, database)
+	//subController := subscription_handler.NewSubscriptionController(ctx, database)
 	// Открытые маршруты
-	r.Post("/api/login", adminHandler.LoginHandler)
-	r.Post("/api/register", adminHandler.RegisterHandler)
+	r.Post("/api/login", baseController.LoginHandler)
+	r.Post("/api/register", baseController.RegisterHandler)
 
 	// Защищенные маршруты
 	r.Group(func(protected chi.Router) {
 		protected.Use(protection.RoleMiddleware("admin"))
 
-		//protected.Get("/api/profile", adminHandler.GetProfile)
+		protected.Get("/api/trainer", trainerController.TrainerList)
+		protected.Put("/api/trainer", trainerController.TrainerUpdate)
+		protected.Delete("api/trainer", trainerController.TrainerDelete)
+		protected.Post("api/trainer", trainerController.AddTrainer)
+
+		protected.Get("/api/user", userController.UserList)
+		protected.Put("/api/user", userController.UserUpdate)
+		protected.Delete("/api/user", userController.UserDelete)
+		protected.Post("/api/trainer", userController.AddUser)
+		//protected.Get("/api/profile", baseController.GetProfile)
 	})
 
 	return r
