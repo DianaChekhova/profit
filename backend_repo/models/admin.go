@@ -8,7 +8,7 @@ type Admin struct {
 	ID       string `json:"id,omitempty" bson:"_id,omitempty"`
 	Name     string `json:"name"validate:"required,min=3,max=20" bson:"name"`
 	Email    string `json:"email"  validate:"required,email" bson:"email"`
-	Password string `json:"password" validate:"required,min=6" bson:"password"`
+	Password string `json:"password,omitempty" validate:"required,min=6" bson:"password"`
 }
 
 func (admin *Admin) Validate() error {
