@@ -13,6 +13,10 @@ export default class UserStore {
     this.isAuthenticated = bool;
   }
 
+  getAuthenticated() {
+    return this.isAuthenticated;
+  }
+
   setUser(user) {
     this.user = user;
   }
@@ -20,7 +24,7 @@ export default class UserStore {
   async login(login, password) {
     try {
       const response = await AuthService.login(login, password);
-      localStorage.setItem('token', response.data.accessToken);
+      localStorage.setItem('token', response.data.token);
       this.setAuthenticated(true);
       this.setUser(response.data.user);
     } catch (error) {
@@ -28,11 +32,13 @@ export default class UserStore {
     }
   }
 
-  async registration(login, password) {
+  async registration(data) {
     try {
-      const response = await AuthService.registration(login, password);
-      localStorage.setItem('token', response.data.accessToken);
+      const response = await AuthService.registration(data);
+      localStorage.setItem('token', response.data.token);
+      console.log('прикол');
       this.setAuthenticated(true);
+      console.log(this.getAuthenticated());
       this.setUser(response.data.user);
     } catch (error) {
       console.log(error);
@@ -40,6 +46,7 @@ export default class UserStore {
   }
 
   async logout() {
+    console.log('kdsdssd');
     try {
       const response = await AuthService.logout();
       localStorage.removeItem('token');
