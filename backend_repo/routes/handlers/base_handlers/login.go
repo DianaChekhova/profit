@@ -54,7 +54,7 @@ func (ctrl *BaseController) LoginHandler(w http.ResponseWriter, r *http.Request)
 	backendController.WriteJSONResponse(
 		w,
 		http.StatusOK,
-		map[string]string{"token": token},
+		map[string]string{"Token": token},
 	)
 }
 

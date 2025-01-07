@@ -19,6 +19,12 @@ definitions:
       username:
         type: string
     type: object
+  base_handlers.RegisterResponse:
+    properties:
+      entity: {}
+      token:
+        type: string
+    type: object
   models.Subscription:
     properties:
       duration:
@@ -179,9 +185,7 @@ paths:
         "201":
           description: Пользователь успешно зарегистрирован
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            $ref: '#/definitions/base_handlers.RegisterResponse'
         "400":
           description: Неверный ввод
           schema:

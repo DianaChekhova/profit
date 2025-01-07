@@ -98,10 +98,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Пользователь успешно зарегистрирован",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/base_handlers.RegisterResponse"
                         }
                     },
                     "400": {
@@ -510,6 +507,15 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "base_handlers.RegisterResponse": {
+            "type": "object",
+            "properties": {
+                "entity": {},
+                "token": {
                     "type": "string"
                 }
             }
