@@ -6,6 +6,7 @@ import Coaches from './pages/landing/coaches/index.jsx';
 import GroupTraining from './pages/landing/group/index.jsx';
 import Contacts from './pages/landing/contacts/index.jsx';
 import Navigator from './components/navigator/navigator.jsx';
+import AdminPage from './pages/account/admin/index.jsx';
 
 function App() {
   return (
@@ -31,6 +32,10 @@ function App() {
         <Route
           path='contacts'
           element={<Contacts />}
+        />
+        <Route
+          path='admin'
+          element={<AdminPage />}
         />
       </Routes>
     </div>

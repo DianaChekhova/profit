@@ -5,7 +5,7 @@ import App from './App.jsx';
 import {ChakraProvider} from '@chakra-ui/react';
 import {system} from '@chakra-ui/react/preset';
 import {BrowserRouter} from 'react-router-dom';
-import UserStore from './store/userStore.js';
+import UserStore from './store/UserStore.js';
 
 const store = new UserStore();
 

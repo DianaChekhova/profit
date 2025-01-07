@@ -43,10 +43,10 @@ function AuthModal(props) {
               </Flex>
             </Theme>
             <Tabs.Content value='tab-1'>
-              <LoginTab />
+              <LoginTab closeHandler={closeModalHandler} />
             </Tabs.Content>
             <Tabs.Content value='tab-2'>
-              <RegistrationTab />
+              <RegistrationTab closeHandler={closeModalHandler} />
             </Tabs.Content>
           </Tabs.Root>
         </Stack>

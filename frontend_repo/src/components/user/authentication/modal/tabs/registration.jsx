@@ -11,6 +11,7 @@ import {GoLock} from 'react-icons/go';
 import {Context} from '../../../../../main.jsx';
 import * as yup from 'yup';
 import styles from './tabs.module.scss';
+import {useNavigate} from 'react-router-dom';
 
 const REGISTRATION_SCHEMA = yup.object().shape({
   retryPassword: yup
@@ -36,11 +37,12 @@ const REGISTRATION_SCHEMA = yup.object().shape({
     .matches(/^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim, 'Некорректный формат'),
 });
 
-function RegistrationTab() {
+function RegistrationTab(props) {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const {store} = useContext(Context);
+  const navigate = useNavigate();
 
   const handleShowClick = () => setShowPassword(!showPassword);
 
@@ -79,7 +81,7 @@ function RegistrationTab() {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setLoading(true);
     REGISTRATION_SCHEMA.validate(loginForm)
       .then(() => {
@@ -87,7 +89,18 @@ function RegistrationTab() {
           setErrorForm({type: 'bothPass', text: 'Пароли должны совпадать!'});
         } else {
           setErrorForm({type: '', text: ''});
-          store.registration(loginForm.login, loginForm.password).then(() => setLoading(false));
+          //mock
+          const regObj = {
+            email: loginForm.mail,
+            username: loginForm.login,
+            role: 'admin',
+            password: loginForm.password,
+          };
+          store.registration(regObj).then(() => {
+            setLoading(false);
+            navigate('/admin');
+            props.closeHandler();
+          });
         }
       })
       .catch((err) => {
