@@ -116,7 +116,7 @@ const docTemplate = `{
         },
         "/api/register": {
             "post": {
-                "description": "Регистрирует пользователя в системе, проверяя имя пользователя и пароль",
+                "description": "Регистрирует нового пользователя в системе, создавая учетную запись на основе указанной роли.",
                 "consumes": [
                     "application/json"
                 ],
@@ -129,7 +129,7 @@ const docTemplate = `{
                 "summary": "Регистрация пользователя",
                 "parameters": [
                     {
-                        "description": "Данные для входа",
+                        "description": "Данные для регистрации пользователя",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -140,27 +140,36 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "201": {
-                        "description": "Пользователь успешно зарегистрирован",
+                        "description": "Пользователь успешно зарегистрирован. Возвращает токен и идентификатор пользователя.",
                         "schema": {
                             "$ref": "#/definitions/base_handlers.RegisterResponse"
                         }
                     },
                     "400": {
-                        "description": "Неверный ввод",
+                        "description": "Неверный ввод данных.",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "500": {
-                        "description": "Ошибка генерации пароля",
+                        "description": "Ошибка при обработке данных (например, ошибка хэширования пароля).",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "503": {
-                        "description": "Серверная ошибка регистрация пользователя",
+                        "description": "Ошибка сервера при регистрации пользователя.",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     }
                 }
@@ -566,7 +575,9 @@ const docTemplate = `{
         "base_handlers.RegisterResponse": {
             "type": "object",
             "properties": {
-                "entity": {},
+                "entity_oid": {
+                    "type": "string"
+                },
                 "token": {
                     "type": "string"
                 }

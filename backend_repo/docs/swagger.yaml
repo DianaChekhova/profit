@@ -26,7 +26,8 @@ definitions:
     type: object
   base_handlers.RegisterResponse:
     properties:
-      entity: {}
+      entity_oid:
+        type: string
       token:
         type: string
     type: object
@@ -206,10 +207,10 @@ paths:
     post:
       consumes:
       - application/json
-      description: Регистрирует пользователя в системе, проверяя имя пользователя
-        и пароль
+      description: Регистрирует нового пользователя в системе, создавая учетную запись
+        на основе указанной роли.
       parameters:
-      - description: Данные для входа
+      - description: Данные для регистрации пользователя
         in: body
         name: body
         required: true
@@ -219,21 +220,28 @@ paths:
       - application/json
       responses:
         "201":
-          description: Пользователь успешно зарегистрирован
+          description: Пользователь успешно зарегистрирован. Возвращает токен и идентификатор
+            пользователя.
           schema:
             $ref: '#/definitions/base_handlers.RegisterResponse'
         "400":
-          description: Неверный ввод
+          description: Неверный ввод данных.
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "500":
-          description: Ошибка генерации пароля
+          description: Ошибка при обработке данных (например, ошибка хэширования пароля).
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "503":
-          description: Серверная ошибка регистрация пользователя
+          description: Ошибка сервера при регистрации пользователя.
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
       summary: Регистрация пользователя
       tags:
       - Register

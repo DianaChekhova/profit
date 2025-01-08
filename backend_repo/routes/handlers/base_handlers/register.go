@@ -20,21 +20,21 @@ type RegisterBody struct {
 }
 
 type RegisterResponse struct {
-	Token  string `json:"token"`
-	Entity any    `json:"entity"`
+	Token     string `json:"token"`
+	EntityOID string `json:"entity_oid"`
 }
 
-// RegisterHandler обрабатывает POST запрос для регистрации нового пользователя
+// RegisterHandler
 // @Summary Регистрация пользователя
-// @Description Регистрирует пользователя в системе, проверяя имя пользователя и пароль
+// @Description Регистрирует нового пользователя в системе, создавая учетную запись на основе указанной роли.
 // @Tags Register
 // @Accept json
 // @Produce json
-// @Param body body RegisterBody true "Данные для входа"
-// @Success 201 {object} RegisterResponse "Пользователь успешно зарегистрирован"
-// @Failure 400 {string} string "Неверный ввод"
-// @Failure 500 {string} string "Ошибка генерации пароля"
-// @Failure 503 {string} string "Серверная ошибка регистрация пользователя"
+// @Param body body base_handlers.RegisterBody true "Данные для регистрации пользователя"
+// @Success 201 {object} base_handlers.RegisterResponse "Пользователь успешно зарегистрирован. Возвращает токен и идентификатор пользователя."
+// @Failure 400 {object} map[string]string "Неверный ввод данных."
+// @Failure 500 {object} map[string]string "Ошибка при обработке данных (например, ошибка хэширования пароля)."
+// @Failure 503 {object} map[string]string "Ошибка сервера при регистрации пользователя."
 // @Router /api/register [post]
 func (ctrl *BaseController) RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	var req RegisterBody
@@ -54,27 +54,27 @@ func (ctrl *BaseController) RegisterHandler(w http.ResponseWriter, r *http.Reque
 	req.Password = string(hashedPassword)
 
 	// Регистрируем пользователя
-	entity, err, code := ctrl.registerUserByRole(r.Context(), req)
+	oid, err, code := ctrl.registerUserByRole(r.Context(), req)
 	if err != nil {
 		backendController.WriteJSONResponse(w, code, map[string]string{"error": err.Error()})
 		return
 	}
 
-	token, err := jwt_token.GenerateToken(models.TrainerRole)
+	token, err := jwt_token.GenerateToken(oid, models.TrainerRole)
 	if err != nil {
 		backendController.WriteJSONResponse(w, code, map[string]string{"error": err.Error()})
 		return
 	}
 
 	response := RegisterResponse{
-		Token:  token,
-		Entity: entity,
+		Token:     token,
+		EntityOID: oid,
 	}
 	// Успешный ответ
 	backendController.WriteJSONResponse(w, http.StatusOK, response)
 }
 
-func (ctrl *BaseController) registerUserByRole(ctx context.Context, request RegisterBody) (any, error, int) {
+func (ctrl *BaseController) registerUserByRole(ctx context.Context, request RegisterBody) (string, error, int) {
 	switch request.Role {
 	case models.UserRole:
 		return ctrl.registerUser(ctx, request)
@@ -83,11 +83,11 @@ func (ctrl *BaseController) registerUserByRole(ctx context.Context, request Regi
 	case models.TrainerRole:
 		return ctrl.registerTrainerByRole(ctx, request)
 	default:
-		return nil, fmt.Errorf("unknown role: %s", request.Role), 400
+		return "", fmt.Errorf("unknown role: %s", request.Role), 400
 	}
 }
 
-func (ctrl *BaseController) registerUser(ctx context.Context, request RegisterBody) (any, error, int) {
+func (ctrl *BaseController) registerUser(ctx context.Context, request RegisterBody) (string, error, int) {
 	var user models.User
 	user.Email = request.Email
 	user.Password = request.Password
@@ -95,40 +95,48 @@ func (ctrl *BaseController) registerUser(ctx context.Context, request RegisterBo
 	user.CreatedAt = time.Now()
 
 	if err := user.Validate(); err != nil {
-		return nil, err, http.StatusBadRequest
+		return "", err, http.StatusBadRequest
 	}
 
 	if err := ctrl.userRepo.CreateUser(ctx, &user); err != nil {
-		return nil, err, http.StatusServiceUnavailable
+		return "", err, http.StatusServiceUnavailable
 	}
 
 	userResp, err := ctrl.userRepo.GetUserByEmail(ctx, request.Email)
-
-	return userResp, err, http.StatusCreated
+	if userResp == nil {
+		return "", err, http.StatusNotFound
+	}
+	return userResp.ID, err, http.StatusCreated
 }
 
-func (ctrl *BaseController) registerAdminByRole(ctx context.Context, request RegisterBody) (any, error, int) {
+func (ctrl *BaseController) registerAdminByRole(ctx context.Context, request RegisterBody) (string, error, int) {
 	var admin models.Admin
 	admin.Email = request.Email
 	admin.Password = request.Password
 	admin.Name = request.Username
 	if err := ctrl.adminRepo.CreateAdmin(ctx, admin); err != nil {
-		return nil, err, http.StatusServiceUnavailable
+		return "", err, http.StatusServiceUnavailable
 	}
 
 	adminResp, err := ctrl.adminRepo.GetAdminByEmail(ctx, admin.Email)
-	return adminResp, err, http.StatusCreated
+	if adminResp == nil {
+		return "", err, http.StatusNotFound
+	}
+	return adminResp.ID, err, http.StatusCreated
 }
 
-func (ctrl *BaseController) registerTrainerByRole(ctx context.Context, request RegisterBody) (any, error, int) {
+func (ctrl *BaseController) registerTrainerByRole(ctx context.Context, request RegisterBody) (string, error, int) {
 	var trainer models.Trainer
 	trainer.Email = request.Email
 	trainer.Password = request.Password
 	trainer.Name = request.Username
 	if err := ctrl.trainerRepo.CreateTrainer(ctx, &trainer); err != nil {
-		return nil, err, http.StatusServiceUnavailable
+		return "", err, http.StatusServiceUnavailable
 	}
 
 	trainerResp, err := ctrl.trainerRepo.GetTrainerByEmail(ctx, trainer.Email)
-	return trainerResp, err, http.StatusCreated
+	if trainerResp == nil {
+		return "", err, http.StatusNotFound
+	}
+	return trainerResp.ID, err, http.StatusCreated
 }
