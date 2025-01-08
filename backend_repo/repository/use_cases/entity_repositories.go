@@ -7,6 +7,7 @@ import (
 
 // UserRepository определяет интерфейс для работы с пользователями.
 type AdminRepository interface {
+	GetAdminByOID(ctx context.Context, oid string) (*models.Admin, error)
 	CreateAdmin(ctx context.Context, admin models.Admin) error
 	DeleteAdminByID(ctx context.Context, id string) error
 	GetAdminByEmail(ctx context.Context, email string) (*models.Admin, error)

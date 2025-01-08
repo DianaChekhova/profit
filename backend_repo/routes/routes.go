@@ -52,6 +52,11 @@ func InitRoutes(database *mongo.Database, ctx context.Context) *chi.Mux {
 		protected.Post("/api/user", userController.AddUser)
 		//protected.Get("/api/profile", baseController.GetProfile)
 	})
+	//Запросы авторизации
+	r.Group(func(protected chi.Router) {
+		protected.Use(protection.AuthMiddleware)
+		protected.Get("/api/me", baseController.Me)
+	})
 
 	return r
 }

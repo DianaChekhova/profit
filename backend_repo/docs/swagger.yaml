@@ -8,6 +8,11 @@ definitions:
       username:
         type: string
     type: object
+  base_handlers.MeResponse:
+    properties:
+      entity_name:
+        type: string
+    type: object
   base_handlers.RegisterBody:
     properties:
       email:
@@ -166,6 +171,37 @@ paths:
       summary: Авторизация пользователя
       tags:
       - Auth
+  /api/me:
+    get:
+      consumes:
+      - application/json
+      description: Возвращает информацию о пользователе на основе его роли (User,
+        Trainer, Admin)
+      parameters:
+      - description: Bearer токен для аутентификации
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Информация о пользователе
+          schema:
+            $ref: '#/definitions/base_handlers.MeResponse'
+        "400":
+          description: 'Ошибка: не удалось получить данные из контекста или некорректная
+            роль'
+          schema:
+            type: string
+        "500":
+          description: 'Ошибка: внутренняя ошибка сервера'
+          schema:
+            type: string
+      summary: Получить информацию о текущем пользователе
+      tags:
+      - User
   /api/register:
     post:
       consumes:

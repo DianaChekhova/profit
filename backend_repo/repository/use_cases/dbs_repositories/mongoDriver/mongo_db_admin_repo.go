@@ -89,3 +89,18 @@ func (su *AdminMongoRepository) GetAdminByEmail(ctx context.Context, email strin
 
 	return nil, fmt.Errorf("admin not found")
 }
+
+func (su *AdminMongoRepository) GetAdminByOID(ctx context.Context, oid string) (*models.Admin, error) {
+	oidHex, err := primitive.ObjectIDFromHex(oid)
+	if err != nil {
+		return nil, err
+	}
+	filter := bson.M{"_id": oidHex}
+	admin := &models.Admin{}
+	cursor := su.collection.FindOne(ctx, filter)
+	if err := cursor.Decode(admin); err != nil {
+		return nil, err
+	}
+
+	return admin, nil
+}

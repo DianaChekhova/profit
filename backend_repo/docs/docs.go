@@ -70,6 +70,50 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/me": {
+            "get": {
+                "description": "Возвращает информацию о пользователе на основе его роли (User, Trainer, Admin)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Получить информацию о текущем пользователе",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer токен для аутентификации",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Информация о пользователе",
+                        "schema": {
+                            "$ref": "#/definitions/base_handlers.MeResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка: не удалось получить данные из контекста или некорректная роль",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка: внутренняя ошибка сервера",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/api/register": {
             "post": {
                 "description": "Регистрирует пользователя в системе, проверяя имя пользователя и пароль",
@@ -490,6 +534,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "base_handlers.MeResponse": {
+            "type": "object",
+            "properties": {
+                "entity_name": {
                     "type": "string"
                 }
             }
