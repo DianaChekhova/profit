@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-type Workout struct {
+type Schedule struct {
 	ID              string    `json:"id,omitempty" bson:"id,omitempty"`
 	Title           string    `json:"title" validate:"required,min=3,max=20" bson:"title"`
 	Description     string    `json:"description" validate:"required,min=3,max=20" bson:"description"`

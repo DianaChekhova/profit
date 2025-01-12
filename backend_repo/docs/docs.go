@@ -15,6 +15,146 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/User": {
+            "put": {
+                "description": "Позволяет обновить информацию о пользователя",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Обновляет данные пользователя",
+                "parameters": [
+                    {
+                        "description": "Информация о пользователя для обновления",
+                        "name": "User",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_handler.userUpdateReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Обновление выполнено успешно",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный ввод",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера при обновлении",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Позволяет добавить нового пользователя в систему",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Добавление нового пользователя",
+                "parameters": [
+                    {
+                        "description": "Данные Юзера",
+                        "name": "User",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_handler.userReqHandler"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Пользователь успешно создан",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный ввод",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка при создании пользователя",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Удаляет пользователя по его идентификатору",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Удаление пользователя",
+                "parameters": [
+                    {
+                        "description": "Идентификатор пользователя для удаления",
+                        "name": "id",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_handler.userDeleteReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Тренер успешно удален",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный ввод",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Тренер не найден",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера при удалении пользователя",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/api/login": {
             "post": {
                 "description": "Позволяет пользователю войти в систему, проверяя имя пользователя и пароль",
@@ -63,6 +203,41 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Ошибка генерации токена",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "description": "Позволяет пользователю выйти из системы, делая токен недействительным",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Выход из системы",
+                "responses": {
+                    "200": {
+                        "description": "Выход выполнен успешно",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Пользователь не авторизован",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка при обработке запроса",
                         "schema": {
                             "type": "string"
                         }
@@ -353,146 +528,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/user": {
-            "put": {
-                "description": "Позволяет обновить информацию о пользователя",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Trainers"
-                ],
-                "summary": "Обновляет данные тренера",
-                "parameters": [
-                    {
-                        "description": "Информация о пользователя для обновления",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/user_handler.userUpdateReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Обновление выполнено успешно",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Неверный ввод",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Ошибка сервера при обновлении",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "Позволяет добавить нового пользователя в систему",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Добавление нового пользователя",
-                "parameters": [
-                    {
-                        "description": "Данные Юзера",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/user_handler.userReqHandler"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Пользователь успешно создан",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Неверный ввод",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Ошибка при создании пользователя",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "Удаляет пользователя по его идентификатору",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Trainers"
-                ],
-                "summary": "Удаление пользователя",
-                "parameters": [
-                    {
-                        "description": "Идентификатор пользователя для удаления",
-                        "name": "id",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/user_handler.userDeleteReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Тренер успешно удален",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Неверный ввод",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "Тренер не найден",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Ошибка сервера при удалении пользователя",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/api/users": {
             "get": {
                 "description": "Позволяет получить список всех пользователей",
@@ -503,7 +538,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Users"
+                    "User"
                 ],
                 "summary": "Возвращает список пользователей",
                 "responses": {
@@ -583,24 +618,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.Subscription": {
-            "type": "object",
-            "properties": {
-                "duration": {
-                    "type": "number"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "price": {
-                    "type": "number"
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.Workout": {
+        "models.Schedule": {
             "type": "object",
             "required": [
                 "description",
@@ -645,6 +663,71 @@ const docTemplate = `{
                 }
             }
         },
+        "models.Subscription": {
+            "type": "object",
+            "properties": {
+                "duration": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.User": {
+            "description": "Пользователь системы",
+            "type": "object",
+            "required": [
+                "email",
+                "name",
+                "password",
+                "subscription"
+            ],
+            "properties": {
+                "created_at": {
+                    "type": "string",
+                    "example": "2023-01-01T12:00:00Z"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "johndoe@example.com"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "123"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 3,
+                    "example": "JohnDoe"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 6,
+                    "example": "123456"
+                },
+                "role": {
+                    "type": "string",
+                    "example": "admin"
+                },
+                "schedule": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Schedule"
+                    }
+                },
+                "subscription": {
+                    "$ref": "#/definitions/models.Subscription"
+                }
+            }
+        },
         "trainer_handlers.deleteHandler": {
             "type": "object"
         },
@@ -666,7 +749,7 @@ const docTemplate = `{
                 "schedule": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.Workout"
+                        "$ref": "#/definitions/models.Schedule"
                     }
                 },
                 "specialty": {
@@ -684,12 +767,23 @@ const docTemplate = `{
             "type": "object"
         },
         "user_handler.userReqHandler": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "user": {
+                    "$ref": "#/definitions/models.User"
+                }
+            }
         },
         "user_handler.userUpdateReq": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "User": {
+                    "$ref": "#/definitions/models.User"
+                }
+            }
         },
         "user_handler.usersAliaceType": {
+            "description": "Пользователь системы",
             "type": "object",
             "required": [
                 "email",
@@ -699,30 +793,36 @@ const docTemplate = `{
             ],
             "properties": {
                 "created_at": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2023-01-01T12:00:00Z"
                 },
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "johndoe@example.com"
                 },
                 "id": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "123"
                 },
                 "name": {
                     "type": "string",
                     "maxLength": 20,
-                    "minLength": 3
+                    "minLength": 3,
+                    "example": "JohnDoe"
                 },
                 "password": {
                     "type": "string",
-                    "minLength": 6
+                    "minLength": 6,
+                    "example": "123456"
                 },
                 "role": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "admin"
                 },
                 "schedule": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.Workout"
+                        "$ref": "#/definitions/models.Schedule"
                     }
                 },
                 "subscription": {

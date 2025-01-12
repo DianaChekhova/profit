@@ -38,3 +38,10 @@ type SubscriptionRepository interface {
 	EnableSubscription(ctx context.Context, subscription models.Subscription) error
 	DisableSubscription(ctx context.Context, subscription models.Subscription) error
 }
+
+type ScheduleRepository interface {
+	CreateSchedule(ctx context.Context, schedule models.Schedule) (string, error)
+	UpdateSchedule(ctx context.Context, schedule models.Schedule) error
+	EnableSchedule(ctx context.Context, schedule models.Schedule) error
+	DisableSchedule(ctx context.Context, schedule models.Schedule) error
+}

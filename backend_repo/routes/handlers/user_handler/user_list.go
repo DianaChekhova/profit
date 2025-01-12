@@ -11,7 +11,7 @@ type usersAliaceType = *models.User
 // UserList обрабатывает GET-запрос для получения списка пользователей
 // @Summary Возвращает список пользователей
 // @Description Позволяет получить список всех пользователей
-// @Tags Users
+// @Tags User
 // @Accept json
 // @Produce json
 // @Success 200 {array} usersAliaceType "Список пользователей"

@@ -31,18 +31,7 @@ definitions:
       token:
         type: string
     type: object
-  models.Subscription:
-    properties:
-      duration:
-        type: number
-      id:
-        type: string
-      price:
-        type: number
-      type:
-        type: string
-    type: object
-  models.Workout:
+  models.Schedule:
     properties:
       description:
         maxLength: 20
@@ -74,6 +63,53 @@ definitions:
     - min_participants
     - title
     type: object
+  models.Subscription:
+    properties:
+      duration:
+        type: number
+      id:
+        type: string
+      price:
+        type: number
+      type:
+        type: string
+    type: object
+  models.User:
+    description: Пользователь системы
+    properties:
+      created_at:
+        example: "2023-01-01T12:00:00Z"
+        type: string
+      email:
+        example: johndoe@example.com
+        type: string
+      id:
+        example: "123"
+        type: string
+      name:
+        example: JohnDoe
+        maxLength: 20
+        minLength: 3
+        type: string
+      password:
+        example: "123456"
+        minLength: 6
+        type: string
+      role:
+        example: admin
+        type: string
+      schedule:
+        items:
+          $ref: '#/definitions/models.Schedule'
+        type: array
+      subscription:
+        $ref: '#/definitions/models.Subscription'
+    required:
+    - email
+    - name
+    - password
+    - subscription
+    type: object
   trainer_handlers.deleteHandler:
     type: object
   trainer_handlers.trainerAliace:
@@ -88,7 +124,7 @@ definitions:
         type: string
       schedule:
         items:
-          $ref: '#/definitions/models.Workout'
+          $ref: '#/definitions/models.Schedule'
         type: array
       specialty:
         type: string
@@ -100,29 +136,42 @@ definitions:
   user_handler.userDeleteReq:
     type: object
   user_handler.userReqHandler:
+    properties:
+      user:
+        $ref: '#/definitions/models.User'
     type: object
   user_handler.userUpdateReq:
+    properties:
+      User:
+        $ref: '#/definitions/models.User'
     type: object
   user_handler.usersAliaceType:
+    description: Пользователь системы
     properties:
       created_at:
+        example: "2023-01-01T12:00:00Z"
         type: string
       email:
+        example: johndoe@example.com
         type: string
       id:
+        example: "123"
         type: string
       name:
+        example: JohnDoe
         maxLength: 20
         minLength: 3
         type: string
       password:
+        example: "123456"
         minLength: 6
         type: string
       role:
+        example: admin
         type: string
       schedule:
         items:
-          $ref: '#/definitions/models.Workout'
+          $ref: '#/definitions/models.Schedule'
         type: array
       subscription:
         $ref: '#/definitions/models.Subscription'
@@ -135,6 +184,98 @@ definitions:
 info:
   contact: {}
 paths:
+  /api/User:
+    delete:
+      consumes:
+      - application/json
+      description: Удаляет пользователя по его идентификатору
+      parameters:
+      - description: Идентификатор пользователя для удаления
+        in: body
+        name: id
+        required: true
+        schema:
+          $ref: '#/definitions/user_handler.userDeleteReq'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Тренер успешно удален
+          schema:
+            type: string
+        "400":
+          description: Неверный ввод
+          schema:
+            type: string
+        "404":
+          description: Тренер не найден
+          schema:
+            type: string
+        "500":
+          description: Ошибка сервера при удалении пользователя
+          schema:
+            type: string
+      summary: Удаление пользователя
+      tags:
+      - User
+    post:
+      consumes:
+      - application/json
+      description: Позволяет добавить нового пользователя в систему
+      parameters:
+      - description: Данные Юзера
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/user_handler.userReqHandler'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Пользователь успешно создан
+          schema:
+            type: string
+        "400":
+          description: Неверный ввод
+          schema:
+            type: string
+        "500":
+          description: Ошибка при создании пользователя
+          schema:
+            type: string
+      summary: Добавление нового пользователя
+      tags:
+      - User
+    put:
+      consumes:
+      - application/json
+      description: Позволяет обновить информацию о пользователя
+      parameters:
+      - description: Информация о пользователя для обновления
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/user_handler.userUpdateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Обновление выполнено успешно
+          schema:
+            type: string
+        "400":
+          description: Неверный ввод
+          schema:
+            type: string
+        "500":
+          description: Ошибка сервера при обновлении
+          schema:
+            type: string
+      summary: Обновляет данные пользователя
+      tags:
+      - User
   /api/login:
     post:
       consumes:
@@ -170,6 +311,29 @@ paths:
           schema:
             type: string
       summary: Авторизация пользователя
+      tags:
+      - Auth
+  /api/logout:
+    post:
+      consumes:
+      - application/json
+      description: Позволяет пользователю выйти из системы, делая токен недействительным
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Выход выполнен успешно
+          schema:
+            type: string
+        "401":
+          description: Пользователь не авторизован
+          schema:
+            type: string
+        "500":
+          description: Ошибка при обработке запроса
+          schema:
+            type: string
+      summary: Выход из системы
       tags:
       - Auth
   /api/me:
@@ -362,98 +526,6 @@ paths:
       summary: Возвращает список тренеров
       tags:
       - Trainers
-  /api/user:
-    delete:
-      consumes:
-      - application/json
-      description: Удаляет пользователя по его идентификатору
-      parameters:
-      - description: Идентификатор пользователя для удаления
-        in: body
-        name: id
-        required: true
-        schema:
-          $ref: '#/definitions/user_handler.userDeleteReq'
-      produces:
-      - application/json
-      responses:
-        "204":
-          description: Тренер успешно удален
-          schema:
-            type: string
-        "400":
-          description: Неверный ввод
-          schema:
-            type: string
-        "404":
-          description: Тренер не найден
-          schema:
-            type: string
-        "500":
-          description: Ошибка сервера при удалении пользователя
-          schema:
-            type: string
-      summary: Удаление пользователя
-      tags:
-      - Trainers
-    post:
-      consumes:
-      - application/json
-      description: Позволяет добавить нового пользователя в систему
-      parameters:
-      - description: Данные Юзера
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/user_handler.userReqHandler'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Пользователь успешно создан
-          schema:
-            type: string
-        "400":
-          description: Неверный ввод
-          schema:
-            type: string
-        "500":
-          description: Ошибка при создании пользователя
-          schema:
-            type: string
-      summary: Добавление нового пользователя
-      tags:
-      - Users
-    put:
-      consumes:
-      - application/json
-      description: Позволяет обновить информацию о пользователя
-      parameters:
-      - description: Информация о пользователя для обновления
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/user_handler.userUpdateReq'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Обновление выполнено успешно
-          schema:
-            type: string
-        "400":
-          description: Неверный ввод
-          schema:
-            type: string
-        "500":
-          description: Ошибка сервера при обновлении
-          schema:
-            type: string
-      summary: Обновляет данные тренера
-      tags:
-      - Trainers
   /api/users:
     get:
       consumes:
@@ -478,5 +550,5 @@ paths:
             type: string
       summary: Возвращает список пользователей
       tags:
-      - Users
+      - User
 swagger: "2.0"

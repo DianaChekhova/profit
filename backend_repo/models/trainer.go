@@ -6,5 +6,5 @@ type Trainer struct {
 	Email     string
 	Specialty string
 	Password  string
-	Schedule  []Workout
+	Schedule  []Schedule
 }

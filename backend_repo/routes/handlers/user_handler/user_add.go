@@ -8,20 +8,20 @@ import (
 )
 
 type userReqHandler struct {
-	user models.User
+	User models.User `json:"user"`
 }
 
 // AddUser добавляет нового пользователя
 // @Summary Добавление нового пользователя
 // @Description Позволяет добавить нового пользователя в систему
-// @Tags Users
+// @Tags User
 // @Accept json
 // @Produce json
-// @Param user body userReqHandler true "Данные Юзера"
+// @Param User body userReqHandler true "Данные Юзера"
 // @Success 200 {string} string "Пользователь успешно создан"
 // @Failure 400 {string} string "Неверный ввод"
 // @Failure 500 {string} string "Ошибка при создании пользователя"
-// @Router /api/user [post]
+// @Router /api/User [post]
 func (uc *UserController) AddUser(w http.ResponseWriter, r *http.Request) {
 	var req userReqHandler
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -33,12 +33,12 @@ func (uc *UserController) AddUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := uc.userRepo.CreateUser(r.Context(), &req.user)
+	err := uc.userRepo.CreateUser(r.Context(), &req.User)
 	if err != nil {
 		backendController.WriteJSONResponse(
 			w,
 			http.StatusBadRequest,
-			"failed to create user",
+			"failed to create User",
 		)
 		return
 	}
@@ -46,6 +46,6 @@ func (uc *UserController) AddUser(w http.ResponseWriter, r *http.Request) {
 	backendController.WriteJSONResponse(
 		w,
 		http.StatusOK,
-		"user succsessfuly created",
+		"User succsessfuly created",
 	)
 }
