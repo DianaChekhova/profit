@@ -14,7 +14,7 @@ type User struct {
 	Password     string       `json:"password" validate:"required,min=6" bson:"password" example:"123456"`
 	CreatedAt    time.Time    `json:"created_at" bson:"created_at" example:"2023-01-01T12:00:00Z"`
 	Role         string       `json:"role" bson:"role" example:"admin"`
-	Schedule     []Schedule   `json:"schedule" bson:"schedule"`
+	ScheduleIds  []string     `json:"schedule" bson:"schedule"`
 	Subscription Subscription `json:"subscription" validate:"required" bson:"subscription"`
 }
 

@@ -44,4 +44,9 @@ type ScheduleRepository interface {
 	UpdateSchedule(ctx context.Context, schedule models.Schedule) error
 	EnableSchedule(ctx context.Context, schedule models.Schedule) error
 	DisableSchedule(ctx context.Context, schedule models.Schedule) error
+	GetScheduleByID(ctx context.Context, scheduleID string) (*models.Schedule, error)
+	GetScheduleArrayByIDs(ctx context.Context, scheduleIDs []string) ([]models.Schedule, error)
+	DeleteScheduleByID(ctx context.Context, scheduleID string) error
+	UnsubFromScheduleByID(ctx context.Context, oid string, role models.Role) error
+	SubscribeToScheduleByID(ctx context.Context, scheduleID string, role models.Role) error
 }

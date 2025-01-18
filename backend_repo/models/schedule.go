@@ -12,6 +12,7 @@ type Schedule struct {
 	EndTime         time.Time `json:"end_time" bson:"end_time"`
 	MaxParticipants int       `json:"max_participants" validate:"required" bson:"max_participants"`
 	MinParticipants int       `json:"min_participants" validate:"required" bson:"min_participants"`
-	Participants    map[string]string
+	TrainersIDs     []string  `json:"trainers_ids" bson:"trainers_ids"`
+	UsersIDS        []string  `json:"users_ids" bson:"users_ids"`
 	IsEnable        bool
 }

@@ -2,12 +2,14 @@ package user_handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"profit/models"
 	"profit/routes/handlers/backendController"
 )
 
 type userDeleteReq struct {
-	id string
+	Id string `json:"id"`
 }
 
 // UserDelete удаляет пользователя
@@ -33,12 +35,22 @@ func (uc *UserController) UserDelete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := uc.userRepo.DeleteUser(r.Context(), req.id)
+	err := uc.userRepo.DeleteUser(r.Context(), req.Id)
 	if err != nil {
 		backendController.WriteJSONResponse(
 			w,
 			http.StatusBadRequest,
 			"failed to delete User",
+		)
+		return
+	}
+
+	err = uc.scheduleRepo.UnsubFromScheduleByID(r.Context(), req.Id, models.UserRole)
+	if err != nil {
+		backendController.WriteJSONResponse(
+			w,
+			http.StatusBadRequest,
+			fmt.Sprintf("failed to unsub user from schedule by id. Err:%v", err),
 		)
 		return
 	}
