@@ -8,6 +8,7 @@ function UserPanel(props) {
   console.log(user);
   const logoutHandler = useCallback(() => {
     logoutCallback();
+    window.location.reload();
   }, [logoutCallback]);
 
   return (
