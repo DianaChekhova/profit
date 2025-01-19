@@ -79,7 +79,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/user_handler.userReqHandler"
+                            "$ref": "#/definitions/user_handler.UserResponse"
                         }
                     }
                 ],
@@ -547,7 +547,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/user_handler.usersAliaceType"
+                                "$ref": "#/definitions/user_handler.UserResponse"
                             }
                         }
                     },
@@ -647,12 +647,6 @@ const docTemplate = `{
                 "min_participants": {
                     "type": "integer"
                 },
-                "participants": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "string"
-                    }
-                },
                 "start_time": {
                     "type": "string"
                 },
@@ -660,6 +654,18 @@ const docTemplate = `{
                     "type": "string",
                     "maxLength": 20,
                     "minLength": 3
+                },
+                "trainers_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "users_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },
@@ -690,6 +696,12 @@ const docTemplate = `{
                 "subscription"
             ],
             "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "birth": {
+                    "type": "string"
+                },
                 "created_at": {
                     "type": "string",
                     "example": "2023-01-01T12:00:00Z"
@@ -708,6 +720,9 @@ const docTemplate = `{
                     "minLength": 3,
                     "example": "JohnDoe"
                 },
+                "passport": {
+                    "type": "string"
+                },
                 "password": {
                     "type": "string",
                     "minLength": 6,
@@ -720,8 +735,11 @@ const docTemplate = `{
                 "schedule": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.Schedule"
+                        "type": "string"
                     }
+                },
+                "status": {
+                    "type": "string"
                 },
                 "subscription": {
                     "$ref": "#/definitions/models.Subscription"
@@ -763,14 +781,49 @@ const docTemplate = `{
         "trainer_handlers.trainerUpdateReq": {
             "type": "object"
         },
-        "user_handler.userDeleteReq": {
-            "type": "object"
-        },
-        "user_handler.userReqHandler": {
+        "user_handler.UserResponse": {
             "type": "object",
             "properties": {
-                "user": {
-                    "$ref": "#/definitions/models.User"
+                "address": {
+                    "type": "string"
+                },
+                "birth": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "passport": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "schedules": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Schedule"
+                    }
+                },
+                "status": {
+                    "type": "string"
+                },
+                "subscription": {
+                    "$ref": "#/definitions/models.Subscription"
+                }
+            }
+        },
+        "user_handler.userDeleteReq": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
                 }
             }
         },
@@ -779,54 +832,6 @@ const docTemplate = `{
             "properties": {
                 "User": {
                     "$ref": "#/definitions/models.User"
-                }
-            }
-        },
-        "user_handler.usersAliaceType": {
-            "description": "Пользователь системы",
-            "type": "object",
-            "required": [
-                "email",
-                "name",
-                "password",
-                "subscription"
-            ],
-            "properties": {
-                "created_at": {
-                    "type": "string",
-                    "example": "2023-01-01T12:00:00Z"
-                },
-                "email": {
-                    "type": "string",
-                    "example": "johndoe@example.com"
-                },
-                "id": {
-                    "type": "string",
-                    "example": "123"
-                },
-                "name": {
-                    "type": "string",
-                    "maxLength": 20,
-                    "minLength": 3,
-                    "example": "JohnDoe"
-                },
-                "password": {
-                    "type": "string",
-                    "minLength": 6,
-                    "example": "123456"
-                },
-                "role": {
-                    "type": "string",
-                    "example": "admin"
-                },
-                "schedule": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.Schedule"
-                    }
-                },
-                "subscription": {
-                    "$ref": "#/definitions/models.Subscription"
                 }
             }
         }

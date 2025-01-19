@@ -47,16 +47,20 @@ definitions:
         type: integer
       min_participants:
         type: integer
-      participants:
-        additionalProperties:
-          type: string
-        type: object
       start_time:
         type: string
       title:
         maxLength: 20
         minLength: 3
         type: string
+      trainers_ids:
+        items:
+          type: string
+        type: array
+      users_ids:
+        items:
+          type: string
+        type: array
     required:
     - description
     - max_participants
@@ -77,6 +81,10 @@ definitions:
   models.User:
     description: Пользователь системы
     properties:
+      address:
+        type: string
+      birth:
+        type: string
       created_at:
         example: "2023-01-01T12:00:00Z"
         type: string
@@ -91,6 +99,8 @@ definitions:
         maxLength: 20
         minLength: 3
         type: string
+      passport:
+        type: string
       password:
         example: "123456"
         minLength: 6
@@ -100,8 +110,10 @@ definitions:
         type: string
       schedule:
         items:
-          $ref: '#/definitions/models.Schedule'
+          type: string
         type: array
+      status:
+        type: string
       subscription:
         $ref: '#/definitions/models.Subscription'
     required:
@@ -133,53 +145,40 @@ definitions:
     type: object
   trainer_handlers.trainerUpdateReq:
     type: object
-  user_handler.userDeleteReq:
-    type: object
-  user_handler.userReqHandler:
+  user_handler.UserResponse:
     properties:
-      user:
-        $ref: '#/definitions/models.User'
+      address:
+        type: string
+      birth:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      passport:
+        type: string
+      role:
+        type: string
+      schedules:
+        items:
+          $ref: '#/definitions/models.Schedule'
+        type: array
+      status:
+        type: string
+      subscription:
+        $ref: '#/definitions/models.Subscription'
+    type: object
+  user_handler.userDeleteReq:
+    properties:
+      id:
+        type: string
     type: object
   user_handler.userUpdateReq:
     properties:
       User:
         $ref: '#/definitions/models.User'
-    type: object
-  user_handler.usersAliaceType:
-    description: Пользователь системы
-    properties:
-      created_at:
-        example: "2023-01-01T12:00:00Z"
-        type: string
-      email:
-        example: johndoe@example.com
-        type: string
-      id:
-        example: "123"
-        type: string
-      name:
-        example: JohnDoe
-        maxLength: 20
-        minLength: 3
-        type: string
-      password:
-        example: "123456"
-        minLength: 6
-        type: string
-      role:
-        example: admin
-        type: string
-      schedule:
-        items:
-          $ref: '#/definitions/models.Schedule'
-        type: array
-      subscription:
-        $ref: '#/definitions/models.Subscription'
-    required:
-    - email
-    - name
-    - password
-    - subscription
     type: object
 info:
   contact: {}
@@ -228,7 +227,7 @@ paths:
         name: User
         required: true
         schema:
-          $ref: '#/definitions/user_handler.userReqHandler'
+          $ref: '#/definitions/user_handler.UserResponse'
       produces:
       - application/json
       responses:
@@ -538,7 +537,7 @@ paths:
           description: Список пользователей
           schema:
             items:
-              $ref: '#/definitions/user_handler.usersAliaceType'
+              $ref: '#/definitions/user_handler.UserResponse'
             type: array
         "400":
           description: Неверный ввод
