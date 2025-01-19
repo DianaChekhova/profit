@@ -30,6 +30,7 @@ export default class UserStore {
       const response = await AuthService.login(login, password);
       localStorage.setItem('token', response.data.token);
       await this.getMe(localStorage.getItem('token'));
+      console.log('hello');
     } catch (error) {
       console.log(error);
     }
@@ -59,7 +60,7 @@ export default class UserStore {
   async logout() {
     console.log('kdsdssd');
     try {
-      const response = await AuthService.logout();
+      await AuthService.logout();
       localStorage.removeItem('token');
       this.setAuthenticated(false);
       this.setUser({});
