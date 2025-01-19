@@ -3,7 +3,7 @@
 echo "Starting backend build process..."
 
 # Переход в директорию backend_repo
-cd "$(dirname "$0")/../backend_repo" || {
+cd "../../backend_repo" || {
     echo "[ERROR] Unable to navigate to backend_repo. Check the directory structure."
     exit 1
 }

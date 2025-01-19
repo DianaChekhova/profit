@@ -3,7 +3,7 @@
 echo "Starting frontend build process..."
 
 # Переход в директорию frontend_repo
-cd "$(dirname "$0")/../frontend_repo" || {
+cd "../../frontend_repo" || {
     echo "[ERROR] Unable to navigate to frontend_repo. Check the directory structure."
     exit 1
 }
