@@ -5,7 +5,7 @@ import Subscriptions from './pages/landing/subscriptions/index.jsx';
 import Coaches from './pages/landing/coaches/index.jsx';
 import GroupTraining from './pages/landing/group/index.jsx';
 import Contacts from './pages/landing/contacts/index.jsx';
-import Navigator from './components/navigator/navigator.jsx';
+import Navigator from './components/navigator/index.jsx';
 import AdminPage from './pages/account/admin/index.jsx';
 
 function App() {

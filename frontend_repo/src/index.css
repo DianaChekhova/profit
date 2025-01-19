@@ -26,6 +26,9 @@ a:hover {
   color: #805AD5 !important;
 }
 
+td {
+  color: black ;
+}
 
 body {
   margin: 0;

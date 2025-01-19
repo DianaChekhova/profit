@@ -3,7 +3,7 @@ import AuthService from '../service/AuthService.js';
 
 export default class UserStore {
   user = {};
-  isAuthenticated = false;
+  isAuthenticated = Boolean(localStorage.getItem('token')) || false;
 
   constructor() {
     makeAutoObservable(this);
@@ -19,6 +19,10 @@ export default class UserStore {
 
   setUser(user) {
     this.user = user;
+  }
+
+  getUser() {
+    return this.user;
   }
 
   async login(login, password) {
@@ -38,8 +42,7 @@ export default class UserStore {
       localStorage.setItem('token', response.data.token);
       console.log('прикол');
       this.setAuthenticated(true);
-      console.log(this.getAuthenticated());
-      this.setUser(response.data.user);
+      this.setUser(response.data.entity);
     } catch (error) {
       console.log(error);
     }

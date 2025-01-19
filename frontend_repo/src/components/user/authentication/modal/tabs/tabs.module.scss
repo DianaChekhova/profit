@@ -6,3 +6,12 @@ padding-right: 30px;
 .errorField {
   width: 200px;
 }
+
+.select {
+  z-index: 9999;
+
+  &Item:hover {
+    cursor: pointer;
+    background-color: gainsboro;
+  }
+}
