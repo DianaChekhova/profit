@@ -60,7 +60,7 @@ func (ctrl *BaseController) RegisterHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	token, err := jwt_token.GenerateToken(oid, models.TrainerRole)
+	token, err := jwt_token.GenerateToken(oid, req.Role)
 	if err != nil {
 		backendController.WriteJSONResponse(w, code, map[string]string{"error": err.Error()})
 		return

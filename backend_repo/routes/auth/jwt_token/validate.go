@@ -21,7 +21,7 @@ func ParseToken(tokenString string) (string, string, error) {
 
 	// Извлекаем claims
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		userID, ok := claims["user_id"].(string)
+		userID, ok := claims["userID"].(string)
 		if !ok {
 			return "", "", errors.New("user_id not found in token")
 		}

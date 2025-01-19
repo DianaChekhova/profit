@@ -27,7 +27,6 @@ func InitRoutes(database *mongo.Database, ctx context.Context) *chi.Mux {
 	r.Use(middleware.Recoverer)
 	r.Use(CORS)
 	r.Get("/swagger/*", httpSwagger.Handler())
-	// Инициализация хендлеров
 
 	baseController := base_handlers.NewBaseController(ctx, database)
 	userController := user_handler.NewUserController(ctx, database)
@@ -36,7 +35,7 @@ func InitRoutes(database *mongo.Database, ctx context.Context) *chi.Mux {
 	// Открытые маршруты
 	r.Post("/api/login", baseController.LoginHandler)
 	r.Post("/api/register", baseController.RegisterHandler)
-
+	r.Post("/api/logout", baseController.LogoutHandler)
 	// Защищенные маршруты
 	r.Group(func(protected chi.Router) {
 		protected.Use(protection.RoleMiddleware("admin"))

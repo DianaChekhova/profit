@@ -1,6 +1,6 @@
 package protection
 
-type contextKey string
+type contextKey = string
 
 const (
 	ContextUserIDKey contextKey = "userID" // Ключ для хранения ID пользователя в контексте
