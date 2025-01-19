@@ -29,18 +29,8 @@ export default class UserStore {
     try {
       const response = await AuthService.login(login, password);
       localStorage.setItem('token', response.data.token);
-      await this.getMe(localStorage.getItem('token'));
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async getMe(token) {
-    try {
-      console.log(token);
-      const response = await AuthService.me(token);
       this.setAuthenticated(true);
-      this.setUser(response.data);
+      this.setUser(response.data.user);
     } catch (error) {
       console.log(error);
     }
@@ -50,7 +40,9 @@ export default class UserStore {
     try {
       const response = await AuthService.registration(data);
       localStorage.setItem('token', response.data.token);
-      await this.getMe(localStorage.getItem('token'));
+      console.log('прикол');
+      this.setAuthenticated(true);
+      this.setUser(response.data.entity);
     } catch (error) {
       console.log(error);
     }
