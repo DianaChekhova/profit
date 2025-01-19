@@ -16,6 +16,10 @@ type User struct {
 	Role         string       `json:"role" bson:"role" example:"admin"`
 	ScheduleIds  []string     `json:"schedule" bson:"schedule"`
 	Subscription Subscription `json:"subscription" validate:"required" bson:"subscription"`
+	Address      string       `json:"address" bson:"address"`
+	BirthDate    string       `json:"birth" bson:"birth"`
+	Passport     string       `json:"passport" bson:"passport"`
+	Status       string       `json:"status" json:"status"`
 }
 
 func (u User) Validate() error {

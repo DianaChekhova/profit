@@ -19,6 +19,7 @@ import (
 // @Router /api/User [post]
 func (uc *UserController) AddUser(w http.ResponseWriter, r *http.Request) {
 	var req UserResponse
+
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		backendController.WriteJSONResponse(
 			w,

@@ -29,6 +29,10 @@ type UserResponse struct {
 	Role         string              `json:"role"`
 	Subscription models.Subscription `json:"subscription"`
 	Schedules    []models.Schedule   `json:"schedules"`
+	Address      string              `json:"address"`
+	BirthDate    string              `json:"birth"`
+	Passport     string              `json:"passport"`
+	Status       string              `json:"status"`
 }
 
 func convertModelToUserResponse(user *models.User) *UserResponse {
@@ -38,6 +42,10 @@ func convertModelToUserResponse(user *models.User) *UserResponse {
 		Email:        user.Email,
 		Role:         user.Role,
 		Subscription: user.Subscription,
+		Address:      user.Address,
+		BirthDate:    user.BirthDate,
+		Passport:     user.Passport,
+		Status:       user.Status,
 	}
 }
 
@@ -48,5 +56,9 @@ func convertUserToModel(user UserResponse) *models.User {
 		Email:        user.Email,
 		Role:         user.Role,
 		Subscription: user.Subscription,
+		Address:      user.Address,
+		BirthDate:    user.BirthDate,
+		Passport:     user.Passport,
+		Status:       user.Status,
 	}
 }

@@ -92,6 +92,10 @@ func (smr *ScheduleMongoRepository) GetScheduleByID(ctx context.Context, schedul
 }
 
 func (smr *ScheduleMongoRepository) GetScheduleArrayByIDs(ctx context.Context, scheduleIDs []string) ([]models.Schedule, error) {
+	if scheduleIDs == nil || len(scheduleIDs) == 0 {
+		return []models.Schedule{}, nil
+	}
+
 	var oids []primitive.ObjectID
 	for _, id := range scheduleIDs {
 		oid, err := primitive.ObjectIDFromHex(id)
