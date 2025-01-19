@@ -16,12 +16,12 @@ const Clients = observer(() => {
   const removeUser = store.removeUser;
   const updateUser = store.updateUser;
   const addUser = store.addUser;
-
+  console.log(users);
   useEffect(() => {
     if (!users.length) {
       store.fetchUsers();
     }
-  }, [store, users.length]);
+  }, [store, users]);
 
   return (
     <>

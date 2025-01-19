@@ -1,4 +1,4 @@
-import {Box, Stack, Table} from '@chakra-ui/react';
+import {Box, Heading, Stack, Table} from '@chakra-ui/react';
 import {IoTrash} from 'react-icons/io5';
 import {Button} from '../../../../../components/ui/button.jsx';
 import {FaRegEdit} from 'react-icons/fa';
@@ -40,47 +40,49 @@ const ClientsTable = (props) => {
           </Table.Row>
         </Table.Header>
         <Table.Body className={styles.tableBody}>
-          {users.map((item) => (
-            <Table.Row key={item.id}>
-              <Table.Cell>{item.name}</Table.Cell>
-              <Table.Cell>{item.status}</Table.Cell>
-              <Table.Cell>{item.birth}</Table.Cell>
-              <Table.Cell>{item.passport}</Table.Cell>
-              <Table.Cell>{item.address}</Table.Cell>
-              <Table.Cell>{item.phone}</Table.Cell>
-              <Table.Cell>{item.email}</Table.Cell>
-              <Table.Cell width='100px'>
-                <Box
-                  justifyContent='center'
-                  display='flex'
-                  gap='5px'
-                >
-                  <Button
-                    colorScheme='teal'
-                    size='sm'
-                    onClick={() => editCallback(item.id)}
-                    variant='plain'
+          {users &&
+            users.map((item) => (
+              <Table.Row key={item.id}>
+                <Table.Cell>{item.name}</Table.Cell>
+                <Table.Cell>{item.status}</Table.Cell>
+                <Table.Cell>{item.birth}</Table.Cell>
+                <Table.Cell>{item.passport}</Table.Cell>
+                <Table.Cell>{item.address}</Table.Cell>
+                <Table.Cell>{item.phone}</Table.Cell>
+                <Table.Cell>{item.email}</Table.Cell>
+                <Table.Cell width='100px'>
+                  <Box
+                    justifyContent='center'
+                    display='flex'
+                    gap='5px'
                   >
-                    <FaRegEdit
-                      color='black'
-                      height='18px'
-                    />
-                  </Button>
-                  <Button
-                    colorScheme='teal'
-                    size='sm'
-                    variant='plain'
-                    onClick={() => removeUser(item.id)}
-                  >
-                    <IoTrash
-                      color='black'
-                      height='18px'
-                    />
-                  </Button>
-                </Box>
-              </Table.Cell>
-            </Table.Row>
-          ))}
+                    <Button
+                      colorScheme='teal'
+                      size='sm'
+                      onClick={() => editCallback(item.id)}
+                      variant='plain'
+                    >
+                      <FaRegEdit
+                        color='black'
+                        height='18px'
+                      />
+                    </Button>
+                    <Button
+                      colorScheme='teal'
+                      size='sm'
+                      variant='plain'
+                      onClick={() => removeUser(item.id)}
+                    >
+                      <IoTrash
+                        color='black'
+                        height='18px'
+                      />
+                    </Button>
+                  </Box>
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          {!users && <Heading>Таблица пустая</Heading>}
         </Table.Body>
       </Table.Root>
       {currentId && (
