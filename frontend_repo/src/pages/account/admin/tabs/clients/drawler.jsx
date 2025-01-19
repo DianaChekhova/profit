@@ -85,9 +85,9 @@ const ClientsDrawler = (props) => {
   const handleSubmit = () => {
     const userExist = users.find((item) => item.id === currentId);
     if (userExist) {
-      updateUser(user);
+      updateUser(drawlerForm);
     } else {
-      addUser(user);
+      addUser(drawlerForm);
     }
   };
 

@@ -11,6 +11,6 @@ export default class AdminService {
     return await $api.put(`/user`, data);
   }
   static async addUser(data) {
-    return await $api.post(`/uset`, data);
+    return await $api.post(`/user`, data);
   }
 }

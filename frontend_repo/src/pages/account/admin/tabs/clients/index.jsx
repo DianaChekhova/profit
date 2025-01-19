@@ -9,7 +9,7 @@ import styles from './clients.module.scss';
 
 const Clients = observer(() => {
   const [isOpen, setOpen] = useState(false);
-
+  // TODO 2 юзера вызывается
   const store = useMemo(() => new ClientsStore(), []);
   const users = store.getUsers();
   const loading = store.getLoading();

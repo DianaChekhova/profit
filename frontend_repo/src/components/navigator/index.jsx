@@ -3,7 +3,7 @@ import styles from './navigator.module.scss';
 import {Link} from 'react-router-dom';
 import UserLogin from '../user/index.jsx';
 import {observer} from 'mobx-react-lite';
-import {useContext} from 'react';
+import {useContext, useEffect} from 'react';
 import {Context} from '../../main.jsx';
 import UserPanel from '../user/userPanel.jsx';
 
@@ -11,6 +11,12 @@ const Index = () => {
   const {store} = useContext(Context);
   const isAuthenticated = store.getAuthenticated();
   const user = store.getUser();
+  console.log(user);
+  useEffect(() => {
+    if (!user.entity_name) {
+      store.getMe();
+    }
+  });
 
   return (
     <div className={`${styles.wrapper} ${styles.flex}`}>
