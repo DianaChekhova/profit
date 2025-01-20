@@ -2,6 +2,7 @@ package user_handler
 
 import (
 	"context"
+	"log"
 	"net/http"
 	"profit/models"
 	"profit/routes/handlers/backendController"
@@ -28,6 +29,11 @@ func (uc *UserController) UserList(w http.ResponseWriter, r *http.Request) {
 		backendController.WriteJSONResponse(w, http.StatusBadRequest, err.Error())
 		return
 	}
+
+	for i, user := range users {
+		log.Printf("EGOR LYKIN LOX VOT TVOU UZER №%d:\n%+v\n", i, *user)
+	}
+
 	var usersResp []UserResponse
 	for _, user := range users {
 		userResp := convertModelToUserResponse(user)
