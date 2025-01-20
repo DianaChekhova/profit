@@ -33,7 +33,7 @@ const ClientsDrawler = (props) => {
   console.log(subscriptionStatus);
 
   const [drawlerForm, setForm] = useState({
-    id: currentId || Date.now(),
+    id: currentId || ``,
     name: '',
     status: 'active',
     birth: '',
