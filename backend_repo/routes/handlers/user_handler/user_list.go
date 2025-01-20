@@ -28,10 +28,11 @@ func (uc *UserController) UserList(w http.ResponseWriter, r *http.Request) {
 		backendController.WriteJSONResponse(w, http.StatusBadRequest, err.Error())
 		return
 	}
-	var usersResp = make([]UserResponse, len(users))
+	var usersResp []UserResponse
 	for _, user := range users {
 		userResp := convertModelToUserResponse(user)
 		userResp.Schedules, err = uc.getSchedules(user.ScheduleIds, r.Context())
+		usersResp = append(usersResp, *userResp)
 		if err != nil {
 			backendController.WriteJSONResponse(w, http.StatusInternalServerError, err.Error())
 		}
