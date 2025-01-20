@@ -10,7 +10,6 @@ import {useEffect, useState} from 'react';
 import {Field} from '../../../../../components/ui/field.jsx';
 import {createListCollection, Heading, Input} from '@chakra-ui/react';
 import styles from '../../../../../components/user/authentication/modal/tabs/tabs.module.scss';
-import user from '../../../../../components/user/index.jsx';
 import {
   SelectContent,
   SelectItem,
@@ -33,7 +32,7 @@ const ClientsDrawler = (props) => {
   console.log(subscriptionStatus);
 
   const [drawlerForm, setForm] = useState({
-    id: currentId || ``,
+    id: ``,
     name: '',
     status: 'active',
     birth: '',
@@ -83,7 +82,7 @@ const ClientsDrawler = (props) => {
   };
 
   const handleSubmit = () => {
-    const userExist = users.find((item) => item.id === currentId);
+    const userExist = users.find((item) => item.email === currentId);
     if (userExist) {
       updateUser(drawlerForm);
     } else {
@@ -94,10 +93,10 @@ const ClientsDrawler = (props) => {
   //не работает
   useEffect(() => {
     if (currentId) {
-      const item = users.find((item) => item.id === currentId);
+      const item = users.find((item) => item.email === currentId);
       setForm(item);
     }
-  }, [currentId]);
+  }, [currentId, users]);
 
   return (
     <DrawerRoot

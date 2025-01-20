@@ -40,8 +40,8 @@ export default class ClientsStore {
     try {
       const response = await AdminService.getUsers();
       runInAction(() => {
-        if (response.data.users.length > 0) {
-          this.setUsers(response.data.user);
+        if (response.data.length > 0) {
+          this.setUsers(response.data);
         } else {
           this.setUsers(mockItems);
         }

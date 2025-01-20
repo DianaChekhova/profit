@@ -12,8 +12,8 @@ const ClientsTable = (props) => {
   const [isOpen, setOpen] = useState(false);
   const [currentId, setCurrentId] = useState(null);
 
-  const editCallback = useCallback((id) => {
-    setCurrentId(id);
+  const editCallback = useCallback((email) => {
+    setCurrentId(email);
     setOpen(true);
   }, []);
 
@@ -42,7 +42,7 @@ const ClientsTable = (props) => {
         <Table.Body className={styles.tableBody}>
           {users &&
             users.map((item) => (
-              <Table.Row key={item.id}>
+              <Table.Row key={item.email}>
                 <Table.Cell>{item.name}</Table.Cell>
                 <Table.Cell>{item.status}</Table.Cell>
                 <Table.Cell>{item.birth}</Table.Cell>
@@ -59,7 +59,7 @@ const ClientsTable = (props) => {
                     <Button
                       colorScheme='teal'
                       size='sm'
-                      onClick={() => editCallback(item.id)}
+                      onClick={() => editCallback(item.email)}
                       variant='plain'
                     >
                       <FaRegEdit
@@ -71,7 +71,7 @@ const ClientsTable = (props) => {
                       colorScheme='teal'
                       size='sm'
                       variant='plain'
-                      onClick={() => removeUser(item.id)}
+                      onClick={() => removeUser(item.email)}
                     >
                       <IoTrash
                         color='black'

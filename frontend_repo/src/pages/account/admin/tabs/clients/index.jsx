@@ -12,6 +12,7 @@ const Clients = observer(() => {
   // TODO 2 юзера вызывается
   const store = useMemo(() => new ClientsStore(), []);
   const users = store.getUsers();
+  console.log(users);
   const loading = store.getLoading();
   const removeUser = store.removeUser;
   const updateUser = store.updateUser;
