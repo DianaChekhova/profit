@@ -2,6 +2,7 @@ package user_handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"profit/routes/handlers/backendController"
 )
@@ -36,7 +37,7 @@ func (uc *UserController) AddUser(w http.ResponseWriter, r *http.Request) {
 		backendController.WriteJSONResponse(
 			w,
 			http.StatusBadRequest,
-			"failed to create User",
+			fmt.Sprintf("failed to create User. Error: %s", err.Error()),
 		)
 		return
 	}
