@@ -2,9 +2,18 @@
 
 echo "Starting servers..."
 
+# Check if MongoDB is running
+if ! brew services list | grep -q "mongodb-community.*started"; then
+    echo "[ERROR] MongoDB is not running. Please start it first using: brew services start mongodb/brew/mongodb-community"
+    exit 1
+fi
+
+# Create logs directory if it doesn't exist
+mkdir -p "$(dirname "$0")/../logs"
+
 # Переход в директорию backend_repo и запуск backend
 echo "Starting backend server..."
-cd "$(dirname "$0")/../backend_repo" || {
+cd "$(dirname "$0")/../../backend_repo" || {
     echo "[ERROR] Unable to navigate to backend_repo. Check the directory structure."
     exit 1
 }
@@ -14,14 +23,25 @@ if [ ! -f "backend" ]; then
     exit 1
 fi
 
+# Check for environment file
+if [ ! -f "config/main.env" ]; then
+    echo "[ERROR] Environment file not found at config/main.env"
+    exit 1
+fi
+
+# Load environment variables
+set -a
+source config/main.env
+set +a
+
 # Запускаем сервер в фоне
-nohup ./backend > backend.log 2>&1 &
+nohup ./backend > "$(dirname "$0")/../logs/backend.log" 2>&1 &
 BACKEND_PID=$!
 echo "Backend server started with PID $BACKEND_PID."
 
 # Переход в директорию frontend_repo и запуск frontend
 echo "Starting frontend server..."
-cd "$(dirname "$0")/../frontend_repo" || {
+cd "$(dirname "$0")/../../frontend_repo" || {
     echo "[ERROR] Unable to navigate to frontend_repo. Check the directory structure."
     exit 1
 }
@@ -31,13 +51,20 @@ if ! command -v yarn &>/dev/null; then
     exit 1
 fi
 
+# Check for environment file
+if [ ! -f ".env" ]; then
+    echo "[WARNING] .env file not found in frontend directory. Using default configuration."
+fi
+
 # Запускаем сервер разработки
-nohup yarn start > frontend.log 2>&1 &
+nohup yarn start > "$(dirname "$0")/../logs/frontend.log" 2>&1 &
 FRONTEND_PID=$!
 echo "Frontend server started with PID $FRONTEND_PID."
 
 # Сохраняем PIDs в файл для последующей остановки
-echo "$BACKEND_PID" > ../server_pids.txt
-echo "$FRONTEND_PID" >> ../server_pids.txt
+echo "$BACKEND_PID" > "$(dirname "$0")/../server_pids.txt"
+echo "$FRONTEND_PID" >> "$(dirname "$0")/../server_pids.txt"
 
 echo "Servers started successfully!"
+echo "Backend logs: $(dirname "$0")/../logs/backend.log"
+echo "Frontend logs: $(dirname "$0")/../logs/frontend.log"

@@ -43,6 +43,14 @@ install_mongodb() {
         echo "MongoDB не установлен. Устанавливаем..."
         brew tap mongodb/brew
         brew install mongodb-community@7.0
+        
+        # Create data directory if it doesn't exist
+        sudo mkdir -p /usr/local/var/mongodb
+        sudo chown -R $(whoami) /usr/local/var/mongodb
+        
+        # Create log directory if it doesn't exist
+        sudo mkdir -p /usr/local/var/log/mongodb
+        sudo chown -R $(whoami) /usr/local/var/log/mongodb
     else
         echo "MongoDB уже установлен."
     fi
@@ -51,7 +59,15 @@ install_mongodb() {
 # Function to start MongoDB
 start_mongodb() {
     echo "Запускаем MongoDB..."
-    brew services start mongodb/brew/mongodb-community
+    if brew services list | grep -q "mongodb-community.*started"; then
+        echo "MongoDB уже запущен."
+    else
+        if ! brew services start mongodb/brew/mongodb-community; then
+            echo "[ERROR] Не удалось запустить MongoDB. Проверьте логи: brew services list"
+            exit 1
+        fi
+        echo "MongoDB успешно запущен."
+    fi
 }
 
 # Main build script
@@ -61,6 +77,7 @@ main() {
     install_node
     install_yarn
     install_mongodb
+    start_mongodb
 
     echo "Собираем проект..."
     ./build_backend.sh
