@@ -838,18 +838,15 @@ const docTemplate = `{
     }
 }`
 
-// SwaggerInfo holds exported Swagger Info so clients can modify it
+// SwaggerInfo holds exported Swagger Info
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
-	Host:             "",
-	BasePath:         "",
-	Schemes:          []string{},
-	Title:            "",
-	Description:      "",
-	InfoInstanceName: "swagger",
-	SwaggerTemplate:  docTemplate,
-	LeftDelim:        "{{",
-	RightDelim:       "}}",
+	Version:          "1.0",
+	Host:            "localhost:8080",
+	BasePath:        "/",
+	Schemes:         []string{"http", "https"},
+	Title:           "Fitness Club API",
+	Description:     "API для управления фитнес-клубом",
+	InfoInstanceName: swag.Name,
 }
 
 func init() {

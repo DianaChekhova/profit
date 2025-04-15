@@ -2,16 +2,19 @@ package user_handler
 
 import (
 	"context"
-	"go.mongodb.org/mongo-driver/mongo"
 	"profit/models"
 	"profit/repository/use_cases"
 	"profit/repository/use_cases/dbs_repositories/mongoDriver"
+
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type UserController struct {
 	userRepo         use_cases.UserRepository
 	scheduleRepo     use_cases.ScheduleRepository
 	subscriptionRepo use_cases.SubscriptionRepository
+	db               *mongo.Database
+	ctx              context.Context
 }
 
 func NewUserController(ctx context.Context, database *mongo.Database) *UserController {
@@ -19,6 +22,8 @@ func NewUserController(ctx context.Context, database *mongo.Database) *UserContr
 		userRepo:         mongoDriver.NewUserMongoRepository(database, ctx),
 		scheduleRepo:     mongoDriver.NewScheduleMongoRepository(database, ctx),
 		subscriptionRepo: mongoDriver.NewSubscriptionMongoRepository(database, ctx),
+		db:               database,
+		ctx:              ctx,
 	}
 }
 
