@@ -19,7 +19,7 @@ import (
 // @Failure 400 {string} string "Invalid user ID"
 // @Failure 404 {string} string "User not found"
 // @Failure 500 {string} string "Database error"
-// @Router /api/users/{id} [get]
+// @Router /users/{id} [get]
 func (c *UserController) GetUser(w http.ResponseWriter, r *http.Request) {
 	userID := chi.URLParam(r, "id")
 

@@ -21,7 +21,7 @@ type trainerUpdateReq struct {
 // @Success 200 {string} string "Обновление выполнено успешно"
 // @Failure 400 {string} string "Неверный ввод"
 // @Failure 500 {string} string "Ошибка сервера при обновлении"
-// @Router /api/trainer [put]
+// @Router /trainer [put]
 func (bc *TrainerController) TrainerUpdate(w http.ResponseWriter, r *http.Request) {
 	var req trainerUpdateReq
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {

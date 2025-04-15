@@ -12,6 +12,14 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+type ErrorResponse struct {
+	Error string `json:"error" example:"Error message"`
+}
+
+type SuccessResponse struct {
+	Message string `json:"message" example:"Operation completed successfully"`
+}
+
 // @Summary Получить расписание групповых занятий
 // @Description Получение списка всех групповых занятий
 // @Tags Group Schedule
@@ -19,7 +27,7 @@ import (
 // @Produce json
 // @Success 200 {array} GroupSession
 // @Failure 401 {object} ErrorResponse
-// @Router /api/group-schedule [get]
+// @Router /subscription/group/schedule [get]
 func (c *SubscriptionController) GetGroupSchedule(w http.ResponseWriter, r *http.Request) {
 	opts := options.Find().SetSort(bson.D{{"startTime", 1}})
 	cursor, err := c.db.Collection("group_sessions").Find(c.ctx, bson.M{}, opts)
@@ -49,7 +57,7 @@ func (c *SubscriptionController) GetGroupSchedule(w http.ResponseWriter, r *http
 // @Success 201 {object} GroupSession
 // @Failure 400 {object} ErrorResponse
 // @Failure 401 {object} ErrorResponse
-// @Router /api/group-schedule [post]
+// @Router /subscription/group/schedule [post]
 func (c *SubscriptionController) CreateGroupSession(w http.ResponseWriter, r *http.Request) {
 	var req CreateGroupSessionRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -96,7 +104,7 @@ func (c *SubscriptionController) CreateGroupSession(w http.ResponseWriter, r *ht
 // @Failure 400 {object} ErrorResponse
 // @Failure 401 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
-// @Router /api/group-schedule/{id} [put]
+// @Router /subscription/group/schedule/{id} [put]
 func (c *SubscriptionController) UpdateGroupSession(w http.ResponseWriter, r *http.Request) {
 	sessionID := chi.URLParam(r, "id")
 	objectID, err := primitive.ObjectIDFromHex(sessionID)
@@ -146,7 +154,7 @@ func (c *SubscriptionController) UpdateGroupSession(w http.ResponseWriter, r *ht
 // @Failure 400 {object} ErrorResponse
 // @Failure 401 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
-// @Router /api/group-schedule/{id} [delete]
+// @Router /subscription/group/schedule/{id} [delete]
 func (c *SubscriptionController) DeleteGroupSession(w http.ResponseWriter, r *http.Request) {
 	sessionID := chi.URLParam(r, "id")
 	objectID, err := primitive.ObjectIDFromHex(sessionID)
@@ -180,7 +188,7 @@ func (c *SubscriptionController) DeleteGroupSession(w http.ResponseWriter, r *ht
 // @Failure 400 {object} ErrorResponse
 // @Failure 401 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
-// @Router /api/group-schedule/{id}/register [post]
+// @Router /subscription/group/schedule/{id}/register [post]
 func (c *SubscriptionController) RegisterForGroupSession(w http.ResponseWriter, r *http.Request) {
 	sessionID := chi.URLParam(r, "id")
 	objectID, err := primitive.ObjectIDFromHex(sessionID)
@@ -249,7 +257,7 @@ func (c *SubscriptionController) RegisterForGroupSession(w http.ResponseWriter, 
 // @Failure 400 {object} ErrorResponse
 // @Failure 401 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
-// @Router /api/group-schedule/{id}/unregister [delete]
+// @Router /subscription/group/schedule/{id}/unregister [delete]
 func (c *SubscriptionController) UnregisterFromGroupSession(w http.ResponseWriter, r *http.Request) {
 	sessionID := chi.URLParam(r, "id")
 	objectID, err := primitive.ObjectIDFromHex(sessionID)

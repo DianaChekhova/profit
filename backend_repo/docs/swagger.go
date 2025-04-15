@@ -1,7 +1,5 @@
 package docs
 
-import "github.com/swaggo/swag"
-
 // @title Fitness Club API
 // @version 1.0
 // @description API для управления фитнес-клубом
@@ -23,7 +21,6 @@ import "github.com/swaggo/swag"
 // @name Authorization
 // @description Type "Bearer" followed by a space and JWT token.
 func InitSwagger() {
-	swag.Register(swag.Name, &swag.Spec{
-		InfoInstanceName: swag.Name,
-	})
+	// No need to register manually, swag will handle this automatically
+	// when swag init is run
 }

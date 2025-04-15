@@ -2,16 +2,18 @@ package user_handler
 
 import (
 	"encoding/json"
+	"net/http"
+
 	"github.com/go-chi/chi/v5"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"net/http"
 )
 
 type UpdateStatusRequest struct {
 	Status string `json:"status"`
 }
 
+// @Router /users/{id}/status [put]
 func (c *UserController) UpdateUserStatus(w http.ResponseWriter, r *http.Request) {
 	userID := chi.URLParam(r, "id")
 	objectID, err := primitive.ObjectIDFromHex(userID)
@@ -61,4 +63,4 @@ func (c *UserController) UpdateUserStatus(w http.ResponseWriter, r *http.Request
 		"message": "User status updated successfully",
 		"status":  req.Status,
 	})
-} 
+}

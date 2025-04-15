@@ -1,424 +1,995 @@
-openapi: 3.0.0
+definitions:
+  base_handlers.AuthBody:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  base_handlers.ErrorResponse:
+    properties:
+      error:
+        example: Error message
+        type: string
+    type: object
+  base_handlers.MeResponse:
+    properties:
+      entity_name:
+        type: string
+    type: object
+  base_handlers.ProfileResponse:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      role:
+        type: string
+    type: object
+  base_handlers.RegisterBody:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+      username:
+        type: string
+    type: object
+  base_handlers.RegisterResponse:
+    properties:
+      entity_oid:
+        type: string
+      token:
+        type: string
+    type: object
+  base_handlers.UpdateProfileRequest:
+    properties:
+      name:
+        type: string
+      phone:
+        type: string
+    type: object
+  models.Schedule:
+    properties:
+      description:
+        maxLength: 20
+        minLength: 3
+        type: string
+      end_time:
+        type: string
+      id:
+        type: string
+      isEnable:
+        type: boolean
+      max_participants:
+        type: integer
+      min_participants:
+        type: integer
+      start_time:
+        type: string
+      title:
+        maxLength: 20
+        minLength: 3
+        type: string
+      trainers_ids:
+        items:
+          type: string
+        type: array
+      users_ids:
+        items:
+          type: string
+        type: array
+    required:
+    - description
+    - max_participants
+    - min_participants
+    - title
+    type: object
+  models.Subscription:
+    properties:
+      duration:
+        type: number
+      id:
+        type: string
+      price:
+        type: number
+      type:
+        type: string
+    type: object
+  subscription_handler.CreateGroupSessionRequest:
+    properties:
+      description:
+        type: string
+      endTime:
+        type: string
+      maxClients:
+        type: integer
+      name:
+        type: string
+      startTime:
+        type: string
+      trainerId:
+        type: string
+    type: object
+  subscription_handler.CreateMembershipRequest:
+    properties:
+      endDate:
+        type: string
+      startDate:
+        type: string
+      type:
+        type: string
+    type: object
+  subscription_handler.CreatePersonalSessionRequest:
+    properties:
+      description:
+        type: string
+      endTime:
+        type: string
+      startTime:
+        type: string
+    type: object
+  subscription_handler.ErrorResponse:
+    properties:
+      error:
+        example: Error message
+        type: string
+    type: object
+  subscription_handler.GroupSession:
+    properties:
+      description:
+        type: string
+      endTime:
+        type: string
+      id:
+        type: string
+      maxClients:
+        type: integer
+      name:
+        type: string
+      startTime:
+        type: string
+      status:
+        type: string
+      trainerId:
+        type: string
+    type: object
+  subscription_handler.Membership:
+    properties:
+      endDate:
+        type: string
+      freezeCount:
+        type: integer
+      id:
+        type: string
+      startDate:
+        type: string
+      status:
+        type: string
+      type:
+        type: string
+      userId:
+        type: string
+    type: object
+  subscription_handler.PersonalSession:
+    properties:
+      clientId:
+        type: string
+      description:
+        type: string
+      endTime:
+        type: string
+      id:
+        type: string
+      startTime:
+        type: string
+      status:
+        type: string
+      trainerId:
+        type: string
+    type: object
+  subscription_handler.SuccessResponse:
+    properties:
+      message:
+        example: Operation completed successfully
+        type: string
+    type: object
+  trainer_handlers.deleteHandler:
+    type: object
+  trainer_handlers.trainerAliace:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      schedule:
+        items:
+          $ref: '#/definitions/models.Schedule'
+        type: array
+      specialty:
+        type: string
+    type: object
+  trainer_handlers.trainerReqHandler:
+    type: object
+  trainer_handlers.trainerUpdateReq:
+    type: object
+  user_handler.UserResponse:
+    properties:
+      address:
+        type: string
+      birth:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      passport:
+        type: string
+      phone:
+        type: string
+      role:
+        type: string
+      schedules:
+        items:
+          $ref: '#/definitions/models.Schedule'
+        type: array
+      status:
+        type: string
+      subscription:
+        $ref: '#/definitions/models.Subscription'
+    type: object
 info:
-  title: Fitness Club API
-  description: API для управления фитнес-клубом
-  version: 1.0.0
-servers:
-  - url: http://localhost:8080
-    description: Локальный сервер разработки
-
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-
-  schemas:
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          description: Сообщение об ошибке
-
-    LoginRequest:
-      type: object
-      required:
-        - email
-        - password
-      properties:
-        email:
-          type: string
-          format: email
-        password:
-          type: string
-          format: password
-
-    RegisterRequest:
-      type: object
-      required:
-        - email
-        - password
-        - firstName
-        - lastName
-        - role
-      properties:
-        email:
-          type: string
-          format: email
-        password:
-          type: string
-          format: password
-        firstName:
-          type: string
-        lastName:
-          type: string
-        role:
-          type: string
-          enum: [admin, trainer, client]
-
-    User:
-      type: object
-      properties:
-        id:
-          type: string
-        email:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-        role:
-          type: string
-        status:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-
-    Membership:
-      type: object
-      properties:
-        id:
-          type: string
-        userId:
-          type: string
-        type:
-          type: string
-        startDate:
-          type: string
-          format: date-time
-        endDate:
-          type: string
-          format: date-time
-        status:
-          type: string
-        freezeCount:
-          type: integer
-
-    GroupSession:
-      type: object
-      properties:
-        id:
-          type: string
-        trainerId:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-        startTime:
-          type: string
-          format: date-time
-        endTime:
-          type: string
-          format: date-time
-        maxClients:
-          type: integer
-        status:
-          type: string
-
-    PersonalSession:
-      type: object
-      properties:
-        id:
-          type: string
-        trainerId:
-          type: string
-        clientId:
-          type: string
-        startTime:
-          type: string
-          format: date-time
-        endTime:
-          type: string
-          format: date-time
-        status:
-          type: string
-        description:
-          type: string
-
-security:
-  - bearerAuth: []
-
+  contact: {}
 paths:
-  /api/login:
+  /api/logout:
     post:
+      consumes:
+      - application/json
+      description: Позволяет пользователю выйти из системы, делая токен недействительным
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Выход выполнен успешно
+          schema:
+            type: string
+        "401":
+          description: Пользователь не авторизован
+          schema:
+            type: string
+        "500":
+          description: Ошибка при обработке запроса
+          schema:
+            type: string
+      summary: Выход из системы
+      tags:
+      - Auth
+  /api/me:
+    get:
+      consumes:
+      - application/json
+      description: Возвращает информацию о пользователе на основе его роли (User,
+        Trainer, Admin)
+      parameters:
+      - description: Bearer токен для аутентификации
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Информация о пользователе
+          schema:
+            $ref: '#/definitions/base_handlers.MeResponse'
+        "400":
+          description: 'Ошибка: не удалось получить данные из контекста или некорректная
+            роль'
+          schema:
+            type: string
+        "500":
+          description: 'Ошибка: внутренняя ошибка сервера'
+          schema:
+            type: string
+      summary: Получить информацию о текущем пользователе
+      tags:
+      - User
+  /api/trainer:
+    post:
+      consumes:
+      - application/json
+      description: Позволяет добавить нового тренера в систему
+      parameters:
+      - description: Данные тренера
+        in: body
+        name: trainer
+        required: true
+        schema:
+          $ref: '#/definitions/trainer_handlers.trainerReqHandler'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Тренер успешно создан
+          schema:
+            type: string
+        "400":
+          description: Неверный ввод
+          schema:
+            type: string
+        "500":
+          description: Ошибка при создании тренера
+          schema:
+            type: string
+      summary: Добавление нового тренера
+      tags:
+      - Trainers
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Позволяет пользователю войти в систему, проверяя имя пользователя
+        и пароль
+      parameters:
+      - description: Данные для входа
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/base_handlers.AuthBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Токен успешной авторизации
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Неверный ввод
+          schema:
+            type: string
+        "401":
+          description: Неверное имя пользователя или пароль
+          schema:
+            type: string
+        "500":
+          description: Ошибка генерации токена
+          schema:
+            type: string
       summary: Авторизация пользователя
       tags:
-        - Auth
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LoginRequest'
-      responses:
-        '200':
-          description: Успешная авторизация
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  token:
-                    type: string
-                  user:
-                    $ref: '#/components/schemas/User'
-        '401':
-          description: Неверные учетные данные
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /api/register:
-    post:
-      summary: Регистрация нового пользователя
-      tags:
-        - Auth
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RegisterRequest'
-      responses:
-        '201':
-          description: Пользователь успешно создан
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        '400':
-          description: Неверные данные
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /api/profile:
+      - Auth
+  /profile:
     get:
+      description: Получение профиля текущего пользователя
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/base_handlers.ProfileResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/base_handlers.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/base_handlers.ErrorResponse'
+      security:
+      - bearerAuth: []
       summary: Получить профиль пользователя
       tags:
-        - Profile
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Профиль пользователя
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        '401':
-          description: Не авторизован
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+      - Profile
     put:
+      consumes:
+      - application/json
+      description: Обновление профиля текущего пользователя
+      parameters:
+      - description: Данные для обновления профиля
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/base_handlers.UpdateProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/base_handlers.ProfileResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/base_handlers.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/base_handlers.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/base_handlers.ErrorResponse'
+      security:
+      - bearerAuth: []
       summary: Обновить профиль пользователя
       tags:
-        - Profile
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-      responses:
-        '200':
-          description: Профиль обновлен
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        '401':
-          description: Не авторизован
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /api/membership:
-    get:
-      summary: Получить информацию об абонементе
-      tags:
-        - Membership
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Информация об абонементе
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Membership'
-        '404':
-          description: Абонемент не найден
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+      - Profile
+  /register:
     post:
-      summary: Создать новый абонемент
-      tags:
-        - Membership
-      security:
-        - bearerAuth: []
-      requestBody:
+      consumes:
+      - application/json
+      description: Регистрирует нового пользователя в системе, создавая учетную запись
+        на основе указанной роли.
+      parameters:
+      - description: Данные для регистрации пользователя
+        in: body
+        name: body
         required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - type
-                - startDate
-                - endDate
-              properties:
-                type:
-                  type: string
-                startDate:
-                  type: string
-                  format: date-time
-                endDate:
-                  type: string
-                  format: date-time
+        schema:
+          $ref: '#/definitions/base_handlers.RegisterBody'
+      produces:
+      - application/json
       responses:
-        '201':
-          description: Абонемент создан
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Membership'
-        '400':
-          description: Неверные данные
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /api/group-schedule:
+        "201":
+          description: Пользователь успешно зарегистрирован. Возвращает токен и идентификатор
+            пользователя.
+          schema:
+            $ref: '#/definitions/base_handlers.RegisterResponse'
+        "400":
+          description: Неверный ввод данных.
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Ошибка при обработке данных (например, ошибка хэширования пароля).
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "503":
+          description: Ошибка сервера при регистрации пользователя.
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Регистрация пользователя
+      tags:
+      - Register
+  /subscription/group/schedule:
     get:
+      description: Получение списка всех групповых занятий
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/subscription_handler.GroupSession'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+      security:
+      - bearerAuth: []
       summary: Получить расписание групповых занятий
       tags:
-        - Group Schedule
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Список групповых занятий
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/GroupSession'
+      - Group Schedule
     post:
+      consumes:
+      - application/json
+      description: Создание нового группового занятия
+      parameters:
+      - description: Данные для создания группового занятия
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/subscription_handler.CreateGroupSessionRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/subscription_handler.GroupSession'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+      security:
+      - bearerAuth: []
       summary: Создать новое групповое занятие
       tags:
-        - Group Schedule
-      security:
-        - bearerAuth: []
-      requestBody:
+      - Group Schedule
+  /subscription/group/schedule/{id}:
+    delete:
+      description: Удаление группового занятия
+      parameters:
+      - description: ID группового занятия
+        in: path
+        name: id
         required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - trainerId
-                - name
-                - startTime
-                - endTime
-                - maxClients
-              properties:
-                trainerId:
-                  type: string
-                name:
-                  type: string
-                description:
-                  type: string
-                startTime:
-                  type: string
-                  format: date-time
-                endTime:
-                  type: string
-                  format: date-time
-                maxClients:
-                  type: integer
+        type: string
+      produces:
+      - application/json
       responses:
-        '201':
-          description: Занятие создано
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GroupSession'
-        '400':
-          description: Неверные данные
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /api/personal-schedule:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/subscription_handler.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+      security:
+      - bearerAuth: []
+      summary: Удалить групповое занятие
+      tags:
+      - Group Schedule
+    put:
+      consumes:
+      - application/json
+      description: Обновление информации о групповом занятии
+      parameters:
+      - description: ID группового занятия
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Данные для обновления группового занятия
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/subscription_handler.CreateGroupSessionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/subscription_handler.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+      security:
+      - bearerAuth: []
+      summary: Обновить групповое занятие
+      tags:
+      - Group Schedule
+  /subscription/group/schedule/{id}/register:
+    post:
+      description: Регистрация пользователя на групповое занятие
+      parameters:
+      - description: ID группового занятия
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/subscription_handler.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+      security:
+      - bearerAuth: []
+      summary: Записаться на групповое занятие
+      tags:
+      - Group Schedule
+  /subscription/group/schedule/{id}/unregister:
+    delete:
+      description: Отмена регистрации пользователя на групповое занятие
+      parameters:
+      - description: ID группового занятия
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/subscription_handler.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+      security:
+      - bearerAuth: []
+      summary: Отменить запись на групповое занятие
+      tags:
+      - Group Schedule
+  /subscription/membership:
     get:
+      description: Получение информации о текущем абонементе пользователя
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/subscription_handler.Membership'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+      security:
+      - bearerAuth: []
+      summary: Получить информацию об абонементе
+      tags:
+      - Membership
+    post:
+      consumes:
+      - application/json
+      description: Создание нового абонемента для пользователя
+      parameters:
+      - description: Данные для создания абонемента
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/subscription_handler.CreateMembershipRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/subscription_handler.Membership'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+      security:
+      - bearerAuth: []
+      summary: Создать новый абонемент
+      tags:
+      - Membership
+  /subscription/membership/freeze:
+    post:
+      description: Временная заморозка абонемента пользователя
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/subscription_handler.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+      security:
+      - bearerAuth: []
+      summary: Заморозить абонемент
+      tags:
+      - Membership
+  /subscription/personal/schedule:
+    get:
+      description: Получение списка персональных тренировок пользователя
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/subscription_handler.PersonalSession'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+      security:
+      - bearerAuth: []
       summary: Получить расписание персональных тренировок
       tags:
-        - Personal Schedule
-      security:
-        - bearerAuth: []
+      - Personal Schedule
+  /subscription/personal/schedule/{id}/unregister:
+    delete:
+      description: Отмена регистрации пользователя на персональную тренировку
+      parameters:
+      - description: ID персональной тренировки
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
       responses:
-        '200':
-          description: Список персональных тренировок
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/PersonalSession'
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/subscription_handler.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+      security:
+      - bearerAuth: []
+      summary: Отменить запись на персональную тренировку
+      tags:
+      - Personal Schedule
+  /subscription/personal/schedule/{trainer_id}/register:
     post:
+      consumes:
+      - application/json
+      description: Регистрация пользователя на персональную тренировку
+      parameters:
+      - description: ID тренера
+        in: path
+        name: trainer_id
+        required: true
+        type: string
+      - description: Данные для записи на тренировку
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/subscription_handler.CreatePersonalSessionRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/subscription_handler.PersonalSession'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/subscription_handler.ErrorResponse'
+      security:
+      - bearerAuth: []
       summary: Записаться на персональную тренировку
       tags:
-        - Personal Schedule
-      security:
-        - bearerAuth: []
-      requestBody:
+      - Personal Schedule
+  /trainer:
+    delete:
+      consumes:
+      - application/json
+      description: Удаляет тренера по его идентификатору
+      parameters:
+      - description: Идентификатор тренера для удаления
+        in: body
+        name: id
         required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - trainerId
-                - startTime
-                - endTime
-              properties:
-                trainerId:
-                  type: string
-                startTime:
-                  type: string
-                  format: date-time
-                endTime:
-                  type: string
-                  format: date-time
-                description:
-                  type: string
+        schema:
+          $ref: '#/definitions/trainer_handlers.deleteHandler'
+      produces:
+      - application/json
       responses:
-        '201':
-          description: Запись создана
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PersonalSession'
-        '400':
-          description: Неверные данные
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+        "204":
+          description: Тренер успешно удален
+          schema:
+            type: string
+        "400":
+          description: Неверный ввод
+          schema:
+            type: string
+        "404":
+          description: Тренер не найден
+          schema:
+            type: string
+        "500":
+          description: Ошибка сервера при удалении тренера
+          schema:
+            type: string
+      summary: Удаление тренера
+      tags:
+      - Trainers
+    put:
+      consumes:
+      - application/json
+      description: Позволяет обновить информацию о тренере
+      parameters:
+      - description: Информация о тренере для обновления
+        in: body
+        name: trainer
+        required: true
+        schema:
+          $ref: '#/definitions/trainer_handlers.trainerUpdateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Обновление выполнено успешно
+          schema:
+            type: string
+        "400":
+          description: Неверный ввод
+          schema:
+            type: string
+        "500":
+          description: Ошибка сервера при обновлении
+          schema:
+            type: string
+      summary: Обновляет данные тренера
+      tags:
+      - Trainers
+  /trainers:
+    get:
+      consumes:
+      - application/json
+      description: Позволяет получить список всех тренеров
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список тренеров
+          schema:
+            items:
+              $ref: '#/definitions/trainer_handlers.trainerAliace'
+            type: array
+        "400":
+          description: Неверный ввод
+          schema:
+            type: string
+        "500":
+          description: Ошибка при получении списка тренеров
+          schema:
+            type: string
+      summary: Возвращает список тренеров
+      tags:
+      - Trainers
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: Позволяет получить список всех пользователей
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список пользователей
+          schema:
+            items:
+              $ref: '#/definitions/user_handler.UserResponse'
+            type: array
+        "400":
+          description: Неверный ввод
+          schema:
+            type: string
+        "500":
+          description: Ошибка при получении списка пользователей
+          schema:
+            type: string
+      summary: Возвращает список пользователей
+      tags:
+      - User
+  /users/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a single user by their ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user_handler.UserResponse'
+        "400":
+          description: Invalid user ID
+          schema:
+            type: string
+        "404":
+          description: User not found
+          schema:
+            type: string
+        "500":
+          description: Database error
+          schema:
+            type: string
+      summary: Get user by ID
+      tags:
+      - User
+  /users/{id}/status:
+    put:
+      responses: {}
+swagger: "2.0"

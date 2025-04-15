@@ -18,7 +18,7 @@ import (
 // @Success 200 {object} Membership
 // @Failure 401 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
-// @Router /api/membership [get]
+// @Router /subscription/membership [get]
 func (c *SubscriptionController) GetMembership(w http.ResponseWriter, r *http.Request) {
 	userID := r.Context().Value(protection.ContextUserIDKey).(string)
 	objectID, err := primitive.ObjectIDFromHex(userID)
@@ -52,7 +52,7 @@ func (c *SubscriptionController) GetMembership(w http.ResponseWriter, r *http.Re
 // @Success 201 {object} Membership
 // @Failure 400 {object} ErrorResponse
 // @Failure 401 {object} ErrorResponse
-// @Router /api/membership [post]
+// @Router /subscription/membership [post]
 func (c *SubscriptionController) CreateMembership(w http.ResponseWriter, r *http.Request) {
 	userID := r.Context().Value(protection.ContextUserIDKey).(string)
 	objectID, err := primitive.ObjectIDFromHex(userID)
@@ -96,7 +96,7 @@ func (c *SubscriptionController) CreateMembership(w http.ResponseWriter, r *http
 // @Failure 400 {object} ErrorResponse
 // @Failure 401 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
-// @Router /api/membership/freeze [patch]
+// @Router /subscription/membership/freeze [post]
 func (c *SubscriptionController) FreezeMembership(w http.ResponseWriter, r *http.Request) {
 	userID := r.Context().Value(protection.ContextUserIDKey).(string)
 	objectID, err := primitive.ObjectIDFromHex(userID)

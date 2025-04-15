@@ -15,201 +15,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/User": {
-            "put": {
-                "description": "Позволяет обновить информацию о пользователя",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User"
-                ],
-                "summary": "Обновляет данные пользователя",
-                "parameters": [
-                    {
-                        "description": "Информация о пользователя для обновления",
-                        "name": "User",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/user_handler.userUpdateReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Обновление выполнено успешно",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Неверный ввод",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Ошибка сервера при обновлении",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "Позволяет добавить нового пользователя в систему",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User"
-                ],
-                "summary": "Добавление нового пользователя",
-                "parameters": [
-                    {
-                        "description": "Данные Юзера",
-                        "name": "User",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/user_handler.UserResponse"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Пользователь успешно создан",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Неверный ввод",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Ошибка при создании пользователя",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "Удаляет пользователя по его идентификатору",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User"
-                ],
-                "summary": "Удаление пользователя",
-                "parameters": [
-                    {
-                        "description": "Идентификатор пользователя для удаления",
-                        "name": "id",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/user_handler.userDeleteReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Тренер успешно удален",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Неверный ввод",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "Тренер не найден",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Ошибка сервера при удалении пользователя",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/login": {
-            "post": {
-                "description": "Позволяет пользователю войти в систему, проверяя имя пользователя и пароль",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Авторизация пользователя",
-                "parameters": [
-                    {
-                        "description": "Данные для входа",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/base_handlers.AuthBody"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Токен успешной авторизации",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Неверный ввод",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "401": {
-                        "description": "Неверное имя пользователя или пароль",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Ошибка генерации токена",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/api/logout": {
             "post": {
                 "description": "Позволяет пользователю выйти из системы, делая токен недействительным",
@@ -289,7 +94,200 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/register": {
+        "/api/trainer": {
+            "post": {
+                "description": "Позволяет добавить нового тренера в систему",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Trainers"
+                ],
+                "summary": "Добавление нового тренера",
+                "parameters": [
+                    {
+                        "description": "Данные тренера",
+                        "name": "trainer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/trainer_handlers.trainerReqHandler"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Тренер успешно создан",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный ввод",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка при создании тренера",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "description": "Позволяет пользователю войти в систему, проверяя имя пользователя и пароль",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Авторизация пользователя",
+                "parameters": [
+                    {
+                        "description": "Данные для входа",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/base_handlers.AuthBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Токен успешной авторизации",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный ввод",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Неверное имя пользователя или пароль",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка генерации токена",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/profile": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Получение профиля текущего пользователя",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Получить профиль пользователя",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/base_handlers.ProfileResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/base_handlers.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/base_handlers.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Обновление профиля текущего пользователя",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Обновить профиль пользователя",
+                "parameters": [
+                    {
+                        "description": "Данные для обновления профиля",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/base_handlers.UpdateProfileRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/base_handlers.ProfileResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/base_handlers.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/base_handlers.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/base_handlers.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/register": {
             "post": {
                 "description": "Регистрирует нового пользователя в системе, создавая учетную запись на основе указанной роли.",
                 "consumes": [
@@ -350,7 +348,587 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/trainer": {
+        "/subscription/group/schedule": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Получение списка всех групповых занятий",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Group Schedule"
+                ],
+                "summary": "Получить расписание групповых занятий",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/subscription_handler.GroupSession"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Создание нового группового занятия",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Group Schedule"
+                ],
+                "summary": "Создать новое групповое занятие",
+                "parameters": [
+                    {
+                        "description": "Данные для создания группового занятия",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.CreateGroupSessionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.GroupSession"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/subscription/group/schedule/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Обновление информации о групповом занятии",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Group Schedule"
+                ],
+                "summary": "Обновить групповое занятие",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID группового занятия",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Данные для обновления группового занятия",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.CreateGroupSessionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Удаление группового занятия",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Group Schedule"
+                ],
+                "summary": "Удалить групповое занятие",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID группового занятия",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/subscription/group/schedule/{id}/register": {
+            "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Регистрация пользователя на групповое занятие",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Group Schedule"
+                ],
+                "summary": "Записаться на групповое занятие",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID группового занятия",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/subscription/group/schedule/{id}/unregister": {
+            "delete": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Отмена регистрации пользователя на групповое занятие",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Group Schedule"
+                ],
+                "summary": "Отменить запись на групповое занятие",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID группового занятия",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/subscription/membership": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Получение информации о текущем абонементе пользователя",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Membership"
+                ],
+                "summary": "Получить информацию об абонементе",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.Membership"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Создание нового абонемента для пользователя",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Membership"
+                ],
+                "summary": "Создать новый абонемент",
+                "parameters": [
+                    {
+                        "description": "Данные для создания абонемента",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.CreateMembershipRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.Membership"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/subscription/membership/freeze": {
+            "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Временная заморозка абонемента пользователя",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Membership"
+                ],
+                "summary": "Заморозить абонемент",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/subscription/personal/schedule": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Получение списка персональных тренировок пользователя",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Personal Schedule"
+                ],
+                "summary": "Получить расписание персональных тренировок",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/subscription_handler.PersonalSession"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/subscription/personal/schedule/{id}/unregister": {
+            "delete": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Отмена регистрации пользователя на персональную тренировку",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Personal Schedule"
+                ],
+                "summary": "Отменить запись на персональную тренировку",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID персональной тренировки",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/subscription/personal/schedule/{trainer_id}/register": {
+            "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "Регистрация пользователя на персональную тренировку",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Personal Schedule"
+                ],
+                "summary": "Записаться на персональную тренировку",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID тренера",
+                        "name": "trainer_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Данные для записи на тренировку",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.CreatePersonalSessionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.PersonalSession"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/subscription_handler.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/trainer": {
             "put": {
                 "description": "Позволяет обновить информацию о тренере",
                 "consumes": [
@@ -389,50 +967,6 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Ошибка сервера при обновлении",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "Позволяет добавить нового тренера в систему",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Trainers"
-                ],
-                "summary": "Добавление нового тренера",
-                "parameters": [
-                    {
-                        "description": "Данные тренера",
-                        "name": "trainer",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/trainer_handlers.trainerReqHandler"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Тренер успешно создан",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Неверный ввод",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Ошибка при создании тренера",
                         "schema": {
                             "type": "string"
                         }
@@ -490,7 +1024,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/trainers": {
+        "/trainers": {
             "get": {
                 "description": "Позволяет получить список всех тренеров",
                 "consumes": [
@@ -528,7 +1062,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/users": {
+        "/users": {
             "get": {
                 "description": "Позволяет получить список всех пользователей",
                 "consumes": [
@@ -565,6 +1099,61 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/users/{id}": {
+            "get": {
+                "description": "Retrieves a single user by their ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get user by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/user_handler.UserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid user ID",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Database error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}/status": {
+            "put": {
+                "responses": {}
+            }
         }
     },
     "definitions": {
@@ -582,10 +1171,39 @@ const docTemplate = `{
                 }
             }
         },
+        "base_handlers.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "Error message"
+                }
+            }
+        },
         "base_handlers.MeResponse": {
             "type": "object",
             "properties": {
                 "entity_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "base_handlers.ProfileResponse": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "role": {
                     "type": "string"
                 }
             }
@@ -614,6 +1232,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "base_handlers.UpdateProfileRequest": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "phone": {
                     "type": "string"
                 }
             }
@@ -686,63 +1315,153 @@ const docTemplate = `{
                 }
             }
         },
-        "models.User": {
-            "description": "Пользователь системы",
+        "subscription_handler.CreateGroupSessionRequest": {
             "type": "object",
-            "required": [
-                "email",
-                "name",
-                "password",
-                "subscription"
-            ],
             "properties": {
-                "address": {
+                "description": {
                     "type": "string"
                 },
-                "birth": {
+                "endTime": {
                     "type": "string"
                 },
-                "created_at": {
-                    "type": "string",
-                    "example": "2023-01-01T12:00:00Z"
-                },
-                "email": {
-                    "type": "string",
-                    "example": "johndoe@example.com"
-                },
-                "id": {
-                    "type": "string",
-                    "example": "123"
+                "maxClients": {
+                    "type": "integer"
                 },
                 "name": {
-                    "type": "string",
-                    "maxLength": 20,
-                    "minLength": 3,
-                    "example": "JohnDoe"
-                },
-                "passport": {
                     "type": "string"
                 },
-                "password": {
-                    "type": "string",
-                    "minLength": 6,
-                    "example": "123456"
+                "startTime": {
+                    "type": "string"
                 },
-                "role": {
-                    "type": "string",
-                    "example": "admin"
+                "trainerId": {
+                    "type": "string"
+                }
+            }
+        },
+        "subscription_handler.CreateMembershipRequest": {
+            "type": "object",
+            "properties": {
+                "endDate": {
+                    "type": "string"
                 },
-                "schedule": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                "startDate": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "subscription_handler.CreatePersonalSessionRequest": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "endTime": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "subscription_handler.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "Error message"
+                }
+            }
+        },
+        "subscription_handler.GroupSession": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "endTime": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "maxClients": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
                 },
                 "status": {
                     "type": "string"
                 },
-                "subscription": {
-                    "$ref": "#/definitions/models.Subscription"
+                "trainerId": {
+                    "type": "string"
+                }
+            }
+        },
+        "subscription_handler.Membership": {
+            "type": "object",
+            "properties": {
+                "endDate": {
+                    "type": "string"
+                },
+                "freezeCount": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "startDate": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "subscription_handler.PersonalSession": {
+            "type": "object",
+            "properties": {
+                "clientId": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "endTime": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "trainerId": {
+                    "type": "string"
+                }
+            }
+        },
+        "subscription_handler.SuccessResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Operation completed successfully"
                 }
             }
         },
@@ -802,6 +1521,9 @@ const docTemplate = `{
                 "passport": {
                     "type": "string"
                 },
+                "phone": {
+                    "type": "string"
+                },
                 "role": {
                     "type": "string"
                 },
@@ -818,35 +1540,22 @@ const docTemplate = `{
                     "$ref": "#/definitions/models.Subscription"
                 }
             }
-        },
-        "user_handler.userDeleteReq": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                }
-            }
-        },
-        "user_handler.userUpdateReq": {
-            "type": "object",
-            "properties": {
-                "User": {
-                    "$ref": "#/definitions/models.User"
-                }
-            }
         }
     }
 }`
 
-// SwaggerInfo holds exported Swagger Info
+// SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "1.0",
-	Host:            "localhost:8080",
-	BasePath:        "/",
-	Schemes:         []string{"http", "https"},
-	Title:           "Fitness Club API",
-	Description:     "API для управления фитнес-клубом",
-	InfoInstanceName: swag.Name,
+	Version:          "",
+	Host:             "",
+	BasePath:         "",
+	Schemes:          []string{},
+	Title:            "",
+	Description:      "",
+	InfoInstanceName: "swagger",
+	SwaggerTemplate:  docTemplate,
+	LeftDelim:        "{{",
+	RightDelim:       "}}",
 }
 
 func init() {

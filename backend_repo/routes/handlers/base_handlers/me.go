@@ -22,7 +22,7 @@ type MeResponse struct {
 // @Failure 400 {string} string "Ошибка: не удалось получить данные из контекста или некорректная роль"
 // @Failure 500 {string} string "Ошибка: внутренняя ошибка сервера"
 // @Router /api/me [get]
-func (bc *BaseController) Me(w http.ResponseWriter, r *http.Request) {
+func (ctrl *BaseController) Me(w http.ResponseWriter, r *http.Request) {
 	entityOid, ok := r.Context().Value(protection.ContextUserIDKey).(string)
 	if !ok {
 		backendController.WriteJSONResponse(w, 400, "failed to get userId from request context")
@@ -35,7 +35,7 @@ func (bc *BaseController) Me(w http.ResponseWriter, r *http.Request) {
 	var entityName string
 	switch role {
 	case models.UserRole:
-		user, err := bc.userRepo.GetUserByID(r.Context(), entityOid)
+		user, err := ctrl.userRepo.GetUserByID(r.Context(), entityOid)
 		if err != nil {
 			backendController.WriteJSONResponse(w, 500, err.Error())
 		}
@@ -47,7 +47,7 @@ func (bc *BaseController) Me(w http.ResponseWriter, r *http.Request) {
 		entityName = user.UserName
 
 	case models.TrainerRole:
-		trainer, err := bc.trainerRepo.GetTrainerByID(r.Context(), entityOid)
+		trainer, err := ctrl.trainerRepo.GetTrainerByID(r.Context(), entityOid)
 		if err != nil {
 			backendController.WriteJSONResponse(w, 500, err.Error())
 		}
@@ -60,7 +60,7 @@ func (bc *BaseController) Me(w http.ResponseWriter, r *http.Request) {
 		entityName = trainer.Name
 
 	case models.AdminRole:
-		admin, err := bc.adminRepo.GetAdminByOID(r.Context(), entityOid)
+		admin, err := ctrl.adminRepo.GetAdminByOID(r.Context(), entityOid)
 		if err != nil {
 			backendController.WriteJSONResponse(w, 500, err.Error())
 		}

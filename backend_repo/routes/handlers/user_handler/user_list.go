@@ -17,7 +17,7 @@ import (
 // @Success 200 {array} UserResponse "Список пользователей"
 // @Failure 400 {string} string "Неверный ввод"
 // @Failure 500 {string} string "Ошибка при получении списка пользователей"
-// @Router /api/users [get]
+// @Router /users [get]
 func (uc *UserController) UserList(w http.ResponseWriter, r *http.Request) {
 	var (
 		users []*models.User

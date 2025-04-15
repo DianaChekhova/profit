@@ -20,7 +20,7 @@ import (
 // @Produce json
 // @Success 200 {array} PersonalSession
 // @Failure 401 {object} ErrorResponse
-// @Router /api/personal-schedule [get]
+// @Router /subscription/personal/schedule [get]
 func (c *SubscriptionController) GetPersonalSchedule(w http.ResponseWriter, r *http.Request) {
 	userID := r.Context().Value(protection.ContextUserIDKey).(string)
 	objectID, err := primitive.ObjectIDFromHex(userID)
@@ -59,7 +59,7 @@ func (c *SubscriptionController) GetPersonalSchedule(w http.ResponseWriter, r *h
 // @Failure 400 {object} ErrorResponse
 // @Failure 401 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
-// @Router /api/personal-schedule/{trainer_id}/register [post]
+// @Router /subscription/personal/schedule/{trainer_id}/register [post]
 func (c *SubscriptionController) RegisterForPersonalSession(w http.ResponseWriter, r *http.Request) {
 	trainerID := chi.URLParam(r, "trainer_id")
 	trainerObjectID, err := primitive.ObjectIDFromHex(trainerID)
@@ -149,7 +149,7 @@ func (c *SubscriptionController) RegisterForPersonalSession(w http.ResponseWrite
 // @Failure 400 {object} ErrorResponse
 // @Failure 401 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
-// @Router /api/personal-schedule/{id}/unregister [delete]
+// @Router /subscription/personal/schedule/{id}/unregister [delete]
 func (c *SubscriptionController) UnregisterFromPersonalSession(w http.ResponseWriter, r *http.Request) {
 	sessionID := chi.URLParam(r, "id")
 	objectID, err := primitive.ObjectIDFromHex(sessionID)

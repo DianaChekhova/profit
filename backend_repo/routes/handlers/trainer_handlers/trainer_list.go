@@ -17,7 +17,7 @@ type trainerAliace = *models.Trainer
 // @Success 200 {array} trainerAliace "Список тренеров"
 // @Failure 400 {string} string "Неверный ввод"
 // @Failure 500 {string} string "Ошибка при получении списка тренеров"
-// @Router /api/trainers [get]
+// @Router /trainers [get]
 func (bc *TrainerController) TrainerList(w http.ResponseWriter, r *http.Request) {
 	var (
 		trainersList []trainerAliace

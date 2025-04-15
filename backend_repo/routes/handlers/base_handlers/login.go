@@ -4,11 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"profit/models"
 	"profit/routes/auth/jwt_token"
 	"profit/routes/handlers/backendController"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 type AuthBody struct {
@@ -28,7 +29,7 @@ type AuthBody struct {
 // @Failure 400 {string} string "Неверный ввод"
 // @Failure 401 {string} string "Неверное имя пользователя или пароль"
 // @Failure 500 {string} string "Ошибка генерации токена"
-// @Router /api/login [post]
+// @Router /login [post]
 func (ctrl *BaseController) LoginHandler(w http.ResponseWriter, r *http.Request) {
 	var req AuthBody
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -59,21 +60,33 @@ func (ctrl *BaseController) LoginHandler(w http.ResponseWriter, r *http.Request)
 }
 
 func (ctrl *BaseController) loginByRole(ctx context.Context, req AuthBody) (string, error, int) {
-	role, ok := ctx.Value("role").(models.Role)
-	if !ok {
-		return "", errors.New("role not found"), http.StatusBadRequest
+	// 1. Пробуем найти пользователя среди обычных пользователей
+	user, err := ctrl.userRepo.GetUserByEmail(ctx, req.Email)
+	if err == nil {
+		// Проверяем пароль
+		if bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password)) == nil {
+			token, err := jwt_token.GenerateToken(user.ID, models.UserRole)
+			return token, err, http.StatusOK
+		}
 	}
-
-	switch role {
-	case models.UserRole:
-		return ctrl.loginUser(ctx, req)
-	case models.AdminRole:
-		return ctrl.loginAdmin(ctx, req)
-	case models.TrainerRole:
-		return ctrl.loginTrainer(ctx, req)
-	default:
-		return "", errors.New("invalid role"), http.StatusBadRequest
+	// 2. Пробуем среди админов
+	admin, err := ctrl.adminRepo.GetAdminByEmail(ctx, req.Email)
+	if err == nil {
+		if bcrypt.CompareHashAndPassword([]byte(admin.Password), []byte(req.Password)) == nil {
+			token, err := jwt_token.GenerateToken(admin.ID, models.AdminRole)
+			return token, err, http.StatusOK
+		}
 	}
+	// 3. Пробуем среди тренеров
+	trainer, err := ctrl.trainerRepo.GetTrainerByEmail(ctx, req.Email)
+	if err == nil {
+		if bcrypt.CompareHashAndPassword([]byte(trainer.Password), []byte(req.Password)) == nil {
+			token, err := jwt_token.GenerateToken(trainer.ID, models.TrainerRole)
+			return token, err, http.StatusOK
+		}
+	}
+	// Если не нашли или пароль не подошёл
+	return "", errors.New("invalid credentials"), http.StatusUnauthorized
 }
 
 func (ctrl *BaseController) loginUser(ctx context.Context, req AuthBody) (token string, err error, code int) {

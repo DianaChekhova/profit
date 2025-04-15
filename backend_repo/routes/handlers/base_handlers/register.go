@@ -4,12 +4,13 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"profit/models"
 	"profit/routes/auth/jwt_token"
 	"profit/routes/handlers/backendController"
 	"time"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 type RegisterBody struct {
@@ -35,7 +36,7 @@ type RegisterResponse struct {
 // @Failure 400 {object} map[string]string "Неверный ввод данных."
 // @Failure 500 {object} map[string]string "Ошибка при обработке данных (например, ошибка хэширования пароля)."
 // @Failure 503 {object} map[string]string "Ошибка сервера при регистрации пользователя."
-// @Router /api/register [post]
+// @Router /register [post]
 func (ctrl *BaseController) RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	var req RegisterBody
 
