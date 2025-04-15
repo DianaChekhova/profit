@@ -8,12 +8,16 @@ if ! brew services list | grep -q "mongodb-community.*started"; then
     exit 1
 fi
 
+# Get the absolute path to the project root
+PROJECT_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+echo "Project root: $PROJECT_ROOT"
+
 # Create logs directory if it doesn't exist
-mkdir -p "$(dirname "$0")/../../logs"
+mkdir -p "$PROJECT_ROOT/logs"
 
 # Переход в директорию backend_repo и запуск backend
 echo "Starting backend server..."
-cd "$(dirname "$0")/../../backend_repo" || {
+cd "$PROJECT_ROOT/backend_repo" || {
     echo "[ERROR] Unable to navigate to backend_repo. Check the directory structure."
     exit 1
 }
@@ -35,13 +39,13 @@ source config/main.env
 set +a
 
 # Запускаем сервер в фоне
-nohup ./backend > "$(dirname "$0")/../../logs/backend.log" 2>&1 &
+nohup ./backend > "$PROJECT_ROOT/logs/backend.log" 2>&1 &
 BACKEND_PID=$!
 echo "Backend server started with PID $BACKEND_PID."
 
 # Переход в директорию frontend_repo и запуск frontend
 echo "Starting frontend server..."
-cd "$(dirname "$0")/../../frontend_repo" || {
+cd "$PROJECT_ROOT/frontend_repo" || {
     echo "[ERROR] Unable to navigate to frontend_repo. Check the directory structure."
     exit 1
 }
@@ -57,14 +61,14 @@ if [ ! -f ".env" ]; then
 fi
 
 # Запускаем сервер разработки
-nohup yarn start > "$(dirname "$0")/../../logs/frontend.log" 2>&1 &
+nohup yarn start > "$PROJECT_ROOT/logs/frontend.log" 2>&1 &
 FRONTEND_PID=$!
 echo "Frontend server started with PID $FRONTEND_PID."
 
 # Сохраняем PIDs в файл для последующей остановки
-echo "$BACKEND_PID" > "$(dirname "$0")/../../server_pids.txt"
-echo "$FRONTEND_PID" >> "$(dirname "$0")/../../server_pids.txt"
+echo "$BACKEND_PID" > "$PROJECT_ROOT/server_pids.txt"
+echo "$FRONTEND_PID" >> "$PROJECT_ROOT/server_pids.txt"
 
 echo "Servers started successfully!"
-echo "Backend logs: $(dirname "$0")/../../logs/backend.log"
-echo "Frontend logs: $(dirname "$0")/../../logs/frontend.log"
+echo "Backend logs: $PROJECT_ROOT/logs/backend.log"
+echo "Frontend logs: $PROJECT_ROOT/logs/frontend.log"

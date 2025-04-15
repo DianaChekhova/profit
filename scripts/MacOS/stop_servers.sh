@@ -2,8 +2,12 @@
 
 echo "Stopping servers..."
 
+# Get the absolute path to the project root
+PROJECT_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+echo "Project root: $PROJECT_ROOT"
+
 # Проверяем наличие файла с PID
-PID_FILE="$(dirname "$0")/../../server_pids.txt"
+PID_FILE="$PROJECT_ROOT/server_pids.txt"
 if [ ! -f "$PID_FILE" ]; then
     echo "[ERROR] PID file not found. Are the servers running?"
     exit 1
@@ -35,7 +39,7 @@ done < "$PID_FILE"
 # Cleanup
 echo "Cleaning up..."
 rm -f "$PID_FILE"
-rm -f "$(dirname "$0")/../../logs/backend.log"
-rm -f "$(dirname "$0")/../../logs/frontend.log"
+rm -f "$PROJECT_ROOT/logs/backend.log"
+rm -f "$PROJECT_ROOT/logs/frontend.log"
 
 echo "All servers stopped and cleaned up."
