@@ -9,7 +9,7 @@ if ! brew services list | grep -q "mongodb-community.*started"; then
 fi
 
 # Create logs directory if it doesn't exist
-mkdir -p "$(dirname "$0")/../logs"
+mkdir -p "$(dirname "$0")/../../logs"
 
 # Переход в директорию backend_repo и запуск backend
 echo "Starting backend server..."
@@ -35,7 +35,7 @@ source config/main.env
 set +a
 
 # Запускаем сервер в фоне
-nohup ./backend > "$(dirname "$0")/../logs/backend.log" 2>&1 &
+nohup ./backend > "$(dirname "$0")/../../logs/backend.log" 2>&1 &
 BACKEND_PID=$!
 echo "Backend server started with PID $BACKEND_PID."
 
@@ -57,14 +57,14 @@ if [ ! -f ".env" ]; then
 fi
 
 # Запускаем сервер разработки
-nohup yarn start > "$(dirname "$0")/../logs/frontend.log" 2>&1 &
+nohup yarn start > "$(dirname "$0")/../../logs/frontend.log" 2>&1 &
 FRONTEND_PID=$!
 echo "Frontend server started with PID $FRONTEND_PID."
 
 # Сохраняем PIDs в файл для последующей остановки
-echo "$BACKEND_PID" > "$(dirname "$0")/../server_pids.txt"
-echo "$FRONTEND_PID" >> "$(dirname "$0")/../server_pids.txt"
+echo "$BACKEND_PID" > "$(dirname "$0")/../../server_pids.txt"
+echo "$FRONTEND_PID" >> "$(dirname "$0")/../../server_pids.txt"
 
 echo "Servers started successfully!"
-echo "Backend logs: $(dirname "$0")/../logs/backend.log"
-echo "Frontend logs: $(dirname "$0")/../logs/frontend.log"
+echo "Backend logs: $(dirname "$0")/../../logs/backend.log"
+echo "Frontend logs: $(dirname "$0")/../../logs/frontend.log"
