@@ -255,29 +255,6 @@ definitions:
 info:
   contact: {}
 paths:
-  /api/logout:
-    post:
-      consumes:
-      - application/json
-      description: Позволяет пользователю выйти из системы, делая токен недействительным
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Выход выполнен успешно
-          schema:
-            type: string
-        "401":
-          description: Пользователь не авторизован
-          schema:
-            type: string
-        "500":
-          description: Ошибка при обработке запроса
-          schema:
-            type: string
-      summary: Выход из системы
-      tags:
-      - Auth
   /api/me:
     get:
       consumes:
