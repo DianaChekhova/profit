@@ -5,6 +5,7 @@ import {useNavigate} from 'react-router-dom';
 import {Context} from '../../../main.jsx';
 import styles from './admin.module.scss';
 import Clients from './tabs/clients/index.jsx';
+import Trainers from './tabs/coachers/index.jsx';
 
 function AdminPage() {
   const {store} = useContext(Context);
@@ -90,7 +91,9 @@ function AdminPage() {
           <Tabs.Content value='tab-1'>
             <Clients />
           </Tabs.Content>
-          <Tabs.Content value='tab-2'></Tabs.Content>
+          <Tabs.Content value='tab-2'>
+            <Trainers />
+          </Tabs.Content>
           <Tabs.Content value='tab-3'></Tabs.Content>
         </Tabs.Root>
       </Stack>

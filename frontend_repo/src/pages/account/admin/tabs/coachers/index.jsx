@@ -1,12 +1,12 @@
 import {useMemo, useState} from 'react';
-import ClientsTable from './table.jsx';
-import ClientsDrawler from './drawler.jsx';
 import {Button} from '../../../../../components/ui/button.jsx';
 import {Skeleton, Stack} from '@chakra-ui/react';
-import {observer} from 'mobx-react-lite';
 import styles from '../../admin.module.scss';
 import BaseAdminStore from '../adminStore.jsx';
-import UserService from '../../../../../service/adminTab/userService.js';
+import {observer} from 'mobx-react-lite';
+import TrainersService from '../../../../../service/adminTab/TrainersService.js';
+import TrainersDrawler from './drawler.jsx';
+import TrainersTable from './table.jsx';
 
 const mockItems = [
   {
@@ -21,10 +21,10 @@ const mockItems = [
   },
 ];
 
-const Clients = observer(() => {
+const Trainers = observer(() => {
   const [isOpen, setOpen] = useState(false);
-  const store = useMemo(() => new BaseAdminStore(new UserService(), mockItems), []);
-  console.log(store.isLoading);
+  const store = useMemo(() => new BaseAdminStore(new TrainersService(), mockItems), []);
+
   return (
     <Stack spacing={4}>
       <Skeleton
@@ -32,12 +32,13 @@ const Clients = observer(() => {
         height='100%'
         className={styles.tableStack}
       >
-        <ClientsTable
+        <TrainersTable
           removeUser={store.removeItem}
           updateUser={store.updateItem}
           users={store.itemsList}
         />
       </Skeleton>
+
       <Skeleton
         loading={store.isLoading}
         height='40px'
@@ -49,10 +50,11 @@ const Clients = observer(() => {
           colorPalette='purple'
           onClick={() => setOpen(true)}
         >
-          Добавить клиента
+          Добавить тренера
         </Button>
       </Skeleton>
-      <ClientsDrawler
+
+      <TrainersDrawler
         users={store.itemsList}
         addUser={store.addItem}
         isOpen={isOpen}
@@ -62,4 +64,4 @@ const Clients = observer(() => {
   );
 });
 
-export default Clients;
+export default Trainers;

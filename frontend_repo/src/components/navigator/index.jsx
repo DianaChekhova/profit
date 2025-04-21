@@ -11,7 +11,9 @@ const Index = () => {
   const {store} = useContext(Context);
   const isAuthenticated = store.getAuthenticated();
   const user = store.getUser();
-  console.log(user);
+
+  setTimeout(() => {}, 12300);
+
   useEffect(() => {
     if (!user.entity_name) {
       store.getMe();

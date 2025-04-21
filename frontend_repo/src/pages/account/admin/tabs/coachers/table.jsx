@@ -3,15 +3,16 @@ import {IoTrash} from 'react-icons/io5';
 import {Button} from '../../../../../components/ui/button.jsx';
 import {FaRegEdit} from 'react-icons/fa';
 import styles from '../../admin.module.scss';
-import ClientsDrawler from './drawler.jsx';
 import {useCallback, useState} from 'react';
 import {observer} from 'mobx-react-lite';
+import TrainersDrawler from './drawler.jsx';
 
-const ClientsTable = observer((props) => {
-  const {users, setUsers, removeUser, updateUser} = props;
+const TrainersTable = observer((props) => {
+  const {coaches, setCoaches, removeCoach, updateCoach} = props;
 
   const [isOpen, setOpen] = useState(false);
   const [currentId, setCurrentId] = useState(null);
+
   const editCallback = useCallback((email) => {
     setCurrentId(email);
     setOpen(true);
@@ -29,8 +30,8 @@ const ClientsTable = observer((props) => {
       >
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeader>Фио</Table.ColumnHeader>
-            <Table.ColumnHeader>Статус абонемента</Table.ColumnHeader>
+            <Table.ColumnHeader>ФИО</Table.ColumnHeader>
+            <Table.ColumnHeader>Статус</Table.ColumnHeader>
             <Table.ColumnHeader>Дата рождения</Table.ColumnHeader>
             <Table.ColumnHeader>Паспорт</Table.ColumnHeader>
             <Table.ColumnHeader>Адрес</Table.ColumnHeader>
@@ -39,65 +40,77 @@ const ClientsTable = observer((props) => {
             <Table.ColumnHeader textAlign='center'>Действия</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
+
         <Table.Body className={styles.tableBody}>
-          {users &&
-            users.map((item) => (
-              <Table.Row key={item.email}>
-                <Table.Cell>{item.name}</Table.Cell>
-                <Table.Cell>{item.status}</Table.Cell>
-                <Table.Cell>{item.birth}</Table.Cell>
-                <Table.Cell>{item.passport}</Table.Cell>
-                <Table.Cell>{item.address}</Table.Cell>
-                <Table.Cell>{item.phone}</Table.Cell>
-                <Table.Cell>{item.email}</Table.Cell>
+          {coaches?.length > 0 ? (
+            coaches.map((coach) => (
+              <Table.Row key={coach.email}>
+                <Table.Cell>{coach.name}</Table.Cell>
+                <Table.Cell>{coach.status}</Table.Cell>
+                <Table.Cell>{coach.birth}</Table.Cell>
+                <Table.Cell>{coach.passport}</Table.Cell>
+                <Table.Cell>{coach.address}</Table.Cell>
+                <Table.Cell>{coach.phone}</Table.Cell>
+                <Table.Cell>{coach.email}</Table.Cell>
                 <Table.Cell width='100px'>
                   <Box
-                    justifyContent='center'
                     display='flex'
+                    justifyContent='center'
                     gap='5px'
                   >
                     <Button
                       colorScheme='teal'
                       size='sm'
-                      onClick={() => editCallback(item.email)}
+                      onClick={() => editCallback(coach.email)}
                       variant='plain'
                     >
                       <FaRegEdit
                         color='black'
-                        height='18px'
+                        size={18}
                       />
                     </Button>
                     <Button
                       colorScheme='teal'
                       size='sm'
                       variant='plain'
-                      onClick={() => removeUser(item.email)}
+                      onClick={() => removeCoach(coach.email)}
                     >
                       <IoTrash
                         color='black'
-                        height='18px'
+                        size={18}
                       />
                     </Button>
                   </Box>
                 </Table.Cell>
               </Table.Row>
-            ))}
-          {!users && <Heading>Таблица пустая</Heading>}
+            ))
+          ) : (
+            <Table.Row>
+              <Table.Cell colSpan={8}>
+                <Heading
+                  size='md'
+                  textAlign='center'
+                >
+                  Список коучей пуст
+                </Heading>
+              </Table.Cell>
+            </Table.Row>
+          )}
         </Table.Body>
       </Table.Root>
+
       {currentId && (
-        <ClientsDrawler
-          setOpen={setOpen}
+        <TrainersDrawler
           isOpen={isOpen}
-          updateUser={updateUser}
-          setMockState={setUsers}
-          users={users}
+          setOpen={setOpen}
           currentId={currentId}
+          coaches={coaches}
+          updateCoach={updateCoach}
+          setCoaches={setCoaches}
         />
       )}
     </Stack>
   );
 });
-//mock
 
-export default ClientsTable;
+export default TrainersTable;
