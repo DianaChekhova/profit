@@ -33,7 +33,7 @@ export default class BaseAdminStore {
     try {
       this.setLoading(true);
       const response = await this.service.getItems();
-      this.setItems(response.data?.length > 0 ? response.data : this.mockItems);
+      this.setItems(response?.length > 0 ? response : this.mockItems);
       this.setLoading(false);
     } catch (error) {
       console.error('Error fetching items:', error);
@@ -53,6 +53,7 @@ export default class BaseAdminStore {
   };
 
   updateItem = async (itemId, itemData) => {
+    console.log(itemId, itemData);
     try {
       await this.service.updateItem(itemId, itemData);
       await this.fetchItems();
@@ -62,7 +63,10 @@ export default class BaseAdminStore {
   };
 
   addItem = async (itemData) => {
+    console.log(itemData);
+    console.log(this.service);
     try {
+      console.log(this.service);
       await this.service.addItem(itemData);
       await this.fetchItems();
     } catch (error) {

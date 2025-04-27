@@ -12,13 +12,11 @@ const Index = () => {
   const isAuthenticated = store.getAuthenticated();
   const user = store.getUser();
 
-  setTimeout(() => {}, 12300);
-
   useEffect(() => {
     if (!user.entity_name) {
       store.getMe();
     }
-  });
+  }, []);
 
   return (
     <div className={`${styles.wrapper} ${styles.flex}`}>

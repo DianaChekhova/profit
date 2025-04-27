@@ -2,15 +2,36 @@ import $api from '../index.jsx';
 
 export default class TrainersService {
   async getItems() {
-    return await $api.get(`/users`);
+    const response = await $api.get(`/trainers`);
+    return response.data;
   }
+
   async removeItem(id) {
-    return await $api.delete(`/user`, id);
+    const response = await $api.delete(`/trainer/${id}`);
+    return response.data;
   }
-  async updateItem(data) {
-    return await $api.put(`/user`, data);
+
+  async updateItem(id, data) {
+    const response = await $api.put(`/trainer/${id}`, {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      specialty: data.specialty,
+      phone: data.phone,
+      status: data.status,
+    });
+    return response.data;
   }
+
   async addItem(data) {
-    return await $api.post(`/user`, data);
+    const response = await $api.post(`/trainer`, {
+      email: data.email,
+      password: data.password,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      specialty: data.specialty,
+      phone: data.phone,
+      role: 'trainer',
+    });
+    return response.data;
   }
 }

@@ -15,9 +15,3 @@ export default class AuthService {
     return await $api.post(`/logout`, {});
   }
 }
-//{
-// "email": "string",
-// "password": "string",
-// "role": "string",
-// "username": "string"
-// }

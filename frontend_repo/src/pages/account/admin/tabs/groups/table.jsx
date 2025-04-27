@@ -3,12 +3,12 @@ import {IoTrash} from 'react-icons/io5';
 import {Button} from '../../../../../components/ui/button.jsx';
 import {FaRegEdit} from 'react-icons/fa';
 import styles from '../../admin.module.scss';
-import TrainersDrawler from './drawler.jsx';
+import GroupSessionsDrawler from './drawler.jsx';
 import {useCallback, useState} from 'react';
 import {observer} from 'mobx-react-lite';
 
-const TrainersTable = observer((props) => {
-  const {coaches, setCoaches, removeCoach, updateCoach} = props;
+const GroupSessionsTable = observer((props) => {
+  const {sessions, removeSession, updateSession} = props;
 
   const [isOpen, setOpen] = useState(false);
   const [currentId, setCurrentId] = useState(null);
@@ -30,23 +30,25 @@ const TrainersTable = observer((props) => {
       >
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeader>ФИО</Table.ColumnHeader>
-            <Table.ColumnHeader>Специализация</Table.ColumnHeader>
-            <Table.ColumnHeader>Статус</Table.ColumnHeader>
-            <Table.ColumnHeader>Телефон</Table.ColumnHeader>
-            <Table.ColumnHeader>Email</Table.ColumnHeader>
+            <Table.ColumnHeader>Название</Table.ColumnHeader>
+            <Table.ColumnHeader>Тренер</Table.ColumnHeader>
+            <Table.ColumnHeader>Описание</Table.ColumnHeader>
+            <Table.ColumnHeader>Время начала</Table.ColumnHeader>
+            <Table.ColumnHeader>Время окончания</Table.ColumnHeader>
+            <Table.ColumnHeader>Макс. участников</Table.ColumnHeader>
             <Table.ColumnHeader textAlign='center'>Действия</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body className={styles.tableBody}>
-          {coaches &&
-            coaches.map((item) => (
-              <Table.Row key={item.id}>
-                <Table.Cell>{`${item.firstName} ${item.lastName}`}</Table.Cell>
-                <Table.Cell>{item.specialty}</Table.Cell>
-                <Table.Cell>{item.status}</Table.Cell>
-                <Table.Cell>{item.phone}</Table.Cell>
-                <Table.Cell>{item.email}</Table.Cell>
+          {sessions && sessions.length > 0 ? (
+            sessions.map((session) => (
+              <Table.Row key={session.id}>
+                <Table.Cell>{session.name}</Table.Cell>
+                <Table.Cell>{session.trainerId}</Table.Cell>
+                <Table.Cell>{session.description}</Table.Cell>
+                <Table.Cell>{session.startTime}</Table.Cell>
+                <Table.Cell>{session.endTime}</Table.Cell>
+                <Table.Cell>{session.maxClients}</Table.Cell>
                 <Table.Cell width='100px'>
                   <Box
                     justifyContent='center'
@@ -56,7 +58,7 @@ const TrainersTable = observer((props) => {
                     <Button
                       colorScheme='teal'
                       size='sm'
-                      onClick={() => editCallback(item.id)}
+                      onClick={() => editCallback(session.id)}
                       variant='plain'
                     >
                       <FaRegEdit
@@ -68,7 +70,7 @@ const TrainersTable = observer((props) => {
                       colorScheme='teal'
                       size='sm'
                       variant='plain'
-                      onClick={() => removeCoach(item.id)}
+                      onClick={() => removeSession(session.id)}
                     >
                       <IoTrash
                         color='black'
@@ -78,22 +80,27 @@ const TrainersTable = observer((props) => {
                   </Box>
                 </Table.Cell>
               </Table.Row>
-            ))}
-          {!coaches && <Heading>Таблица пустая</Heading>}
+            ))
+          ) : (
+            <Table.Row>
+              <Table.Cell colSpan={7}>
+                <Heading size='sm'>Нет доступных тренировок</Heading>
+              </Table.Cell>
+            </Table.Row>
+          )}
         </Table.Body>
       </Table.Root>
-      {currentId && (
-        <TrainersDrawler
-          setOpen={setOpen}
-          isOpen={isOpen}
-          updateCoach={updateCoach}
-          setCoaches={setCoaches}
-          coaches={coaches}
-          currentId={currentId}
-        />
-      )}
+
+      <GroupSessionsDrawler
+        isOpen={isOpen}
+        setOpen={setOpen}
+        currentId={currentId}
+        sessions={sessions}
+        addSession={updateSession}
+        updateSession={updateSession}
+      />
     </Stack>
   );
 });
 
-export default TrainersTable;
+export default GroupSessionsTable;

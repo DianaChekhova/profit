@@ -6,7 +6,7 @@ import {Skeleton, Stack} from '@chakra-ui/react';
 import {observer} from 'mobx-react-lite';
 import styles from '../../admin.module.scss';
 import BaseAdminStore from '../adminStore.jsx';
-import UserService from '../../../../../service/adminTab/userService.js';
+import UserService from '../../../../../service/adminTab/UserService.js';
 
 const mockItems = [
   {
@@ -55,6 +55,7 @@ const Clients = observer(() => {
       <ClientsDrawler
         users={store.itemsList}
         addUser={store.addItem}
+        updateUser={store.updateItem}
         isOpen={isOpen}
         setOpen={setOpen}
       />

@@ -30,9 +30,9 @@ export default class UserStore {
       const response = await AuthService.login(login, password);
       localStorage.setItem('token', response.data.token);
       await this.getMe(localStorage.getItem('token'));
-      console.log('hello');
     } catch (error) {
-      console.log(error);
+      console.error('Login error:', error.response?.data?.message || error.message);
+      throw error;
     }
   }
 
@@ -42,30 +42,35 @@ export default class UserStore {
       localStorage.setItem('token', response.data.token);
       await this.getMe(localStorage.getItem('token'));
     } catch (error) {
-      console.log(error);
+      console.error('Registration error:', error.response?.data?.message || error.message);
+      throw error;
     }
   }
 
   async getMe(token) {
+    console.log(12);
     try {
-      console.log(token);
       const response = await AuthService.me(token);
       this.setAuthenticated(true);
       this.setUser(response.data);
     } catch (error) {
-      console.log(error);
+      console.error('Get me error:', error.response?.data?.message || error.message);
+      this.setAuthenticated(false);
+      this.setUser({});
+      localStorage.removeItem('token');
+      throw error;
     }
   }
 
   async logout() {
-    console.log('kdsdssd');
     try {
       await AuthService.logout();
       localStorage.removeItem('token');
       this.setAuthenticated(false);
       this.setUser({});
     } catch (error) {
-      console.log(error);
+      console.error('Logout error:', error.response?.data?.message || error.message);
+      throw error;
     }
   }
 }

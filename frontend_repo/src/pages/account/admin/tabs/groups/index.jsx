@@ -4,13 +4,12 @@ import {Skeleton, Stack} from '@chakra-ui/react';
 import styles from '../../admin.module.scss';
 import BaseAdminStore from '../adminStore.jsx';
 import {observer} from 'mobx-react-lite';
-import TrainersDrawler from './drawler.jsx';
-import TrainersTable from './table.jsx';
-import TrainersService from '../../../../../service/adminTab/TrainersService.js';
-
-const Trainers = observer(() => {
+import GroupSessionsDrawler from './drawler.jsx';
+import GroupSessionsTable from './table.jsx';
+import GroupScheduleService from '../../../../../service/adminTab/GroupScheduleService.js';
+const GroupSessions = observer(() => {
   const [isOpen, setOpen] = useState(false);
-  const store = useMemo(() => new BaseAdminStore(new TrainersService(), []), []);
+  const store = useMemo(() => new BaseAdminStore(new GroupScheduleService(), []), []);
 
   return (
     <Stack spacing={4}>
@@ -19,10 +18,10 @@ const Trainers = observer(() => {
         height='100%'
         className={styles.tableStack}
       >
-        <TrainersTable
-          removeCoach={store.removeItem}
-          coaches={store.itemsList}
-          updateCoach={store.updateItem}
+        <GroupSessionsTable
+          removeSession={store.removeItem}
+          sessions={store.itemsList}
+          updateSession={store.updateItem}
         />
       </Skeleton>
 
@@ -30,21 +29,21 @@ const Trainers = observer(() => {
         loading={store.isLoading}
         height='40px'
         marginTop='24px'
-        width='150px'
+        width='200px'
       >
         <Button
-          width='150px'
+          width='200px'
           colorPalette='purple'
           onClick={() => setOpen(true)}
         >
-          Добавить тренера
+          Добавить тренировку
         </Button>
       </Skeleton>
 
-      <TrainersDrawler
-        coaches={store.itemsList}
-        addCoach={store.addItem}
-        updateCoach={store.updateItem}
+      <GroupSessionsDrawler
+        sessions={store.itemsList}
+        addSession={store.addItem}
+        updateSession={store.updateItem}
         isOpen={isOpen}
         setOpen={setOpen}
       />
@@ -52,4 +51,4 @@ const Trainers = observer(() => {
   );
 });
 
-export default Trainers;
+export default GroupSessions;
