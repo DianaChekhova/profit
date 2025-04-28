@@ -1,3 +1,4 @@
+basePath: /
 definitions:
   base_handlers.AuthBody:
     properties:
@@ -252,8 +253,12 @@ definitions:
       subscription:
         $ref: '#/definitions/models.Subscription'
     type: object
+host: localhost:8080
 info:
   contact: {}
+  description: API для управления фитнес-приложением
+  title: Fitness API
+  version: "1.0"
 paths:
   /api/me:
     get:
@@ -969,4 +974,6 @@ paths:
   /users/{id}/status:
     put:
       responses: {}
+schemes:
+- http
 swagger: "2.0"

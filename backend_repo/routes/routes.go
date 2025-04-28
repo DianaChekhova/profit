@@ -78,12 +78,22 @@ func InitRoutes(db *mongo.Database, ctx context.Context) http.Handler {
 		r.Get("/profile", baseController.GetProfile)
 		r.Put("/profile", baseController.UpdateProfile)
 
+		//trainer routes
+		r.Put("/trainer", trainerController.TrainerUpdate)
+		r.Delete("/trainer", trainerController.TrainerDelete)
+		r.Get("/trainers", trainerController.TrainerList)
+
 		// User routes
 		r.Route("/users", func(r chi.Router) {
 			r.Use(middleware.AdminMiddleware)
 			r.Get("/", userController.UserList)
 			r.Get("/{id}", userController.GetUser)
 			r.Put("/{id}/status", userController.UpdateUserStatus)
+		})
+
+		r.Route("/api", func(r chi.Router) {
+			r.Get("/me", baseController.Me)
+			r.Post("/trainer", trainerController.AddTrainer)
 		})
 
 		// Trainer routes

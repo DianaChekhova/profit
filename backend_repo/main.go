@@ -19,6 +19,12 @@ import (
 	"profit/routes"
 )
 
+// @title           Fitness API
+// @version         1.0
+// @description     API для управления фитнес-приложением
+// @host            localhost:8080
+// @BasePath        /
+// @schemes         http
 func main() {
 	// Load environment variables
 	if err := godotenv.Load(); err != nil {
