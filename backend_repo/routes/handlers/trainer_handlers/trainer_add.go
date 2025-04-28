@@ -23,7 +23,7 @@ type trainerReqHandler struct {
 // @Failure 500 {string} string "Ошибка при создании тренера"
 // @Router /api/trainer [post]
 func (tc *TrainerController) AddTrainer(w http.ResponseWriter, r *http.Request) {
-	var req trainerReqHandler
+	var req models.Trainer
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		backendController.WriteJSONResponse(
 			w,
@@ -33,7 +33,7 @@ func (tc *TrainerController) AddTrainer(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	err := tc.trainerRepo.CreateTrainer(r.Context(), &req.trainer)
+	err := tc.trainerRepo.CreateTrainer(r.Context(), &req)
 	if err != nil {
 		backendController.WriteJSONResponse(
 			w,

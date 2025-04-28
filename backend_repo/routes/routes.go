@@ -83,6 +83,8 @@ func InitRoutes(db *mongo.Database, ctx context.Context) http.Handler {
 		r.Delete("/trainer", trainerController.TrainerDelete)
 		r.Get("/trainers", trainerController.TrainerList)
 
+		r.Post("/user", userController.AddUser)
+
 		// User routes
 		r.Route("/users", func(r chi.Router) {
 			r.Use(middleware.AdminMiddleware)
