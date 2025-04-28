@@ -7,31 +7,21 @@ export default class TrainersService {
   }
 
   async removeItem(id) {
-    const response = await $api.delete(`/trainer/${id}`);
+    const response = await $api.delete(`/trainer`, {
+      data: {
+        id: id,
+      },
+    });
     return response.data;
   }
 
-  async updateItem(id, data) {
-    const response = await $api.put(`/trainer/${id}`, {
-      firstName: data.firstName,
-      lastName: data.lastName,
-      specialty: data.specialty,
-      phone: data.phone,
-      status: data.status,
-    });
+  async updateItem(data) {
+    const response = await $api.put(`/trainer`, data);
     return response.data;
   }
 
   async addItem(data) {
-    const response = await $api.post(`/trainer`, {
-      email: data.email,
-      password: data.password,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      specialty: data.specialty,
-      phone: data.phone,
-      role: 'trainer',
-    });
+    const response = await $api.post(`api/trainer`, data);
     return response.data;
   }
 }

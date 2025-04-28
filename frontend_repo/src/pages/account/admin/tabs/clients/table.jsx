@@ -9,7 +9,7 @@ import {observer} from 'mobx-react-lite';
 
 const ClientsTable = observer((props) => {
   const {users, setUsers, removeUser, updateUser} = props;
-
+  console.log(users);
   const [isOpen, setOpen] = useState(false);
   const [currentId, setCurrentId] = useState(null);
   const editCallback = useCallback((email) => {

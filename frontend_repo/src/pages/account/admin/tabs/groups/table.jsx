@@ -83,7 +83,7 @@ const GroupSessionsTable = observer((props) => {
             ))
           ) : (
             <Table.Row>
-              <Table.Cell colSpan={7}>
+              <Table.Cell colSpan={70}>
                 <Heading size='sm'>Нет доступных тренировок</Heading>
               </Table.Cell>
             </Table.Row>

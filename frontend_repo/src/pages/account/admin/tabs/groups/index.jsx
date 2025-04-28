@@ -7,9 +7,10 @@ import {observer} from 'mobx-react-lite';
 import GroupSessionsDrawler from './drawler.jsx';
 import GroupSessionsTable from './table.jsx';
 import GroupScheduleService from '../../../../../service/adminTab/GroupScheduleService.js';
+
 const GroupSessions = observer(() => {
   const [isOpen, setOpen] = useState(false);
-  const store = useMemo(() => new BaseAdminStore(new GroupScheduleService(), []), []);
+  const store = useMemo(() => new BaseAdminStore(new GroupScheduleService()), []);
 
   return (
     <Stack spacing={4}>

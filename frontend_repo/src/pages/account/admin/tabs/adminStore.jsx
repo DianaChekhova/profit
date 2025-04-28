@@ -3,13 +3,11 @@ import {makeAutoObservable} from 'mobx';
 export default class BaseAdminStore {
   items = [];
   loading = true;
-  mockItems = [];
   service = null;
 
-  constructor(serviceInstance, mockItems = []) {
+  constructor(serviceInstance) {
     makeAutoObservable(this);
     this.service = serviceInstance;
-    this.mockItems = mockItems;
     this.init();
   }
 
@@ -33,17 +31,17 @@ export default class BaseAdminStore {
     try {
       this.setLoading(true);
       const response = await this.service.getItems();
-      this.setItems(response?.length > 0 ? response : this.mockItems);
+      this.setItems(response?.length > 0 ? response : []);
       this.setLoading(false);
     } catch (error) {
       console.error('Error fetching items:', error);
-      this.setItems(this.mockItems); // Fallback to mock data
+      this.setItems([]); // Fallback to mock data
     } finally {
       this.setLoading(false);
     }
   };
 
-  removeItem = async (itemId) => {
+  removeItem = async (itemId = 0) => {
     try {
       await this.service.removeItem(itemId);
       await this.fetchItems();
@@ -52,10 +50,9 @@ export default class BaseAdminStore {
     }
   };
 
-  updateItem = async (itemId, itemData) => {
-    console.log(itemId, itemData);
+  updateItem = async (itemData) => {
     try {
-      await this.service.updateItem(itemId, itemData);
+      await this.service.updateItem(itemData);
       await this.fetchItems();
     } catch (error) {
       console.error('Error updating item:', error);
@@ -63,10 +60,7 @@ export default class BaseAdminStore {
   };
 
   addItem = async (itemData) => {
-    console.log(itemData);
-    console.log(this.service);
     try {
-      console.log(this.service);
       await this.service.addItem(itemData);
       await this.fetchItems();
     } catch (error) {

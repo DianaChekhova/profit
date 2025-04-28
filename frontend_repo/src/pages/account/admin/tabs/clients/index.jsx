@@ -8,23 +8,10 @@ import styles from '../../admin.module.scss';
 import BaseAdminStore from '../adminStore.jsx';
 import UserService from '../../../../../service/adminTab/UserService.js';
 
-const mockItems = [
-  {
-    id: 1,
-    status: 'активен',
-    birth: '24.11.2024',
-    phone: '+79966175980',
-    email: 'lalala@mail.ru',
-    name: 'EXAMPLE',
-    passport: '1234 858490',
-    address: 'г. Рязань, улица Леймов д2 проспект 4',
-  },
-];
-
 const Clients = observer(() => {
   const [isOpen, setOpen] = useState(false);
-  const store = useMemo(() => new BaseAdminStore(new UserService(), mockItems), []);
-  console.log(store.isLoading);
+  const store = useMemo(() => new BaseAdminStore(new UserService()), []);
+
   return (
     <Stack spacing={4}>
       <Skeleton

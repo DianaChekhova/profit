@@ -2,15 +2,24 @@ import $api from '../index.jsx';
 
 export default class UserService {
   async getItems() {
-    return await $api.get(`/users`);
+    const response = await $api.get(`/users`);
+    return response.data;
   }
   async removeItem(id) {
-    return await $api.delete(`/user`, id);
+    console.log(id);
+    const response = await $api.delete(`api/user`, {
+      data: {
+        id: id,
+      },
+    });
+    return response.data;
   }
   async updateItem(data) {
-    return await $api.put(`/user`, data);
+    const response = await $api.put(`/user`, data);
+    return response.data;
   }
   async addItem(data) {
-    return await $api.post(`/user`, data);
+    const response = await $api.post(`api/user`, data);
+    return response.data;
   }
 }

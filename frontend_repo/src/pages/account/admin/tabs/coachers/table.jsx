@@ -33,7 +33,6 @@ const TrainersTable = observer((props) => {
             <Table.ColumnHeader>ФИО</Table.ColumnHeader>
             <Table.ColumnHeader>Специализация</Table.ColumnHeader>
             <Table.ColumnHeader>Статус</Table.ColumnHeader>
-            <Table.ColumnHeader>Телефон</Table.ColumnHeader>
             <Table.ColumnHeader>Email</Table.ColumnHeader>
             <Table.ColumnHeader textAlign='center'>Действия</Table.ColumnHeader>
           </Table.Row>
@@ -42,10 +41,9 @@ const TrainersTable = observer((props) => {
           {coaches &&
             coaches.map((item) => (
               <Table.Row key={item.id}>
-                <Table.Cell>{`${item.firstName} ${item.lastName}`}</Table.Cell>
+                <Table.Cell>{item.name}</Table.Cell>
                 <Table.Cell>{item.specialty}</Table.Cell>
                 <Table.Cell>{item.status}</Table.Cell>
-                <Table.Cell>{item.phone}</Table.Cell>
                 <Table.Cell>{item.email}</Table.Cell>
                 <Table.Cell width='100px'>
                   <Box

@@ -32,8 +32,7 @@ const TrainersDrawler = (props) => {
 
   const [drawlerForm, setForm] = useState({
     id: ``,
-    firstName: '',
-    lastName: '',
+    name: ``,
     status: 'active',
     specialty: '',
     phone: '',
@@ -42,9 +41,9 @@ const TrainersDrawler = (props) => {
   });
 
   const changeHandler = (e, type) => {
-    if (type === 'firstName') {
+    if (type === 'name') {
       setForm((prevState) => {
-        return {...prevState, firstName: e.target.value};
+        return {...prevState, name: e.target.value};
       });
     }
     if (type === 'lastName') {
@@ -97,8 +96,7 @@ const TrainersDrawler = (props) => {
       if (item) {
         setForm({
           id: item.id,
-          firstName: item.firstName,
-          lastName: item.lastName,
+          name: item.name,
           status: item.status,
           specialty: item.specialty,
           phone: item.phone,
@@ -129,18 +127,9 @@ const TrainersDrawler = (props) => {
             <Input
               className={styles.formInput}
               type='text'
-              value={drawlerForm.firstName}
-              onChange={(e) => changeHandler(e, 'firstName')}
+              value={drawlerForm.name}
+              onChange={(e) => changeHandler(e, 'name')}
               placeholder='Введите имя'
-            />
-          </Field>
-          <Field label='Фамилия'>
-            <Input
-              className={styles.formInput}
-              type='text'
-              value={drawlerForm.lastName}
-              onChange={(e) => changeHandler(e, 'lastName')}
-              placeholder='Введите фамилию'
             />
           </Field>
           <Field label='Специализация'>
