@@ -51,8 +51,10 @@ export default class BaseAdminStore {
   };
 
   updateItem = async (itemData) => {
+    const payload = itemData;
+    delete payload.id;
     try {
-      await this.service.updateItem(itemData);
+      await this.service.updateItem(payload);
       await this.fetchItems();
     } catch (error) {
       console.error('Error updating item:', error);
@@ -60,8 +62,10 @@ export default class BaseAdminStore {
   };
 
   addItem = async (itemData) => {
+    const payload = itemData;
+    delete payload.id;
     try {
-      await this.service.addItem(itemData);
+      await this.service.addItem(payload);
       await this.fetchItems();
     } catch (error) {
       console.error('Error adding item:', error);

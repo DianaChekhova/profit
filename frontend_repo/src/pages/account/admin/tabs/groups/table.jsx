@@ -24,8 +24,10 @@ const GroupSessionsTable = observer((props) => {
         size='sm'
         variant='line'
         interactive
-        border='none'
+        border='solid 5px gray'
         padding='10px'
+        className={styles.tableRoot}
+        height='50vh'
         overflow='hidden'
       >
         <Table.Header>
@@ -82,15 +84,17 @@ const GroupSessionsTable = observer((props) => {
               </Table.Row>
             ))
           ) : (
-            <Table.Row>
-              <Table.Cell colSpan={70}>
+            <Table.Row className={styles.emptyRow}>
+              <Table.Cell
+                className={styles.emptyCell}
+                colSpan={70}
+              >
                 <Heading size='sm'>Нет доступных тренировок</Heading>
               </Table.Cell>
             </Table.Row>
           )}
         </Table.Body>
       </Table.Root>
-
       <GroupSessionsDrawler
         isOpen={isOpen}
         setOpen={setOpen}

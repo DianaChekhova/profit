@@ -49,7 +49,6 @@ const ClientsDrawler = (props) => {
       });
     }
     if (type === 'status') {
-      console.log(e.target);
       setForm((prevState) => {
         return {...prevState, status: e.target.value};
       });

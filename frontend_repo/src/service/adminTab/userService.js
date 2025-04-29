@@ -6,20 +6,15 @@ export default class UserService {
     return response.data;
   }
   async removeItem(id) {
-    console.log(id);
-    const response = await $api.delete(`api/user`, {
-      data: {
-        id: id,
-      },
-    });
+    const response = await $api.delete(`/users/${id}`);
     return response.data;
   }
   async updateItem(data) {
-    const response = await $api.put(`/user`, data);
+    const response = await $api.put(`/admin/user/${data.id}`, data);
     return response.data;
   }
   async addItem(data) {
-    const response = await $api.post(`api/user`, data);
+    const response = await $api.post(`/admin/user`, data);
     return response.data;
   }
 }

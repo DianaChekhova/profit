@@ -7,16 +7,12 @@ export default class GroupScheduleService {
   }
 
   async removeItem(id) {
-    const response = await $api.delete(`/subscription/group/schedule`, {
-      data: {
-        id: id,
-      },
-    });
+    const response = await $api.delete(`/subscription/group/schedule/${id}`);
     return response.data;
   }
 
-  async updateItem(id, data) {
-    const response = await $api.put(`/subscription/group/schedule`, data);
+  async updateItem(data) {
+    const response = await $api.put(`/subscription/group/schedule/${data.id}`, data);
     return response.data;
   }
 

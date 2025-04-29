@@ -100,7 +100,7 @@ const GroupSessionsDrawler = (props) => {
           >
             {currentId ? 'Редактировать тренировку' : 'Добавить тренировку'}
           </Heading>
-          
+
           <Field label='Название тренировки'>
             <Input
               className={styles.formInput}
