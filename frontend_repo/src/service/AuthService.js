@@ -9,7 +9,7 @@ export default class AuthService {
   }
   static async me(data) {
     console.log(data);
-    return await $api.get(`api/me`);
+    return await $api.get(`/me`);
   }
   static async logout() {
     return await $api.post(`/logout`, {});

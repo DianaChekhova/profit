@@ -21,7 +21,7 @@ export default class GroupScheduleService {
   }
 
   async addItem(data) {
-    const response = await $api.post('api/subscription/group/schedule', data);
+    const response = await $api.post('/subscription/group/schedule', data);
     return response.data;
   }
 }
