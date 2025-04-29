@@ -1015,6 +1015,38 @@ paths:
       tags:
       - User
   /users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a single user by their ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: User
+        "400":
+          description: Invalid user ID
+          schema:
+            type: string
+        "404":
+          description: User not found
+          schema:
+            type: string
+        "500":
+          description: Database error
+          schema:
+            type: string
+      summary: Get user by ID
+      tags:
+      - User
     get:
       consumes:
       - application/json

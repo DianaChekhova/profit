@@ -1,7 +1,7 @@
 package trainer_handlers
 
 import (
-	"encoding/json"
+	"github.com/go-chi/chi/v5"
 	"net/http"
 	"profit/routes/handlers/backendController"
 )
@@ -21,19 +21,11 @@ type deleteHandler struct {
 // @Failure 400 {string} string "Неверный ввод"
 // @Failure 404 {string} string "Тренер не найден"
 // @Failure 500 {string} string "Ошибка сервера при удалении тренера"
-// @Router /trainer [delete]
-func (bc *TrainerController) TrainerDelete(w http.ResponseWriter, r *http.Request) {
-	var req deleteHandler
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		backendController.WriteJSONResponse(
-			w,
-			http.StatusBadRequest,
-			"Invalid input",
-		)
-		return
-	}
+// @Router admin/trainer/{id} [delete]
+func (tc *TrainerController) TrainerDelete(w http.ResponseWriter, r *http.Request) {
+	trainerID := chi.URLParam(r, "id")
 
-	err := bc.trainerRepo.DeleteTrainerByID(r.Context(), req.id)
+	err := tc.trainerRepo.DeleteTrainerByID(r.Context(), trainerID)
 	if err != nil {
 		backendController.WriteJSONResponse(
 			w,
