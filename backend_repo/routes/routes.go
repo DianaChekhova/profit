@@ -2,6 +2,7 @@ package routes
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"profit/routes/handlers/base_handlers"
 	"profit/routes/handlers/subscription_handler"
@@ -51,6 +52,12 @@ func InitRoutes(db *mongo.Database, ctx context.Context) http.Handler {
 		AllowCredentials: true,
 		MaxAge:           300,
 	}))
+	r.Use(func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			fmt.Println("ROUTE:", r.Method, r.URL.Path)
+			next.ServeHTTP(w, r)
+		})
+	})
 
 	// Swagger UI
 	r.Get("/swagger/*", httpSwagger.Handler(
@@ -82,13 +89,11 @@ func InitRoutes(db *mongo.Database, ctx context.Context) http.Handler {
 		r.Put("/trainer", trainerController.TrainerUpdate)
 		r.Delete("/trainer", trainerController.TrainerDelete)
 		r.Get("/trainers", trainerController.TrainerList)
-		r.Post("/trainer", trainerController.AddTrainer)
 
-		r.Get("/me", baseController.Me)
-
-		r.Post("/user", userController.AddUser)
 		r.Put("/user", userController.UserUpdate)
-
+		r.Get("/me", baseController.Me)
+		r.Post("/trainer_create", trainerController.AddTrainer)
+		r.Post("/user", userController.AddUser)
 		// User routes
 		r.Route("/users", func(r chi.Router) {
 			r.Use(middleware.AdminMiddleware)
