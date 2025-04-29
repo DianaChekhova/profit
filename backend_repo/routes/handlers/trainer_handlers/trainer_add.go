@@ -21,7 +21,7 @@ type trainerReqHandler struct {
 // @Success 200 {string} string "Тренер успешно создан"
 // @Failure 400 {string} string "Неверный ввод"
 // @Failure 500 {string} string "Ошибка при создании тренера"
-// @Router /api/trainer [post]
+// @Router /trainer [post]
 func (tc *TrainerController) AddTrainer(w http.ResponseWriter, r *http.Request) {
 	var req models.Trainer
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {

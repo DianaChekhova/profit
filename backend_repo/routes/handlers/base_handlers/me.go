@@ -21,7 +21,7 @@ type MeResponse struct {
 // @Success 200 {object} MeResponse "Информация о пользователе"
 // @Failure 400 {string} string "Ошибка: не удалось получить данные из контекста или некорректная роль"
 // @Failure 500 {string} string "Ошибка: внутренняя ошибка сервера"
-// @Router /api/me [get]
+// @Router /me [get]
 func (ctrl *BaseController) Me(w http.ResponseWriter, r *http.Request) {
 	entityOid, ok := r.Context().Value(protection.ContextUserIDKey).(string)
 	if !ok {

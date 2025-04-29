@@ -19,7 +19,7 @@ type userReqHandler = models.User
 // @Success 200 {string} string "Клиент успешно создан"
 // @Failure 400 {string} string "Неверный ввод"
 // @Failure 500 {string} string "Ошибка при создании клиента"
-// @Router /api/user [post]
+// @Router /user [post]
 func (c *UserController) AddUser(w http.ResponseWriter, r *http.Request) {
 	var resp models.User
 	if err := json.NewDecoder(r.Body).Decode(&resp); err != nil {

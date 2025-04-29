@@ -253,6 +253,53 @@ definitions:
       subscription:
         $ref: '#/definitions/models.Subscription'
     type: object
+  user_handler.userReqHandler:
+    description: Пользователь системы
+    properties:
+      address:
+        type: string
+      birth:
+        type: string
+      created_at:
+        example: "2023-01-01T12:00:00Z"
+        type: string
+      email:
+        example: johndoe@example.com
+        type: string
+      id:
+        example: "123"
+        type: string
+      name:
+        example: JohnDoe
+        maxLength: 20
+        minLength: 3
+        type: string
+      passport:
+        type: string
+      password:
+        example: "123456"
+        minLength: 6
+        type: string
+      phone:
+        example: "123456"
+        type: string
+      role:
+        example: admin
+        type: string
+      schedule:
+        items:
+          type: string
+        type: array
+      status:
+        type: string
+      subscription:
+        $ref: '#/definitions/models.Subscription'
+    required:
+    - email
+    - name
+    - password
+    - subscription
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -260,67 +307,6 @@ info:
   title: Fitness API
   version: "1.0"
 paths:
-  /api/me:
-    get:
-      consumes:
-      - application/json
-      description: Возвращает информацию о пользователе на основе его роли (User,
-        Trainer, Admin)
-      parameters:
-      - description: Bearer токен для аутентификации
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Информация о пользователе
-          schema:
-            $ref: '#/definitions/base_handlers.MeResponse'
-        "400":
-          description: 'Ошибка: не удалось получить данные из контекста или некорректная
-            роль'
-          schema:
-            type: string
-        "500":
-          description: 'Ошибка: внутренняя ошибка сервера'
-          schema:
-            type: string
-      summary: Получить информацию о текущем пользователе
-      tags:
-      - User
-  /api/trainer:
-    post:
-      consumes:
-      - application/json
-      description: Позволяет добавить нового тренера в систему
-      parameters:
-      - description: Данные тренера
-        in: body
-        name: trainer
-        required: true
-        schema:
-          $ref: '#/definitions/trainer_handlers.trainerReqHandler'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Тренер успешно создан
-          schema:
-            type: string
-        "400":
-          description: Неверный ввод
-          schema:
-            type: string
-        "500":
-          description: Ошибка при создании тренера
-          schema:
-            type: string
-      summary: Добавление нового тренера
-      tags:
-      - Trainers
   /login:
     post:
       consumes:
@@ -358,6 +344,37 @@ paths:
       summary: Авторизация пользователя
       tags:
       - Auth
+  /me:
+    get:
+      consumes:
+      - application/json
+      description: Возвращает информацию о пользователе на основе его роли (User,
+        Trainer, Admin)
+      parameters:
+      - description: Bearer токен для аутентификации
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Информация о пользователе
+          schema:
+            $ref: '#/definitions/base_handlers.MeResponse'
+        "400":
+          description: 'Ошибка: не удалось получить данные из контекста или некорректная
+            роль'
+          schema:
+            type: string
+        "500":
+          description: 'Ошибка: внутренняя ошибка сервера'
+          schema:
+            type: string
+      summary: Получить информацию о текущем пользователе
+      tags:
+      - User
   /profile:
     get:
       description: Получение профиля текущего пользователя
@@ -859,6 +876,35 @@ paths:
       summary: Удаление тренера
       tags:
       - Trainers
+    post:
+      consumes:
+      - application/json
+      description: Позволяет добавить нового тренера в систему
+      parameters:
+      - description: Данные тренера
+        in: body
+        name: trainer
+        required: true
+        schema:
+          $ref: '#/definitions/trainer_handlers.trainerReqHandler'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Тренер успешно создан
+          schema:
+            type: string
+        "400":
+          description: Неверный ввод
+          schema:
+            type: string
+        "500":
+          description: Ошибка при создании тренера
+          schema:
+            type: string
+      summary: Добавление нового тренера
+      tags:
+      - Trainers
     put:
       consumes:
       - application/json
@@ -913,6 +959,36 @@ paths:
       summary: Возвращает список тренеров
       tags:
       - Trainers
+  /user:
+    post:
+      consumes:
+      - application/json
+      description: Позволяет добавить нового клиента в систему
+      parameters:
+      - description: Данные клиента
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user_handler.userReqHandler'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Клиент успешно создан
+          schema:
+            type: string
+        "400":
+          description: Неверный ввод
+          schema:
+            type: string
+        "500":
+          description: Ошибка при создании клиента
+          schema:
+            type: string
+      summary: добавление нового клиента
+      tags:
+      - Users
   /users:
     get:
       consumes:

@@ -12,96 +12,6 @@
     "host": "localhost:8080",
     "basePath": "/",
     "paths": {
-        "/api/me": {
-            "get": {
-                "description": "Возвращает информацию о пользователе на основе его роли (User, Trainer, Admin)",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User"
-                ],
-                "summary": "Получить информацию о текущем пользователе",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Bearer токен для аутентификации",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Информация о пользователе",
-                        "schema": {
-                            "$ref": "#/definitions/base_handlers.MeResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Ошибка: не удалось получить данные из контекста или некорректная роль",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Ошибка: внутренняя ошибка сервера",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/trainer": {
-            "post": {
-                "description": "Позволяет добавить нового тренера в систему",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Trainers"
-                ],
-                "summary": "Добавление нового тренера",
-                "parameters": [
-                    {
-                        "description": "Данные тренера",
-                        "name": "trainer",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/trainer_handlers.trainerReqHandler"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Тренер успешно создан",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Неверный ввод",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Ошибка при создании тренера",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/login": {
             "post": {
                 "description": "Позволяет пользователю войти в систему, проверяя имя пользователя и пароль",
@@ -150,6 +60,50 @@
                     },
                     "500": {
                         "description": "Ошибка генерации токена",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/me": {
+            "get": {
+                "description": "Возвращает информацию о пользователе на основе его роли (User, Trainer, Admin)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Получить информацию о текущем пользователе",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer токен для аутентификации",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Информация о пользователе",
+                        "schema": {
+                            "$ref": "#/definitions/base_handlers.MeResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка: не удалось получить данные из контекста или некорректная роль",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка: внутренняя ошибка сервера",
                         "schema": {
                             "type": "string"
                         }
@@ -935,6 +889,50 @@
                     }
                 }
             },
+            "post": {
+                "description": "Позволяет добавить нового тренера в систему",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Trainers"
+                ],
+                "summary": "Добавление нового тренера",
+                "parameters": [
+                    {
+                        "description": "Данные тренера",
+                        "name": "trainer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/trainer_handlers.trainerReqHandler"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Тренер успешно создан",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный ввод",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка при создании тренера",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
             "delete": {
                 "description": "Удаляет тренера по его идентификатору",
                 "consumes": [
@@ -1017,6 +1015,52 @@
                     },
                     "500": {
                         "description": "Ошибка при получении списка тренеров",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/user": {
+            "post": {
+                "description": "Позволяет добавить нового клиента в систему",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "добавление нового клиента",
+                "parameters": [
+                    {
+                        "description": "Данные клиента",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_handler.userReqHandler"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Клиент успешно создан",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный ввод",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка при создании клиента",
                         "schema": {
                             "type": "string"
                         }
@@ -1493,6 +1537,70 @@
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/models.Schedule"
+                    }
+                },
+                "status": {
+                    "type": "string"
+                },
+                "subscription": {
+                    "$ref": "#/definitions/models.Subscription"
+                }
+            }
+        },
+        "user_handler.userReqHandler": {
+            "description": "Пользователь системы",
+            "type": "object",
+            "required": [
+                "email",
+                "name",
+                "password",
+                "subscription"
+            ],
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "birth": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string",
+                    "example": "2023-01-01T12:00:00Z"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "johndoe@example.com"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "123"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 3,
+                    "example": "JohnDoe"
+                },
+                "passport": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 6,
+                    "example": "123456"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "123456"
+                },
+                "role": {
+                    "type": "string",
+                    "example": "admin"
+                },
+                "schedule": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
                     }
                 },
                 "status": {
