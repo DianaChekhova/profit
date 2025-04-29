@@ -81,19 +81,8 @@ func InitRoutes(db *mongo.Database, ctx context.Context) http.Handler {
 	r.Group(func(r chi.Router) {
 		r.Use(middleware.AuthMiddleware)
 
-		// Base routes
-		r.Get("/profile", baseController.GetProfile)
-		r.Put("/profile", baseController.UpdateProfile)
-
-		//trainer routes
-		r.Put("/trainer", trainerController.TrainerUpdate)
-		r.Delete("/trainer", trainerController.TrainerDelete)
-		r.Get("/trainers", trainerController.TrainerList)
-
-		r.Put("/user", userController.UserUpdate)
 		r.Get("/me", baseController.Me)
-		r.Post("/trainer_create", trainerController.AddTrainer)
-		r.Post("/user", userController.AddUser)
+
 		// User routes
 		r.Route("/users", func(r chi.Router) {
 			r.Use(middleware.AdminMiddleware)
@@ -102,9 +91,22 @@ func InitRoutes(db *mongo.Database, ctx context.Context) http.Handler {
 			r.Put("/{id}/status", userController.UpdateUserStatus)
 		})
 
+		r.Route("/admin", func(r chi.Router) {
+			r.Use(middleware.AdminMiddleware)
+
+			r.Get("/trainers", trainerController.TrainerList)
+			r.Post("/trainer", trainerController.AddTrainer)
+			r.Put("/trainer", trainerController.TrainerUpdate)
+			r.Delete("/trainer", trainerController.TrainerDelete)
+
+			r.Put("/user", userController.UserUpdate)
+			r.Post("/user", userController.AddUser)
+		})
+
 		// Trainer routes
 		r.Route("/trainer", func(r chi.Router) {
 			r.Use(middleware.TrainerMiddleware)
+
 			r.Get("/schedule/personal", trainerController.GetPersonalSchedule)
 			r.Put("/schedule/personal/{id}", trainerController.UpdatePersonalSession)
 			r.Get("/schedule/group", trainerController.GetTrainerGroupSchedule)
