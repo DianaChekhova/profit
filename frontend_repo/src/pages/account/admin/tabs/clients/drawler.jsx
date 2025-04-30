@@ -81,7 +81,7 @@ const ClientsDrawler = (props) => {
   };
 
   const handleSubmit = () => {
-    const userExist = users.find((item) => item.email === currentId);
+    const userExist = users.find((item) => item.id === currentId);
     if (userExist) {
       updateUser(currentId, drawlerForm);
     } else {
@@ -92,7 +92,7 @@ const ClientsDrawler = (props) => {
   //не работает
   useEffect(() => {
     if (currentId) {
-      const item = users.find((item) => item.email === currentId);
+      const item = users.find((item) => item.id === currentId);
       setForm(item);
     }
   }, [currentId, users]);

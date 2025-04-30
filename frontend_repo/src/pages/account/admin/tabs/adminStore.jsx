@@ -50,9 +50,9 @@ export default class BaseAdminStore {
     }
   };
 
-  updateItem = async (itemData) => {
+  updateItem = async (id, itemData) => {
     try {
-      await this.service.updateItem(itemData);
+      await this.service.updateItem(id, itemData);
       await this.fetchItems();
     } catch (error) {
       console.error('Error updating item:', error);

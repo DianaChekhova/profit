@@ -12,8 +12,8 @@ const ClientsTable = observer((props) => {
 
   const [isOpen, setOpen] = useState(false);
   const [currentId, setCurrentId] = useState(null);
-  const editCallback = useCallback((email) => {
-    setCurrentId(email);
+  const editCallback = useCallback((id) => {
+    setCurrentId(id);
     setOpen(true);
   }, []);
   console.log(users);
@@ -25,7 +25,7 @@ const ClientsTable = observer((props) => {
         interactive
         border='none'
         padding='10px'
-        height='50vh'
+        minHeight='15vh'
         className={styles.tableRoot}
         overflow='hidden'
       >
@@ -61,7 +61,7 @@ const ClientsTable = observer((props) => {
                     <Button
                       colorScheme='teal'
                       size='sm'
-                      onClick={() => editCallback(item.email)}
+                      onClick={() => editCallback(item.id)}
                       variant='plain'
                     >
                       <FaRegEdit

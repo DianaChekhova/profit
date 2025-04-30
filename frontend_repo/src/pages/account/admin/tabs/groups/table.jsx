@@ -26,8 +26,8 @@ const GroupSessionsTable = observer((props) => {
         interactive
         border='solid 5px gray'
         padding='10px'
+        minHeight='15vh'
         className={styles.tableRoot}
-        height='50vh'
         overflow='hidden'
       >
         <Table.Header>

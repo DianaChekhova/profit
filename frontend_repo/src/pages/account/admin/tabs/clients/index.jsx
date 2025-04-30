@@ -29,10 +29,10 @@ const Clients = observer(() => {
         loading={store.isLoading}
         height='40px'
         marginTop='24px'
-        width='150px'
+        width='200px'
       >
         <Button
-          width='150px'
+          width='200px'
           colorPalette='purple'
           onClick={() => setOpen(true)}
         >

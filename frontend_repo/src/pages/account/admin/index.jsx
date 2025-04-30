@@ -7,6 +7,7 @@ import styles from './admin.module.scss';
 import Clients from './tabs/clients/index.jsx';
 import Trainers from './tabs/coachers/index.jsx';
 import GroupClasses from './tabs/groups/index.jsx';
+import {observer} from 'mobx-react-lite';
 
 function AdminPage() {
   const {store} = useContext(Context);
@@ -45,7 +46,7 @@ function AdminPage() {
             color='black'
             textStyle='4xl'
           >
-            Test Admin
+            {store.getUserName()}
           </Text>
           <Tag
             align='flex-start'
@@ -104,4 +105,4 @@ function AdminPage() {
   );
 }
 
-export default AdminPage;
+export default observer(AdminPage);

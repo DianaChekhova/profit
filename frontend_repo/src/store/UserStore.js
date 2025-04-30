@@ -25,6 +25,10 @@ export default class UserStore {
     return this.user;
   }
 
+  getUserName() {
+    return this.user.entity_name || 'Test User';
+  }
+
   async login(login, password) {
     try {
       const response = await AuthService.login(login, password);

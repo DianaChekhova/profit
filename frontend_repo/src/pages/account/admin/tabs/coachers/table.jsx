@@ -26,6 +26,7 @@ const TrainersTable = observer((props) => {
         interactive
         border='none'
         padding='10px'
+        minHeight='15vh'
         className={styles.tableRoot}
         overflow='hidden'
       >

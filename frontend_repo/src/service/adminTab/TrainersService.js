@@ -12,7 +12,9 @@ export default class TrainersService {
   }
 
   async updateItem(id, data) {
-    const response = await $api.put(`/admin/trainer/${id}`, data);
+    const payload = {...data};
+    delete payload.id;
+    const response = await $api.put(`/admin/trainer/${id}`, payload);
     return response.data;
   }
 
