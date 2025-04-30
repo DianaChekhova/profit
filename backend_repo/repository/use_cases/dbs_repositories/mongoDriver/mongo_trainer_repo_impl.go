@@ -74,8 +74,24 @@ func (repo *TrainerMongoRepository) UpdateTrainer(ctx context.Context, trainer *
 		return err
 	}
 
+	// Копируем структуру и очищаем ID
+	trainerCopy := *trainer
+	trainerCopy.ID = "" // убрать _id, чтобы не обновлялся
+
+	// Преобразуем в bson.M
+	updateData, err := bson.Marshal(trainerCopy)
+	if err != nil {
+		return err
+	}
+
+	var updateDoc bson.M
+	if err := bson.Unmarshal(updateData, &updateDoc); err != nil {
+		return err
+	}
+
 	filter := bson.M{"_id": oid}
-	update := bson.M{"$set": trainer}
+	update := bson.M{"$set": updateDoc}
+
 	_, err = repo.collection.UpdateOne(ctx, filter, update)
 	return err
 }
