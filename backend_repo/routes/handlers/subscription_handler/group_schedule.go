@@ -61,18 +61,18 @@ func (c *SubscriptionController) GetGroupSchedule(w http.ResponseWriter, r *http
 func (c *SubscriptionController) CreateGroupSession(w http.ResponseWriter, r *http.Request) {
 	var req CreateGroupSessionRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	trainerID, err := primitive.ObjectIDFromHex(req.TrainerID)
-	if err != nil {
-		http.Error(w, "Invalid trainer ID", http.StatusBadRequest)
-		return
-	}
+	//trainerID, err := primitive.ObjectIDFromHex(req.TrainerID)
+	//if err != nil {
+	//	http.Error(w, err.Error(), http.StatusBadRequest)
+	//	return
+	//}
 
 	session := GroupSession{
-		TrainerID:   trainerID.Hex(),
+		//TrainerID:   trainerID.Hex(),
 		Name:        req.Name,
 		Description: req.Description,
 		StartTime:   req.StartTime,
@@ -83,7 +83,7 @@ func (c *SubscriptionController) CreateGroupSession(w http.ResponseWriter, r *ht
 
 	result, err := c.db.Collection("group_sessions").InsertOne(c.ctx, session)
 	if err != nil {
-		http.Error(w, "Database error", http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 

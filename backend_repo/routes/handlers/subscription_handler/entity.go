@@ -31,7 +31,7 @@ type Membership struct {
 
 type GroupSession struct {
 	ID          string `json:"id" bson:"_id,omitempty"`
-	TrainerID   string `json:"trainerId" bson:"trainerId"`
+	TrainerID   string `json:"trainerId" bson:"trainerId,omitempty"`
 	Name        string `json:"name" bson:"name"`
 	Description string `json:"description" bson:"description"`
 	StartTime   string `json:"startTime" bson:"startTime"`
