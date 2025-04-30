@@ -11,13 +11,16 @@ export default class GroupScheduleService {
     return response.data;
   }
 
-  async updateItem(data) {
-    const response = await $api.put(`/subscription/group/schedule/${data.id}`, data);
+  async updateItem(id, data) {
+    const response = await $api.put(`/subscription/group/schedule/${id}`, data);
     return response.data;
   }
 
   async addItem(data) {
-    const response = await $api.post('/subscription/group/schedule', data);
+    const payload = {...data};
+    delete payload.trainerId;
+    delete payload.id;
+    const response = await $api.post('/subscription/group/schedule', payload);
     return response.data;
   }
 }

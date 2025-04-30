@@ -8,24 +8,8 @@ import {
 } from '../../../../../components/ui/drawer.jsx';
 import {useEffect, useState} from 'react';
 import {Field} from '../../../../../components/ui/field.jsx';
-import {createListCollection, Heading, Input} from '@chakra-ui/react';
+import {Heading, Input} from '@chakra-ui/react';
 import styles from '../../../../../components/user/authentication/modal/tabs/tabs.module.scss';
-import {
-  SelectContent,
-  SelectItem,
-  SelectLabel,
-  SelectRoot,
-  SelectTrigger,
-  SelectValueText,
-} from '../../../../../components/ui/select.jsx';
-
-const coachStatus = createListCollection({
-  items: [
-    {label: 'Активный', value: 'active'},
-    {label: 'Неактивный', value: 'inactive'},
-    {label: 'В отпуске', value: 'on_leave'},
-  ],
-});
 
 const TrainersDrawler = (props) => {
   const {isOpen, setOpen, currentId, coaches, addCoach, updateCoach} = props;
@@ -80,12 +64,9 @@ const TrainersDrawler = (props) => {
 
   const handleSubmit = () => {
     const coachExist = coaches.find((item) => item.id === currentId);
-    console.log(coachExist);
     if (coachExist && currentId) {
-      console.log('jopa');
       updateCoach(currentId, drawlerForm);
     } else {
-      console.log('jopa2');
       addCoach(drawlerForm);
     }
   };
@@ -170,42 +151,6 @@ const TrainersDrawler = (props) => {
               />
             </Field>
           )}
-          <Heading
-            color='black'
-            margin='24px 0'
-          >
-            Статус
-          </Heading>
-          <SelectRoot
-            collection={coachStatus}
-            size='sm'
-            color='black'
-            className={styles.select}
-            width='320px'
-            defaultValue={['active']}
-            value={[drawlerForm.status]}
-            onChange={(e) => changeHandler(e, 'status')}
-          >
-            <SelectLabel>Статус тренера</SelectLabel>
-            <SelectTrigger>
-              <SelectValueText placeholder='Статус' />
-            </SelectTrigger>
-            <SelectContent
-              defaultValue={'active'}
-              className={styles.select}
-            >
-              {coachStatus.items.map((status) => (
-                <SelectItem
-                  className={styles.selectItem}
-                  color='black'
-                  item={status}
-                  key={status.value}
-                >
-                  {status.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </SelectRoot>
         </DrawerBody>
         <DrawerFooter>
           <DrawerActionTrigger asChild>

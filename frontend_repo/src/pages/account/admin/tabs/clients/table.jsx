@@ -16,7 +16,7 @@ const ClientsTable = observer((props) => {
     setCurrentId(email);
     setOpen(true);
   }, []);
-
+  console.log(users);
   return (
     <Stack>
       <Table.Root
@@ -25,6 +25,8 @@ const ClientsTable = observer((props) => {
         interactive
         border='none'
         padding='10px'
+        height='50vh'
+        className={styles.tableRoot}
         overflow='hidden'
       >
         <Table.Header>
@@ -82,7 +84,16 @@ const ClientsTable = observer((props) => {
                 </Table.Cell>
               </Table.Row>
             ))}
-          {!users && <Heading>Таблица пустая</Heading>}
+          {!users.length && (
+            <Table.Row className={styles.emptyRow}>
+              <Table.Cell
+                className={styles.emptyCell}
+                colSpan={70}
+              >
+                <Heading size='sm'>Нет доступных пользователей</Heading>
+              </Table.Cell>
+            </Table.Row>
+          )}
         </Table.Body>
       </Table.Root>
       {currentId && (

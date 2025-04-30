@@ -11,13 +11,15 @@ export default class TrainersService {
     return response.data;
   }
 
-  async updateItem(data) {
-    const response = await $api.put(`/admin/trainer/${data.id}`, data);
+  async updateItem(id, data) {
+    const response = await $api.put(`/admin/trainer/${id}`, data);
     return response.data;
   }
 
   async addItem(data) {
-    const response = await $api.post(`/admin/trainer`, data);
+    const payload = {...data};
+    delete payload.id;
+    const response = await $api.post(`/admin/trainer`, payload);
     return response.data;
   }
 }

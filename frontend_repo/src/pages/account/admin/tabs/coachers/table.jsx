@@ -26,13 +26,13 @@ const TrainersTable = observer((props) => {
         interactive
         border='none'
         padding='10px'
+        className={styles.tableRoot}
         overflow='hidden'
       >
         <Table.Header>
           <Table.Row>
             <Table.ColumnHeader>ФИО</Table.ColumnHeader>
             <Table.ColumnHeader>Специализация</Table.ColumnHeader>
-            <Table.ColumnHeader>Статус</Table.ColumnHeader>
             <Table.ColumnHeader>Email</Table.ColumnHeader>
             <Table.ColumnHeader textAlign='center'>Действия</Table.ColumnHeader>
           </Table.Row>
@@ -43,7 +43,6 @@ const TrainersTable = observer((props) => {
               <Table.Row key={item.id}>
                 <Table.Cell>{item.name}</Table.Cell>
                 <Table.Cell>{item.specialty}</Table.Cell>
-                <Table.Cell>{item.status}</Table.Cell>
                 <Table.Cell>{item.email}</Table.Cell>
                 <Table.Cell width='100px'>
                   <Box
@@ -77,7 +76,16 @@ const TrainersTable = observer((props) => {
                 </Table.Cell>
               </Table.Row>
             ))}
-          {!coaches && <Heading>Таблица пустая</Heading>}
+          {!coaches.length && (
+            <Table.Row className={styles.emptyRow}>
+              <Table.Cell
+                className={styles.emptyCell}
+                colSpan={70}
+              >
+                <Heading size='sm'>Нет доступных тренеров</Heading>
+              </Table.Cell>
+            </Table.Row>
+          )}
         </Table.Body>
       </Table.Root>
       {currentId && (

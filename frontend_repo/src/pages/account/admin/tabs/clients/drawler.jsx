@@ -34,7 +34,7 @@ const ClientsDrawler = (props) => {
   const [drawlerForm, setForm] = useState({
     id: ``,
     name: '',
-    status: 'active',
+    status: '',
     birth: '',
     passport: '',
     address: '',
@@ -83,7 +83,7 @@ const ClientsDrawler = (props) => {
   const handleSubmit = () => {
     const userExist = users.find((item) => item.email === currentId);
     if (userExist) {
-      updateUser(drawlerForm);
+      updateUser(currentId, drawlerForm);
     } else {
       addUser(drawlerForm);
     }
@@ -179,8 +179,8 @@ const ClientsDrawler = (props) => {
             color='black'
             className={styles.select}
             width='320px'
-            defaultValue={['active']}
-            value={[drawlerForm.status]}
+            defaultValue={'active'}
+            value={drawlerForm.status}
             onChange={(e) => changeHandler(e, 'status')}
           >
             <SelectLabel>Cтатус абонимента</SelectLabel>
@@ -189,6 +189,7 @@ const ClientsDrawler = (props) => {
             </SelectTrigger>
             <SelectContent
               defaultValue={'active'}
+              value={''}
               className={styles.select}
             >
               {subscriptionStatus.items.map((status) => (

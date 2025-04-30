@@ -52,7 +52,7 @@ const GroupSessionsDrawler = (props) => {
     }
     if (type === 'maxClients') {
       setForm((prevState) => {
-        return {...prevState, maxClients: e.target.value};
+        return {...prevState, maxClients: parseInt(e.target.value)};
       });
     }
   };
@@ -78,9 +78,9 @@ const GroupSessionsDrawler = (props) => {
         trainerId: '',
         name: '',
         description: '',
-        startTime: '',
-        endTime: '',
-        maxClients: '',
+        startTime: '12:00',
+        endTime: '13:00',
+        maxClients: 1,
       });
     }
   }, [currentId, sessions]);

@@ -9,12 +9,14 @@ export default class UserService {
     const response = await $api.delete(`/users/${id}`);
     return response.data;
   }
-  async updateItem(data) {
-    const response = await $api.put(`/admin/user/${data.id}`, data);
+  async updateItem(id, data) {
+    const response = await $api.put(`/admin/user/${id}`, data);
     return response.data;
   }
   async addItem(data) {
-    const response = await $api.post(`/admin/user`, data);
+    const payload = {...data};
+    delete payload.id;
+    const response = await $api.post(`/admin/user`, payload);
     return response.data;
   }
 }
