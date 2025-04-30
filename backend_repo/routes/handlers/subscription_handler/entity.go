@@ -30,14 +30,14 @@ type Membership struct {
 }
 
 type GroupSession struct {
-	ID          string    `json:"id" bson:"_id,omitempty"`
-	TrainerID   string    `json:"trainerId" bson:"trainerId"`
-	Name        string    `json:"name" bson:"name"`
-	Description string    `json:"description" bson:"description"`
-	StartTime   time.Time `json:"startTime" bson:"startTime"`
-	EndTime     time.Time `json:"endTime" bson:"endTime"`
-	MaxClients  int       `json:"maxClients" bson:"maxClients"`
-	Status      string    `json:"status" bson:"status"`
+	ID          string `json:"id" bson:"_id,omitempty"`
+	TrainerID   string `json:"trainerId" bson:"trainerId"`
+	Name        string `json:"name" bson:"name"`
+	Description string `json:"description" bson:"description"`
+	StartTime   string `json:"startTime" bson:"startTime"`
+	EndTime     string `json:"endTime" bson:"endTime"`
+	MaxClients  int    `json:"maxClients" bson:"maxClients"`
+	Status      string `json:"status" bson:"status"`
 }
 
 type PersonalSession struct {
@@ -51,12 +51,12 @@ type PersonalSession struct {
 }
 
 type CreateGroupSessionRequest struct {
-	TrainerID   string    `json:"trainerId"`
-	Name        string    `json:"name"`
-	Description string    `json:"description"`
-	StartTime   time.Time `json:"startTime"`
-	EndTime     time.Time `json:"endTime"`
-	MaxClients  int       `json:"maxClients"`
+	TrainerID   string `json:"trainerId" bson:"_id,omitempty"`
+	Name        string `json:"name" bson:"name"`
+	Description string `json:"description" bson:"description"`
+	StartTime   string `json:"startTime" bson:"startTime"`
+	EndTime     string `json:"endTime" bson:"endTime"`
+	MaxClients  int    `json:"maxClients" bson:"maxClients"`
 }
 
 type CreateMembershipRequest struct {
