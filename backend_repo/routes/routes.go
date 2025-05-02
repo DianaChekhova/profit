@@ -100,7 +100,7 @@ func InitRoutes(db *mongo.Database, ctx context.Context) http.Handler {
 
 			r.Get("/trainers", trainerController.TrainerList)
 			r.Post("/trainer", trainerController.AddTrainer)
-			r.Put("/trainer", trainerController.TrainerUpdate)
+			r.Put("/trainer/{id}", trainerController.TrainerUpdate)
 			r.Delete("/trainer/{id}", trainerController.TrainerDelete)
 
 			r.Put("/user", userController.UserUpdate)
