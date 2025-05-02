@@ -68,7 +68,20 @@ const TrainersDrawler = (props) => {
       updateCoach(currentId, drawlerForm);
     } else {
       addCoach(drawlerForm);
+      clearForm();
     }
+  };
+
+  const clearForm = () => {
+    setForm({
+      id: ``,
+      name: ``,
+      status: 'active',
+      specialty: '',
+      phone: '',
+      email: '',
+      password: '',
+    });
   };
 
   useEffect(() => {

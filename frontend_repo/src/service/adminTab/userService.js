@@ -10,7 +10,9 @@ export default class UserService {
     return response.data;
   }
   async updateItem(id, data) {
-    const response = await $api.put(`/admin/user/${id}`, data);
+    const payload = {...data};
+    delete payload.id;
+    const response = await $api.put(`/admin/user/${id}`, payload);
     return response.data;
   }
   async addItem(data) {

@@ -25,7 +25,7 @@ const ClientsTable = observer((props) => {
         interactive
         border='none'
         padding='10px'
-        minHeight='15vh'
+        minHeight='53px'
         className={styles.tableRoot}
         overflow='hidden'
       >
