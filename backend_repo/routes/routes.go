@@ -79,8 +79,7 @@ func InitRoutes(db *mongo.Database, ctx context.Context) http.Handler {
 
 	// Protected routes
 	r.Group(func(r chi.Router) {
-		r.Use(middleware.AuthMiddleware)
-
+		//r.Use(middleware.AuthMiddleware)
 		r.Get("/me", baseController.Me)
 
 		// User routes

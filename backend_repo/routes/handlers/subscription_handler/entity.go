@@ -38,12 +38,14 @@ type GroupSession struct {
 	EndTime     string `json:"endTime" bson:"endTime"`
 	MaxClients  int    `json:"maxClients" bson:"maxClients"`
 	Status      string `json:"status" bson:"status"`
+	Type        string `json:"type" bson:"type"`
 }
 
 type PersonalSession struct {
 	ID          string    `json:"id" bson:"_id,omitempty"`
 	TrainerID   string    `json:"trainerId" bson:"trainerId"`
 	ClientID    string    `json:"clientId" bson:"clientId"`
+	Type        string    `json:"type" bson:"type"`
 	StartTime   time.Time `json:"startTime" bson:"startTime"`
 	EndTime     time.Time `json:"endTime" bson:"endTime"`
 	Status      string    `json:"status" bson:"status"`
@@ -56,6 +58,7 @@ type CreateGroupSessionRequest struct {
 	Description string `json:"description" bson:"description"`
 	StartTime   string `json:"startTime" bson:"startTime"`
 	EndTime     string `json:"endTime" bson:"endTime"`
+	Type        string `json:"type" bson:"type"`
 	MaxClients  int    `json:"maxClients" bson:"maxClients"`
 }
 
