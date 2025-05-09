@@ -1,91 +1,121 @@
-import React from 'react';
+import React, {useCallback, useContext, useState} from 'react';
 import {Box, Grid, Image, Text, Badge, Button, Heading, HStack, Flex} from '@chakra-ui/react';
+import absStrech from './dependency/abs-stretch.png';
+import abs from './dependency/abs.png';
+import aerobics from './dependency/aerobics.png';
+import core from './dependency/core.png';
+import balance from './dependency/balance.png';
+import boxing from './dependency/boxing.png';
+import zumba from './dependency/zumba.png';
+import yoga from './dependency/yoga.png';
+import sculpt from './dependency/sculpt.png';
+import upper from './dependency/upper-body.png';
+import pump from './dependency/pump.png';
+import strech from './dependency/stretching.png';
+import functional from './dependency/functional.png';
+import AuthModal from '../../../components/user/authentication/modal/index.jsx';
+import TrainingSubscriptionModal from '../../../components/trainingSubModal/index.jsx';
+import {Context} from '../../../main.jsx';
 
 const groupClasses = [
   {
     title: 'Core',
     desc: 'Комплекс тренировок с акцентом на мышцы пресса, спины и корпуса. Отлично подходит для укрепления мышечного корсета.',
-    img: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=400&q=80',
-    tags: ['Функциональная', 'Утро'],
+    img: core,
+    tags: ['Силовые тренировки'],
   },
   {
     title: 'ABS',
     desc: 'Развитие мышц пресса и повышение выносливости. Подходит для всех уровней подготовки.',
-    img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80',
-    tags: ['Силовая', 'Утро'],
+    img: abs,
+    tags: ['Силовые тренировки'],
   },
   {
     title: 'Upper body',
     desc: 'Акцент на верхнюю часть тела: руки, плечи, грудь, спина. Для красивого и сильного верха.',
-    img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80',
-    tags: ['Силовая'],
+    img: upper,
+    tags: ['Кардио тренировки'],
   },
   {
     title: 'Скульптурирующие',
     desc: 'Тренировка для формирования рельефа и тонуса мышц. Подходит для девушек.',
-    img: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80',
-    tags: ['Функциональная', 'Утро'],
+    img: sculpt,
+    tags: ['Кардио тренировки', 'Силовые тренировки'],
   },
   {
     title: 'Pump',
     desc: 'Тренировка с акцентом на работу с весами для увеличения мышечной массы и силы.',
-    img: 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80',
-    tags: ['Силовая'],
+    img: pump,
+    tags: ['Силовые тренировки'],
   },
   {
     title: 'Стретчинг',
     desc: 'Растяжка, развитие гибкости и подвижности суставов. Для всех уровней.',
-    img: 'https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=400&q=80',
-    tags: ['Растяжка'],
+    img: strech,
+    tags: ['Гибкость'],
   },
   {
     title: 'ABS + стретчинг',
     desc: 'Сочетание тренировки пресса и растяжки. Идеально для баланса силы и гибкости.',
-    img: 'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=400&q=80',
-    tags: ['Силовая', 'Растяжка'],
+    img: absStrech,
+    tags: ['Силовые тренировки', 'Гибкость'],
   },
   {
     title: 'Баланс',
     desc: 'Тренировка для развития координации, баланса и стабилизации.',
-    img: 'https://images.unsplash.com/photo-1519340333755-c6e2a6a10410?auto=format&fit=crop&w=400&q=80',
-    tags: ['Функциональная'],
+    img: balance,
+    tags: ['Силовые тренировки', 'Гибкость'],
   },
   {
     title: 'Йога',
     desc: 'Гармония тела и разума, дыхательные практики, асаны и релаксация.',
-    img: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=400&q=80',
-    tags: ['Растяжка'],
+    img: yoga,
+    tags: ['Гибкость'],
   },
   {
     title: 'Функциональные',
     desc: 'Комплексная тренировка всего тела для развития силы, выносливости и координации.',
-    img: 'https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80',
-    tags: ['Функциональная'],
+    img: functional,
+    tags: ['Силовые тренировки'],
   },
   {
     title: 'Зумба',
     desc: 'Танцевальная фитнес-программа с элементами латиноамериканских танцев.',
-    img: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=80',
-    tags: ['Танцевальная'],
+    img: zumba,
+    tags: ['Кардио тренировки'],
   },
   {
     title: 'Аэробика',
     desc: 'Классическая аэробика для сжигания калорий и улучшения выносливости.',
-    img: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80',
-    tags: ['Кардио'],
+    img: aerobics,
+    tags: ['Кардио тренировки'],
   },
   {
     title: 'Бокс',
     desc: 'Силовая и кардио нагрузка через бокс. Для мужчин и женщин.',
-    img: 'https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=crop&w=400&q=80',
-    tags: ['Силовая', 'Кардио'],
+    img: boxing,
+    tags: ['Кардио тренировки', 'Силовые тренировки'],
   },
 ];
 
 export default function GroupTraining() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const {store} = useContext(Context);
+  const isAuthenticated = store.getAuthenticated();
+
+  const subscribeHandler = useCallback(() => {
+    setIsOpen(true);
+  });
+  const closeModalHandler = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
   return (
     <Box
       maxW='1400px'
+      minW='70%'
+      minH='700px'
       mx='auto'
       px={4}
       py={8}
@@ -154,19 +184,13 @@ export default function GroupTraining() {
                   <Badge
                     key={i}
                     colorPalette={
-                      tag === 'Утро'
-                        ? 'orange'
-                        : tag === 'Кардио'
-                          ? 'blue'
-                          : tag === 'Силовая'
-                            ? 'purple'
-                            : tag === 'Растяжка'
-                              ? 'teal'
-                              : tag === 'Функциональная'
-                                ? 'green'
-                                : tag === 'Танцевальная'
-                                  ? 'pink'
-                                  : 'gray'
+                      tag === 'Кардио тренировки'
+                        ? 'blue'
+                        : tag === 'Силовые тренировки'
+                          ? 'orange'
+                          : tag === 'Гибкость'
+                            ? 'teal'
+                            : ''
                     }
                     fontSize='0.8em'
                   >
@@ -176,6 +200,7 @@ export default function GroupTraining() {
               </HStack>
               <Button
                 colorPalette='purple'
+                onClick={subscribeHandler}
                 w='100px'
                 mt='auto'
               >
@@ -185,6 +210,8 @@ export default function GroupTraining() {
           </Flex>
         ))}
       </Grid>
+      {isOpen && !isAuthenticated && <AuthModal closeModalHandler={closeModalHandler} />}
+      {isOpen && isAuthenticated && <TrainingSubscriptionModal />}
     </Box>
   );
 }

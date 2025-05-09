@@ -1,76 +1,90 @@
 import React from 'react';
 import {Box, Grid, Image, Text, Button, Heading} from '@chakra-ui/react';
+import Bahmarov from './dependency/Bahmarov.png';
+import Archipova from './dependency/Archipova.png';
+import Bevzenko from './dependency/Bevzenko.png';
+import Gavrushin from './dependency/Gavrushin.png';
+import Zodechenko from './dependency/Zodechenko.png';
+import Novikov from './dependency/Novikov.png';
+import Petrenko from './dependency/Petrenko.png';
+import Zamyatina from './dependency/Zamyatina.png';
+import Sokolov from './dependency/Sokolov.png';
+import Solovev from './dependency/Solovev.png';
+import Stepina from './dependency/Stepina.png';
+import Nesterova from './dependency/Nesterova.png';
+import Semina from './dependency/Semina.png';
+import Tarasova from './dependency/Tarasova.png';
 
 const coaches = [
   {
     name: 'Аржанова Наталья',
     desc: 'Тренер групповых программ и персональный фитнес-тренер в сфере женского фитнеса',
-    img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80',
+    img: Archipova,
   },
   {
     name: 'Новиков Антон',
     desc: 'Тренер групповых программ и персональный фитнес-тренер в сфере мужского фитнеса',
-    img: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=80',
+    img: Novikov,
   },
   {
-    name: 'Петрова Елена',
+    name: 'Петренко Елена',
     desc: 'Тренер групповых программ и персональный фитнес-тренер',
-    img: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=400&q=80',
+    img: Petrenko,
   },
   {
     name: 'Соколов Михаил',
     desc: 'Персональный фитнес-тренер',
-    img: 'https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=crop&w=400&q=80',
+    img: Sokolov,
   },
   {
     name: 'Соловьёв Николай',
     desc: 'Персональный фитнес-тренер',
-    img: 'https://images.unsplash.com/photo-1519340333755-c6e2a6a10410?auto=format&fit=crop&w=400&q=80',
+    img: Solovev,
   },
   {
     name: 'Безвенко Инна',
     desc: 'Тренер групповых программ и сферы женского фитнеса и йоги',
-    img: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80',
+    img: Bevzenko,
   },
   {
-    name: 'Гаврилюк Стас',
+    name: 'Гаврюшин Стас',
     desc: 'Тренер групповых программ и сферы мужского фитнеса и бокса',
-    img: 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80',
+    img: Gavrushin,
   },
   {
-    name: 'Занятиева Евгения',
+    name: 'Замятина Евгения',
     desc: 'Тренер групповых программ и сферы йоги и баланса',
-    img: 'https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=400&q=80',
+    img: Zamyatina,
   },
   {
     name: 'Степина Наталья',
     desc: 'Персональный фитнес-тренер',
-    img: 'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=400&q=80',
+    img: Stepina,
   },
   {
     name: 'Зодченко Константин',
     desc: 'Тренер групповых программ',
-    img: 'https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80',
+    img: Zodechenko,
   },
   {
     name: 'Нестерова Ольга',
     desc: 'Тренер групповых программ',
-    img: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80',
+    img: Nesterova,
   },
   {
     name: 'Семина Анна',
     desc: 'Тренер групповых программ',
-    img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80',
+    img: Semina,
   },
   {
     name: 'Бахмаров Артем',
     desc: 'Тренер групповых программ и персональный фитнес-тренер',
-    img: 'https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=crop&w=400&q=80',
+    img: Bahmarov,
   },
   {
     name: 'Тарасова Екатерина',
     desc: 'Тренер групповых программ и персональный фитнес-тренер',
-    img: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=400&q=80',
+    img: Tarasova,
   },
 ];
 
@@ -78,6 +92,8 @@ export default function GroupTraining() {
   return (
     <Box
       maxW='1400px'
+      minW='70%'
+      minH='700px'
       mx='auto'
       px={4}
       py={8}
@@ -106,14 +122,14 @@ export default function GroupTraining() {
             display='flex'
             flexDirection='column'
             alignItems='stretch'
-            height='370px'
+            height='470px'
             overflow='hidden'
           >
             <Image
               src={coach.img}
               alt={coach.name}
               w='100%'
-              h='180px'
+              h='300px'
               objectFit='cover'
               borderTopRadius='lg'
               borderBottomRadius={0}
