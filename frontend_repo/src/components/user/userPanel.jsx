@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import {useCallback} from 'react';
 
 function UserPanel(props) {
-  const {user, logoutCallback, link} = props;
+  const {user, logoutCallback} = props;
   const logoutHandler = useCallback(() => {
     logoutCallback();
     window.location.reload();
@@ -12,7 +12,7 @@ function UserPanel(props) {
 
   return (
     <div className={styles.flex}>
-      <Link to={link}>
+      <Link to={`/${user.role}`}>
         <div className={styles.flex}>
           {user.entity_name || 'Test Admin'}
           <Avatar

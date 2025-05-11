@@ -25,6 +25,10 @@ export default class UserStore {
     return this.user;
   }
 
+  getUserRole() {
+    return this.user.role;
+  }
+
   getUserName() {
     return this.user.entity_name || 'Test User';
   }

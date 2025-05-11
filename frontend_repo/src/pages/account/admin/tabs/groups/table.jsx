@@ -8,7 +8,7 @@ import {useCallback, useState} from 'react';
 import {observer} from 'mobx-react-lite';
 
 const GroupSessionsTable = observer((props) => {
-  const {sessions, removeSession, updateSession} = props;
+  const {sessions, removeSession, updateSession, coaches} = props;
 
   const [isOpen, setOpen] = useState(false);
   const [currentId, setCurrentId] = useState(null);
@@ -32,12 +32,10 @@ const GroupSessionsTable = observer((props) => {
       >
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeader>Название</Table.ColumnHeader>
+            <Table.ColumnHeader> </Table.ColumnHeader>
             <Table.ColumnHeader>Тренер</Table.ColumnHeader>
-            <Table.ColumnHeader>Описание</Table.ColumnHeader>
-            <Table.ColumnHeader>Время начала</Table.ColumnHeader>
-            <Table.ColumnHeader>Время окончания</Table.ColumnHeader>
-            <Table.ColumnHeader>Макс. участников</Table.ColumnHeader>
+            <Table.ColumnHeader>Дата</Table.ColumnHeader>
+            <Table.ColumnHeader>Время</Table.ColumnHeader>
             <Table.ColumnHeader textAlign='center'>Действия</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
@@ -46,11 +44,9 @@ const GroupSessionsTable = observer((props) => {
             sessions.map((session) => (
               <Table.Row key={session.id}>
                 <Table.Cell>{session.name}</Table.Cell>
-                <Table.Cell>{session.trainerId}</Table.Cell>
-                <Table.Cell>{session.description}</Table.Cell>
-                <Table.Cell>{session.startTime}</Table.Cell>
-                <Table.Cell>{session.endTime}</Table.Cell>
-                <Table.Cell>{session.maxClients}</Table.Cell>
+                <Table.Cell>{session.trainer}</Table.Cell>
+                <Table.Cell>{session.date}</Table.Cell>
+                <Table.Cell>{session.time}</Table.Cell>
                 <Table.Cell width='100px'>
                   <Box
                     justifyContent='center'
@@ -98,6 +94,7 @@ const GroupSessionsTable = observer((props) => {
       <GroupSessionsDrawler
         isOpen={isOpen}
         setOpen={setOpen}
+        coaches={coaches}
         currentId={currentId}
         sessions={sessions}
         addSession={updateSession}

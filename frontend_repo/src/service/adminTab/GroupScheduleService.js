@@ -6,6 +6,11 @@ export default class GroupScheduleService {
     return response.data;
   }
 
+  async getCoaches() {
+    const response = await $api.get('/admin/trainers');
+    return response.data;
+  }
+
   async removeItem(id) {
     const response = await $api.delete(`/subscription/group/schedule/${id}`);
     return response.data;

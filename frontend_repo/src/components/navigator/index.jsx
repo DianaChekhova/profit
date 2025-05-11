@@ -11,6 +11,7 @@ const Index = () => {
   const {store} = useContext(Context);
   const isAuthenticated = store.getAuthenticated();
   const user = store.getUser();
+  console.log(user);
 
   useEffect(() => {
     if (!user.entity_name) {
@@ -39,9 +40,6 @@ const Index = () => {
       {isAuthenticated && (
         <UserPanel
           user={user}
-          link={
-            user.role === 'admin' ? '/admin' : user.role === 'coach' ? '/coach' : user.role === 'user' ? '/user' : ''
-          }
           logoutCallback={store.logout}
         />
       )}

@@ -2,6 +2,7 @@ import {makeAutoObservable} from 'mobx';
 
 export default class BaseAdminStore {
   items = [];
+  coaches = [];
   loading = true;
   service = null;
 
@@ -15,12 +16,20 @@ export default class BaseAdminStore {
     return this.items;
   }
 
+  get coachesList() {
+    return this.items;
+  }
+
   get isLoading() {
     return this.loading;
   }
 
   setItems = (items) => {
     this.items = items;
+  };
+
+  setCoaches = (items) => {
+    this.coaches = items;
   };
 
   setLoading = (bool) => {
@@ -32,6 +41,8 @@ export default class BaseAdminStore {
       this.setLoading(true);
       const response = await this.service.getItems();
       this.setItems(response?.length > 0 ? response : []);
+      const coaches = await this.service.getCoaches();
+      this.setCoaches(coaches);
       this.setLoading(false);
     } catch (error) {
       console.error('Error fetching items:', error);

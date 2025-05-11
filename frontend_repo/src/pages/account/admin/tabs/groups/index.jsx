@@ -21,6 +21,7 @@ const GroupSessions = observer(() => {
       >
         <GroupSessionsTable
           removeSession={store.removeItem}
+          coaches={store.coachesList}
           sessions={store.itemsList}
           updateSession={store.updateItem}
         />
@@ -43,6 +44,7 @@ const GroupSessions = observer(() => {
 
       <GroupSessionsDrawler
         sessions={store.itemsList}
+        coaches={store.coachesList}
         addSession={store.addItem}
         updateSession={store.updateItem}
         isOpen={isOpen}

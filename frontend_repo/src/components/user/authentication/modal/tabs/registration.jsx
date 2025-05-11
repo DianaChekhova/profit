@@ -104,7 +104,7 @@ function RegistrationTab(props) {
           };
           store.registration(regObj).then(() => {
             setLoading(false);
-            navigate('/admin');
+            navigate(`/${loginForm.role}`);
             props.closeHandler();
           });
         }
@@ -132,7 +132,7 @@ function RegistrationTab(props) {
           gap='2'
         >
           <Radio value='admin'>Админ</Radio>
-          <Radio value='coach'>Тренер</Radio>
+          <Radio value='trainer'>Тренер</Radio>
           <Radio value='user'>Пользователь</Radio>
         </HStack>
       </RadioGroup>

@@ -6,58 +6,90 @@ import {
   DrawerFooter,
   DrawerRoot,
 } from '../../../../../components/ui/drawer.jsx';
-import {useEffect, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {Field} from '../../../../../components/ui/field.jsx';
-import {Heading, Input} from '@chakra-ui/react';
+import {Box, createListCollection, Heading, Input} from '@chakra-ui/react';
 import styles from '../../../../../components/user/authentication/modal/tabs/tabs.module.scss';
+import {InputGroup} from '../../../../../components/ui/input-group.jsx';
+import {
+  SelectContent,
+  SelectItem,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+} from '../../../../../components/ui/select.jsx';
+
+const groupClassesData = createListCollection({
+  items: [
+    {label: 'Core', value: 'Core'},
+    {label: 'ABS', value: 'ABS'},
+    {label: 'Upper body', value: 'Upper body'},
+    {label: 'Скульптурирующие', value: 'Скульптурирующие'},
+    {label: 'Pump', value: 'Pump'},
+    {label: 'Стретчинг', value: 'Стретчинг'},
+    {label: 'ABS + стретчинг', value: 'ABS + стретчинг'},
+    {label: 'Баланс', value: 'Баланс'},
+    {label: 'Йога', value: 'Йога'},
+    {label: 'Функциональные', value: 'Функциональные'},
+    {label: 'Зумба', value: 'Зумба'},
+    {label: 'Аэробика', value: 'Аэробика'},
+    {label: 'Бокс', value: 'Бокс'},
+  ],
+});
 
 const GroupSessionsDrawler = (props) => {
-  const {isOpen, setOpen, currentId, sessions, addSession, updateSession} = props;
+  const {isOpen, setOpen, currentId, sessions, addSession, updateSession, coaches} = props;
+
+  const prepareCoaches = useMemo(() => {
+    return {
+      items:
+        coaches?.map((coach) => ({
+          label: coach.name,
+          value: coach.name,
+        })) || [],
+    };
+  }, [coaches]);
+
+  const coachesData = createListCollection(prepareCoaches);
+
+  const getDefaultTime = () => {
+    const now = new Date();
+    const currentHours = now.getHours();
+    let defaultDate = now.toISOString().split('T')[0];
+    let defaultTime = '12:00';
+
+    if (currentHours < 16) {
+      const futureTime = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+      const hours = futureTime.getHours().toString().padStart(2, '0');
+      const minutes = futureTime.getMinutes().toString().padStart(2, '0');
+      defaultTime = `${hours}:${minutes}`;
+    }
+
+    return {defaultDate, defaultTime};
+  };
+
+  const {defaultDate, defaultTime} = getDefaultTime();
 
   const [drawlerForm, setForm] = useState({
-    id: ``,
-    trainerId: '',
-    name: '',
-    description: '',
-    startTime: '',
-    endTime: '',
-    maxClients: '',
+    id: '',
+    trainer: prepareCoaches.items[0]?.value || '',
+    training: 'Баланс',
+    date: defaultDate,
+    time: defaultTime,
   });
 
   const changeHandler = (e, type) => {
-    if (type === 'name') {
-      setForm((prevState) => {
-        return {...prevState, name: e.target.value};
-      });
-    }
-    if (type === 'trainerId') {
-      setForm((prevState) => {
-        return {...prevState, trainerId: e.target.value};
-      });
-    }
-    if (type === 'description') {
-      setForm((prevState) => {
-        return {...prevState, description: e.target.value};
-      });
-    }
-    if (type === 'startTime') {
-      setForm((prevState) => {
-        return {...prevState, startTime: e.target.value};
-      });
-    }
-    if (type === 'endTime') {
-      setForm((prevState) => {
-        return {...prevState, endTime: e.target.value};
-      });
-    }
-    if (type === 'maxClients') {
-      setForm((prevState) => {
-        return {...prevState, maxClients: parseInt(e.target.value)};
-      });
-    }
+    setForm((prevState) => ({
+      ...prevState,
+      [type]: e.target.value,
+    }));
   };
 
   const handleSubmit = () => {
+    if (!drawlerForm.trainer || !drawlerForm.training || !drawlerForm.date || !drawlerForm.time) {
+      return;
+    }
+    console.log(drawlerForm);
     if (currentId) {
       updateSession(currentId, drawlerForm);
     } else {
@@ -73,17 +105,16 @@ const GroupSessionsDrawler = (props) => {
         setForm(session);
       }
     } else {
+      const {defaultDate, defaultTime} = getDefaultTime();
       setForm({
-        id: ``,
-        trainerId: '',
-        name: '',
-        description: '',
-        startTime: '12:00',
-        endTime: '13:00',
-        maxClients: 1,
+        id: '',
+        trainer: prepareCoaches.items[0]?.value || '',
+        training: 'Баланс',
+        date: defaultDate,
+        time: defaultTime,
       });
     }
-  }, [currentId, sessions]);
+  }, [currentId, sessions, prepareCoaches.items]);
 
   return (
     <DrawerRoot
@@ -100,61 +131,120 @@ const GroupSessionsDrawler = (props) => {
           >
             {currentId ? 'Редактировать тренировку' : 'Добавить тренировку'}
           </Heading>
-          <Field label='Название тренировки'>
-            <Input
-              className={styles.formInput}
-              value={drawlerForm.name}
-              onChange={(e) => changeHandler(e, 'name')}
-              placeholder='Введите название тренировки'
-            />
-          </Field>
 
-          <Field label='ID тренера'>
-            <Input
-              className={styles.formInput}
-              value={drawlerForm.trainerId}
-              onChange={(e) => changeHandler(e, 'trainerId')}
-              placeholder='Введите ID тренера'
-            />
-          </Field>
+          <Box
+            fontWeight='500'
+            color='gray.700'
+            mb='4px'
+          >
+            Тренер
+          </Box>
+          <InputGroup
+            mb='24px'
+            width='100%'
+          >
+            <Field>
+              <SelectRoot
+                collection={coachesData}
+                size='sm'
+                color='black'
+                className={styles.select}
+                width='100%'
+                value={drawlerForm.trainer}
+                defaultValue={prepareCoaches.items[0]?.value}
+                onChange={(e) => changeHandler(e, 'trainer')}
+              >
+                <SelectTrigger>
+                  <SelectValueText value={drawlerForm.trainer} />
+                </SelectTrigger>
+                <SelectContent className={styles.select}>
+                  {coachesData.items.map((coachItem) => (
+                    <SelectItem
+                      color='black'
+                      className={styles.selectItem}
+                      item={coachItem}
+                      value={coachItem.value}
+                      key={coachItem.value}
+                    >
+                      {coachItem.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </SelectRoot>
+            </Field>
+          </InputGroup>
 
-          <Field label='Описание'>
-            <Input
-              className={styles.formInput}
-              value={drawlerForm.description}
-              onChange={(e) => changeHandler(e, 'description')}
-              placeholder='Введите описание тренировки'
-            />
-          </Field>
+          <Box
+            fontWeight='500'
+            color='gray.700'
+            mb='4px'
+          >
+            Тренировка
+          </Box>
+          <InputGroup
+            mb='16px'
+            width='100%'
+          >
+            <Field>
+              <SelectRoot
+                collection={groupClassesData}
+                size='sm'
+                color='black'
+                className={styles.select}
+                width='100%'
+                value={drawlerForm.training}
+                defaultValue='Баланс'
+                onChange={(e) => changeHandler(e, 'training')}
+              >
+                <SelectTrigger>
+                  <SelectValueText value={drawlerForm.training} />
+                </SelectTrigger>
+                <SelectContent className={styles.select}>
+                  {groupClassesData.items.map((coachItem) => (
+                    <SelectItem
+                      color='black'
+                      item={coachItem}
+                      className={styles.selectItem}
+                      key={coachItem.value}
+                      value={coachItem.value}
+                    >
+                      {coachItem.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </SelectRoot>
+            </Field>
+          </InputGroup>
 
-          <Field label='Время начала'>
-            <Input
-              className={styles.formInput}
-              type='time'
-              value={drawlerForm.startTime}
-              onChange={(e) => changeHandler(e, 'startTime')}
-            />
-          </Field>
+          <Box
+            fontWeight='500'
+            color='gray.700'
+            mb='4px'
+          >
+            Дата
+          </Box>
+          <Input
+            type='date'
+            value={drawlerForm.date}
+            mb='16px'
+            onChange={(e) => changeHandler(e, 'date')}
+          />
 
-          <Field label='Время окончания'>
-            <Input
-              className={styles.formInput}
-              type='time'
-              value={drawlerForm.endTime}
-              onChange={(e) => changeHandler(e, 'endTime')}
-            />
-          </Field>
-
-          <Field label='Максимальное количество участников'>
-            <Input
-              className={styles.formInput}
-              type='number'
-              value={drawlerForm.maxClients}
-              onChange={(e) => changeHandler(e, 'maxClients')}
-              placeholder='Введите максимальное количество участников'
-            />
-          </Field>
+          <Box
+            fontWeight='500'
+            color='gray.700'
+            mb='4px'
+          >
+            Время
+          </Box>
+          <Input
+            type='time'
+            value={drawlerForm.time}
+            mb='16px'
+            onChange={(e) => changeHandler(e, 'time')}
+          />
         </DrawerBody>
+
         <DrawerFooter>
           <DrawerActionTrigger asChild>
             <Button variant='outline'>Отменить</Button>

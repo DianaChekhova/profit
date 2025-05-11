@@ -39,7 +39,7 @@ function App() {
           element={<AdminPage />}
         />
         <Route
-          path='coach'
+          path='trainer'
           element={<CoachPage />}
         />
         <Route
