@@ -18,6 +18,7 @@ import {
   SelectTrigger,
   SelectValueText,
 } from '../../../../../components/ui/select.jsx';
+import {observer} from 'mobx-react-lite';
 
 const groupClassesData = createListCollection({
   items: [
@@ -49,7 +50,7 @@ const GroupSessionsDrawler = (props) => {
         })) || [],
     };
   }, [coaches]);
-
+  console.log(coaches);
   const coachesData = createListCollection(prepareCoaches);
 
   const getDefaultTime = () => {
@@ -261,4 +262,4 @@ const GroupSessionsDrawler = (props) => {
   );
 };
 
-export default GroupSessionsDrawler;
+export default observer(GroupSessionsDrawler);
