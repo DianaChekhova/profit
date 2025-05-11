@@ -11,7 +11,7 @@ import CoachPage from './pages/account/coach/index.jsx';
 
 function App() {
   return (
-    <div className='wrapper'>
+    <div className='wrapper 2'>
       <Navigator />
       <Routes>
         <Route
