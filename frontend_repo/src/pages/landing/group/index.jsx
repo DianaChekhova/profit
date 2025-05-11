@@ -211,7 +211,7 @@ export default function GroupTraining() {
         ))}
       </Grid>
       {isOpen && !isAuthenticated && <AuthModal closeModalHandler={closeModalHandler} />}
-      {isOpen && isAuthenticated && <TrainingSubscriptionModal />}
+      {isOpen && isAuthenticated && <TrainingSubscriptionModal closeModalHandler={closeModalHandler} />}
     </Box>
   );
 }

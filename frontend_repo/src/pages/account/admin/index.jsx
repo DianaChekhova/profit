@@ -52,7 +52,7 @@ function AdminPage() {
             align='flex-start'
             colorPalette={'orange'}
           >
-            Admin
+            Админ
           </Tag>
         </HStack>
         <Tabs.Root
@@ -85,7 +85,7 @@ function AdminPage() {
                   fontSize='lg'
                   value='tab-3'
                 >
-                  Групповые Тренеровки
+                  Групповые тренеровки
                 </Tabs.Trigger>
               </Tabs.List>
             </Flex>

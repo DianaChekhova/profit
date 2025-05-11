@@ -52,7 +52,6 @@ export default class UserStore {
   }
 
   async getMe(token) {
-    console.log(12);
     try {
       const response = await AuthService.me(token);
       this.setAuthenticated(true);

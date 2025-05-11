@@ -1,0 +1,33 @@
+.username {
+  font-family: Inter, sans-serif ;
+  margin-bottom: 40px;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 32px;
+}
+.tableTabs {
+  font-family: Inter, sans-serif ;
+}
+
+.tableStack {
+  border: 1px solid #E2E8F0;
+  border-radius: 32px;
+  padding: 12px;
+}
+
+.tableBody :last-child > td {
+  border-bottom: none !important;
+}
+
+.tableRoot{
+  border-radius: 32px;
+}
+
+.emptyRow {
+  min-height: 200px !important;
+}
+.emptyCell {
+  min-height: 200px !important;
+  text-align: center;
+  vertical-align: middle;
+}

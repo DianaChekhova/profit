@@ -8,7 +8,6 @@ export default class AuthService {
     return await $api.post(`/register`, data);
   }
   static async me(data) {
-    console.log(data);
     return await $api.get(`/me`);
   }
   static async logout() {

@@ -1,5 +1,8 @@
 import {Box, Text, Heading, Image, VStack, HStack} from '@chakra-ui/react';
 import mapImg from './dependency/map.png';
+import AuthModal from '../../../components/user/authentication/modal/index.jsx';
+import TrainingSubscriptionModal from '../../../components/trainingSubModal/index.jsx';
+import React from 'react';
 
 function Contacts() {
   return (

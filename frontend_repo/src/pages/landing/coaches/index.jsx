@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useContext, useState} from 'react';
 import {Box, Grid, Image, Text, Button, Heading} from '@chakra-ui/react';
 import Bahmarov from './dependency/Bahmarov.png';
 import Archipova from './dependency/Archipova.png';
@@ -14,6 +14,9 @@ import Stepina from './dependency/Stepina.png';
 import Nesterova from './dependency/Nesterova.png';
 import Semina from './dependency/Semina.png';
 import Tarasova from './dependency/Tarasova.png';
+import AuthModal from '../../../components/user/authentication/modal/index.jsx';
+import TrainingSubscriptionModal from '../../../components/trainingSubModal/index.jsx';
+import {Context} from '../../../main.jsx';
 
 const coaches = [
   {
@@ -89,6 +92,18 @@ const coaches = [
 ];
 
 export default function GroupTraining() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const {store} = useContext(Context);
+  const isAuthenticated = store.getAuthenticated();
+
+  const subscribeHandler = useCallback(() => {
+    setIsOpen(true);
+  }, []);
+  const closeModalHandler = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
   return (
     <Box
       maxW='1400px'
@@ -164,6 +179,7 @@ export default function GroupTraining() {
                 color={'white'}
                 variant='outline'
                 w='100%'
+                onClick={subscribeHandler}
                 mt='auto'
               >
                 Записаться на тренировку
@@ -172,6 +188,13 @@ export default function GroupTraining() {
           </Box>
         ))}
       </Grid>
+      {isOpen && !isAuthenticated && <AuthModal closeModalHandler={closeModalHandler} />}
+      {isOpen && isAuthenticated && (
+        <TrainingSubscriptionModal
+          individual
+          closeModalHandler={closeModalHandler}
+        />
+      )}
     </Box>
   );
 }

@@ -51,6 +51,7 @@ function RegistrationTab(props) {
     login: '',
     password: '',
     retryPassword: '',
+    role: 'user',
   });
 
   const [errorForm, setErrorForm] = useState({
@@ -62,6 +63,11 @@ function RegistrationTab(props) {
     if (type === 'password') {
       setLoginForm((prevState) => {
         return {...prevState, password: e.target.value};
+      });
+    }
+    if (type === 'role') {
+      setLoginForm((prevState) => {
+        return {...prevState, role: e.target.value};
       });
     }
     if (type === 'retryPassword') {
@@ -93,7 +99,7 @@ function RegistrationTab(props) {
           const regObj = {
             email: loginForm.mail,
             username: loginForm.login,
-            role: 'admin',
+            role: loginForm.role,
             password: loginForm.password,
           };
           store.registration(regObj).then(() => {
@@ -116,7 +122,8 @@ function RegistrationTab(props) {
   return (
     <Stack mt={2}>
       <RadioGroup
-        defaultValue='1'
+        defaultValue='user'
+        onChange={(e) => changeLoginForm(e, 'role')}
         variant='subtle'
         mb='4'
       >
@@ -124,19 +131,9 @@ function RegistrationTab(props) {
           color='black'
           gap='2'
         >
-          <Radio value='1'>Админ</Radio>
-          <Radio
-            disabled
-            value='2'
-          >
-            Тренер
-          </Radio>
-          <Radio
-            disabled
-            value='3'
-          >
-            Пользователь
-          </Radio>
+          <Radio value='admin'>Админ</Radio>
+          <Radio value='coach'>Тренер</Radio>
+          <Radio value='user'>Пользователь</Radio>
         </HStack>
       </RadioGroup>
       <InputGroup

@@ -1,16 +1,30 @@
 import {Box} from '@chakra-ui/react';
+import React from 'react';
+import FirstBlock from './firstBlock.jsx';
+import CardioZone from './secondBlock.jsx';
+import SilaZone from './thirdBlock.jsx';
+import Bassein from './fourBlock.jsx';
+import TrainersBlock from './trainersBlock.jsx';
+import TrainingsBlock from './trainingsBlock.jsx';
 
 function MainPage() {
   return (
     <Box
-      width='100%'
-      height='500px'
-      display='flex'
-      justifyContent='center'
+      maxW='1400px'
+      minW='70%'
+      minH='700px'
+      mx='auto'
       alignItems='center'
-      padding='4'
-      background='gray'
-    ></Box>
+      px={4}
+      py={8}
+    >
+      <FirstBlock />
+      <CardioZone />
+      <SilaZone />
+      <TrainingsBlock />
+      <Bassein />
+      <TrainersBlock />
+    </Box>
   );
 }
 

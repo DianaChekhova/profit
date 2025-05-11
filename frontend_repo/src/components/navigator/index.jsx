@@ -39,6 +39,9 @@ const Index = () => {
       {isAuthenticated && (
         <UserPanel
           user={user}
+          link={
+            user.role === 'admin' ? '/admin' : user.role === 'coach' ? '/coach' : user.role === 'user' ? '/user' : ''
+          }
           logoutCallback={store.logout}
         />
       )}
