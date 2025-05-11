@@ -8,7 +8,8 @@ import (
 )
 
 type MeResponse struct {
-	EntityName string `json:"entity_name"`
+	entityName string      `json:"entity_name"`
+	role       models.Role `json:"role"`
 }
 
 // Me
@@ -74,5 +75,5 @@ func (ctrl *BaseController) Me(w http.ResponseWriter, r *http.Request) {
 		backendController.WriteJSONResponse(w, 400, "invalid role")
 	}
 
-	backendController.WriteJSONResponse(w, 200, MeResponse{entityName})
+	backendController.WriteJSONResponse(w, 200, MeResponse{entityName: entityName, role: role})
 }
