@@ -10,7 +10,7 @@ import TrainersService from '../../../../../service/adminTab/TrainersService.js'
 
 const Trainers = observer(() => {
   const [isOpen, setOpen] = useState(false);
-  const store = useMemo(() => new BaseAdminStore(new TrainersService(), []), []);
+  const store = useMemo(() => new BaseAdminStore(new TrainersService()), []);
 
   return (
     <Stack spacing={4}>

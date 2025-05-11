@@ -150,8 +150,7 @@ const GroupSessionsDrawler = (props) => {
                 color='black'
                 className={styles.select}
                 width='100%'
-                value={drawlerForm.trainer}
-                defaultValue={prepareCoaches.items[0]?.value}
+                defaultValue={[drawlerForm.trainer]}
                 onChange={(e) => changeHandler(e, 'trainer')}
               >
                 <SelectTrigger>
@@ -163,7 +162,7 @@ const GroupSessionsDrawler = (props) => {
                       color='black'
                       className={styles.selectItem}
                       item={coachItem}
-                      value={coachItem.value}
+                      value={[coachItem.value]}
                       key={coachItem.value}
                     >
                       {coachItem.label}
@@ -192,8 +191,7 @@ const GroupSessionsDrawler = (props) => {
                 color='black'
                 className={styles.select}
                 width='100%'
-                value={drawlerForm.training}
-                defaultValue='Баланс'
+                defaultValue={[drawlerForm.training]}
                 onChange={(e) => changeHandler(e, 'training')}
               >
                 <SelectTrigger>

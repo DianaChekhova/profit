@@ -32,7 +32,7 @@ const GroupSessionsTable = observer((props) => {
       >
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeader> </Table.ColumnHeader>
+            <Table.ColumnHeader>Тренировка</Table.ColumnHeader>
             <Table.ColumnHeader>Тренер</Table.ColumnHeader>
             <Table.ColumnHeader>Дата</Table.ColumnHeader>
             <Table.ColumnHeader>Время</Table.ColumnHeader>
@@ -43,7 +43,7 @@ const GroupSessionsTable = observer((props) => {
           {sessions && sessions.length > 0 ? (
             sessions.map((session) => (
               <Table.Row key={session.id}>
-                <Table.Cell>{session.name}</Table.Cell>
+                <Table.Cell>{session.training}</Table.Cell>
                 <Table.Cell>{session.trainer}</Table.Cell>
                 <Table.Cell>{session.date}</Table.Cell>
                 <Table.Cell>{session.time}</Table.Cell>

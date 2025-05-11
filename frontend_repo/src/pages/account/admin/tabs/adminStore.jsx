@@ -6,9 +6,10 @@ export default class BaseAdminStore {
   loading = true;
   service = null;
 
-  constructor(serviceInstance) {
+  constructor(serviceInstance, needTraining) {
     makeAutoObservable(this);
     this.service = serviceInstance;
+    this.needTraining = needTraining;
     this.init();
   }
 
@@ -41,8 +42,10 @@ export default class BaseAdminStore {
       this.setLoading(true);
       const response = await this.service.getItems();
       this.setItems(response?.length > 0 ? response : []);
-      const coaches = await this.service.getCoaches();
-      this.setCoaches(coaches);
+      if (this.needTraining) {
+        const coaches = await this.service.getCoaches();
+        this.setCoaches(coaches);
+      }
       this.setLoading(false);
     } catch (error) {
       console.error('Error fetching items:', error);

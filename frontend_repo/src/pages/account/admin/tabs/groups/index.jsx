@@ -10,7 +10,7 @@ import GroupScheduleService from '../../../../../service/adminTab/GroupScheduleS
 
 const GroupSessions = observer(() => {
   const [isOpen, setOpen] = useState(false);
-  const store = useMemo(() => new BaseAdminStore(new GroupScheduleService()), []);
+  const store = useMemo(() => new BaseAdminStore(new GroupScheduleService(), true), []);
 
   return (
     <Stack spacing={4}>
@@ -26,7 +26,6 @@ const GroupSessions = observer(() => {
           updateSession={store.updateItem}
         />
       </Skeleton>
-
       <Skeleton
         loading={store.isLoading}
         height='40px'
@@ -41,7 +40,6 @@ const GroupSessions = observer(() => {
           Добавить тренировку
         </Button>
       </Skeleton>
-
       <GroupSessionsDrawler
         sessions={store.itemsList}
         coaches={store.coachesList}
