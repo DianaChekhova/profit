@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"profit/routes/auth/protection"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 	"go.mongodb.org/mongo-driver/bson"
@@ -65,20 +66,26 @@ func (c *SubscriptionController) CreateGroupSession(w http.ResponseWriter, r *ht
 		return
 	}
 
-	//trainerID, err := primitive.ObjectIDFromHex(req.TrainerID)
+	//trainerID, err := primitive.ObjectIDFromHex(req.Trainer)
 	//if err != nil {
 	//	http.Error(w, err.Error(), http.StatusBadRequest)
 	//	return
 	//}
+	parsedDate, err := time.Parse("2006-01-02", req.Date) // замените на ваш формат
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
 	session := GroupSession{
-		//TrainerID:   trainerID.Hex(),
-		Name:        req.Name,
-		Description: req.Description,
-		StartTime:   req.StartTime,
-		EndTime:     req.EndTime,
-		MaxClients:  req.MaxClients,
-		Status:      "scheduled",
+		Trainer:      req.Trainer,
+		Name:         req.Name,
+		Description:  req.Description,
+		Time:         req.StartTime,
+		MaxClients:   req.MaxClients,
+		Date:         parsedDate,
+		Status:       "scheduled",
+		TrainingType: req.Training,
 	}
 
 	result, err := c.db.Collection("group_sessions").InsertOne(c.ctx, session)

@@ -122,8 +122,6 @@ func (c *SubscriptionController) RegisterForPersonalSession(w http.ResponseWrite
 	session := PersonalSession{
 		TrainerID:   trainerObjectID.Hex(),
 		ClientID:    userObjectID.Hex(),
-		StartTime:   req.StartTime,
-		EndTime:     req.EndTime,
 		Status:      "scheduled",
 		Description: req.Description,
 	}

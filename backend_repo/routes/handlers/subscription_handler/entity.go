@@ -30,35 +30,37 @@ type Membership struct {
 }
 
 type GroupSession struct {
-	ID          string `json:"id" bson:"_id,omitempty"`
-	TrainerID   string `json:"trainerId" bson:"trainerId,omitempty"`
-	Name        string `json:"name" bson:"name"`
-	Description string `json:"description" bson:"description"`
-	StartTime   string `json:"startTime" bson:"startTime"`
-	EndTime     string `json:"endTime" bson:"endTime"`
-	MaxClients  int    `json:"maxClients" bson:"maxClients"`
-	Status      string `json:"status" bson:"status"`
-	Type        string `json:"type" bson:"type"`
+	ID           string    `json:"id" bson:"_id,omitempty"`
+	Trainer      string    `json:"trainer" bson:"trainer,omitempty"`
+	TrainingType string    `json:"training" bson:"training,omitempty"`
+	Name         string    `json:"name" bson:"name"`
+	Description  string    `json:"description" bson:"description"`
+	Time         string    `json:"time" bson:"time"`
+	Date         time.Time `json:"date" bson:"date"`
+	MaxClients   int       `json:"maxClients" bson:"maxClients"`
+	Status       string    `json:"status" bson:"status"`
+	Type         string    `json:"type" bson:"type"`
 }
 
 type PersonalSession struct {
-	ID          string    `json:"id" bson:"_id,omitempty"`
-	TrainerID   string    `json:"trainerId" bson:"trainerId"`
-	ClientID    string    `json:"clientId" bson:"clientId"`
-	Type        string    `json:"type" bson:"type"`
-	StartTime   time.Time `json:"startTime" bson:"startTime"`
-	EndTime     time.Time `json:"endTime" bson:"endTime"`
-	Status      string    `json:"status" bson:"status"`
-	Description string    `json:"description" bson:"description"`
+	ID          string `json:"id" bson:"_id,omitempty"`
+	TrainerID   string `json:"trainerId" bson:"trainerId"`
+	ClientID    string `json:"clientId" bson:"clientId"`
+	Type        string `json:"type" bson:"type"`
+	Time        string `json:"time" bson:"startTime"`
+	Status      string `json:"status" bson:"status"`
+	Description string `json:"description" bson:"description"`
 }
 
 type CreateGroupSessionRequest struct {
-	TrainerID   string `json:"trainerId" bson:"_id,omitempty"`
+	Trainer     string `json:"trainer" bson:"trainer,omitempty"`
 	Name        string `json:"name" bson:"name"`
 	Description string `json:"description" bson:"description"`
 	StartTime   string `json:"startTime" bson:"startTime"`
 	EndTime     string `json:"endTime" bson:"endTime"`
 	Type        string `json:"type" bson:"type"`
+	Date        string `json:"date" bson:"date"`
+	Training    string `json:"training" bson:"training"`
 	MaxClients  int    `json:"maxClients" bson:"maxClients"`
 }
 
