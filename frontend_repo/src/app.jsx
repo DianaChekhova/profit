@@ -42,6 +42,10 @@ function App() {
           path='coach'
           element={<CoachPage />}
         />
+        <Route
+          path='user'
+          element={<CoachPage />}
+        />
       </Routes>
     </div>
   );
