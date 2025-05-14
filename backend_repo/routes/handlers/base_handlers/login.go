@@ -36,17 +36,17 @@ func (ctrl *BaseController) LoginHandler(w http.ResponseWriter, r *http.Request)
 		backendController.WriteJSONResponse(
 			w,
 			http.StatusBadRequest,
-			"Invalid input",
+			err.Error(),
 		)
 		return
 	}
 
-	token, err, code := ctrl.loginByRole(r.Context(), req)
+	token, role, err, code := ctrl.loginByRole(r.Context(), req)
 	if err != nil {
 		backendController.WriteJSONResponse(
 			w,
 			code,
-			"Invalid input",
+			err.Error(),
 		)
 	}
 
@@ -55,38 +55,38 @@ func (ctrl *BaseController) LoginHandler(w http.ResponseWriter, r *http.Request)
 	backendController.WriteJSONResponse(
 		w,
 		http.StatusOK,
-		map[string]string{"Token": token},
+		map[string]string{"token": token, "role": role},
 	)
 }
 
-func (ctrl *BaseController) loginByRole(ctx context.Context, req AuthBody) (string, error, int) {
+func (ctrl *BaseController) loginByRole(ctx context.Context, req AuthBody) (string, string, error, int) {
 	// 1. Пробуем найти пользователя среди обычных пользователей
-	user, err := ctrl.userRepo.GetUserByEmail(ctx, req.Email)
+	user, err := ctrl.userRepo.GetUserByEmail(ctx, req.Username)
 	if err == nil {
 		// Проверяем пароль
 		if bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password)) == nil {
 			token, err := jwt_token.GenerateToken(user.ID, models.UserRole)
-			return token, err, http.StatusOK
+			return token, models.UserRole, err, http.StatusOK
 		}
 	}
 	// 2. Пробуем среди админов
-	admin, err := ctrl.adminRepo.GetAdminByEmail(ctx, req.Email)
+	admin, err := ctrl.adminRepo.GetAdminByEmail(ctx, req.Username)
 	if err == nil {
 		if bcrypt.CompareHashAndPassword([]byte(admin.Password), []byte(req.Password)) == nil {
 			token, err := jwt_token.GenerateToken(admin.ID, models.AdminRole)
-			return token, err, http.StatusOK
+			return token, models.AdminRole, err, http.StatusOK
 		}
 	}
 	// 3. Пробуем среди тренеров
-	trainer, err := ctrl.trainerRepo.GetTrainerByEmail(ctx, req.Email)
+	trainer, err := ctrl.trainerRepo.GetTrainerByEmail(ctx, req.Username)
 	if err == nil {
 		if bcrypt.CompareHashAndPassword([]byte(trainer.Password), []byte(req.Password)) == nil {
 			token, err := jwt_token.GenerateToken(trainer.ID, models.TrainerRole)
-			return token, err, http.StatusOK
+			return token, models.AdminRole, err, http.StatusOK
 		}
 	}
 	// Если не нашли или пароль не подошёл
-	return "", errors.New("invalid credentials"), http.StatusUnauthorized
+	return "", "", errors.New("invalid credentials"), http.StatusUnauthorized
 }
 
 func (ctrl *BaseController) loginUser(ctx context.Context, req AuthBody) (token string, err error, code int) {

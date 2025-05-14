@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"profit/routes/handlers/base_handlers"
+	"profit/routes/handlers/guests"
 	"profit/routes/handlers/subscription_handler"
 	"profit/routes/handlers/trainer_handlers"
 	"profit/routes/handlers/user_handler"
@@ -70,13 +71,17 @@ func InitRoutes(db *mongo.Database, ctx context.Context) http.Handler {
 	userController := user_handler.NewUserController(ctx, db)
 	trainerController := trainer_handlers.NewTrainerController(ctx, db)
 	subscriptionController := subscription_handler.NewSubscriptionController(ctx, db)
+	guestController := guests.NewGuestsController(ctx, db)
 
 	// Public routes
 	r.Group(func(r chi.Router) {
 		r.Post("/login", baseController.LoginHandler)
 		r.Post("/register", baseController.RegisterHandler)
-	})
+		r.Route("/guest", func(r chi.Router) {
+			r.Post("/suggestion", guestController.SaveSuggestion)
 
+		})
+	})
 	// Protected routes
 	r.Group(func(r chi.Router) {
 		r.Use(middleware.AuthMiddleware)
@@ -136,6 +141,12 @@ func InitRoutes(db *mongo.Database, ctx context.Context) http.Handler {
 				r.Post("/schedule/{id}/register", subscriptionController.RegisterForPersonalSession)
 				r.Delete("/schedule/{id}/register", subscriptionController.UnregisterFromPersonalSession)
 			})
+		})
+		r.Route("/suggestion", func(r chi.Router) {
+			r.Use(middleware.AdminMiddleware)
+			r.Get("/", guestController.GetSuggestions)
+			r.Put("/status", guestController.ChangeSuggestionActivity)
+			r.Delete("/{id}", guestController.DeleteSuggestion)
 		})
 	})
 
