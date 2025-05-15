@@ -24,10 +24,12 @@ func (c *UserController) AddUser(w http.ResponseWriter, r *http.Request) {
 	var resp models.User
 	if err := json.NewDecoder(r.Body).Decode(&resp); err != nil {
 		http.Error(w, "Database error", http.StatusInternalServerError)
+		return
 	}
 
 	if err := c.userRepo.CreateUser(c.ctx, &resp); err != nil {
 		http.Error(w, "Database error", http.StatusInternalServerError)
+		return
 	}
 	backendController.WriteJSONResponse(
 		w,

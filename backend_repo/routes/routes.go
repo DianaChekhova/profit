@@ -43,8 +43,8 @@ func InitRoutes(db *mongo.Database, ctx context.Context) http.Handler {
 	r := chi.NewRouter()
 
 	// Middleware
-	r.Use(chimiddleware.Logger)
 	r.Use(chimiddleware.Recoverer)
+	r.Use(chimiddleware.Logger)
 	r.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:3000", "http://localhost:5173"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
@@ -107,7 +107,7 @@ func InitRoutes(db *mongo.Database, ctx context.Context) http.Handler {
 			r.Put("/trainer/{id}", trainerController.TrainerUpdate)
 			r.Delete("/trainer/{id}", trainerController.TrainerDelete)
 
-			r.Put("/user", userController.UserUpdate)
+			r.Put("/user/{id}", userController.UserUpdate)
 			r.Post("/user", userController.AddUser)
 		})
 
