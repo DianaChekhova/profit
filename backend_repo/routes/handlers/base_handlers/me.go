@@ -75,5 +75,5 @@ func (ctrl *BaseController) Me(w http.ResponseWriter, r *http.Request) {
 		backendController.WriteJSONResponse(w, 400, "invalid role")
 	}
 
-	backendController.WriteJSONResponse(w, 200, MeResponse{entityName: entityName, role: role})
+	backendController.WriteJSONResponse(w, 200, &MeResponse{entityName: entityName, role: role})
 }
