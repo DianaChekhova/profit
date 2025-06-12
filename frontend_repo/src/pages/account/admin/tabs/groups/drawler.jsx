@@ -6,9 +6,8 @@ import {
   DrawerFooter,
   DrawerRoot,
 } from '../../../../../components/ui/drawer.jsx';
-import {useEffect, useMemo, useState} from 'react';
-import {Field} from '../../../../../components/ui/field.jsx';
-import {Box, createListCollection, Heading, Input} from '@chakra-ui/react';
+import {useEffect, useMemo, useRef, useState} from 'react';
+import {createListCollection, Heading, Input} from '@chakra-ui/react';
 import styles from '../../../../../components/user/authentication/modal/tabs/tabs.module.scss';
 import {InputGroup} from '../../../../../components/ui/input-group.jsx';
 import {
@@ -90,7 +89,6 @@ const GroupSessionsDrawler = (props) => {
     if (!drawlerForm.trainer || !drawlerForm.training || !drawlerForm.date || !drawlerForm.time) {
       return;
     }
-    console.log(drawlerForm);
     if (currentId) {
       updateSession(currentId, drawlerForm);
     } else {
@@ -117,6 +115,18 @@ const GroupSessionsDrawler = (props) => {
     }
   }, [currentId, sessions, prepareCoaches.items]);
 
+  const dateInputRef = useRef(null);
+
+  const handleClick = () => {
+    dateInputRef.current.showPicker();
+  };
+
+  const dateInputRef2 = useRef(null);
+
+  const handleClick2 = () => {
+    dateInputRef2.current.showPicker();
+  };
+
   return (
     <DrawerRoot
       open={isOpen}
@@ -132,118 +142,114 @@ const GroupSessionsDrawler = (props) => {
           >
             {currentId ? 'Редактировать тренировку' : 'Добавить тренировку'}
           </Heading>
-
-          <Box
-            fontWeight='500'
-            color='gray.700'
-            mb='4px'
+          <Heading
+            color='black'
+            fontSize='12px'
+            fontWeight={400}
           >
             Тренер
-          </Box>
+          </Heading>
           <InputGroup
             mb='24px'
             width='100%'
           >
-            <Field>
-              <SelectRoot
-                collection={coachesData}
-                size='sm'
-                color='black'
-                className={styles.select}
-                width='100%'
-                defaultValue={[drawlerForm.trainer]}
-                onChange={(e) => changeHandler(e, 'trainer')}
-              >
-                <SelectTrigger>
-                  <SelectValueText value={drawlerForm.trainer} />
-                </SelectTrigger>
-                <SelectContent className={styles.select}>
-                  {coachesData.items.map((coachItem) => (
-                    <SelectItem
-                      color='black'
-                      className={styles.selectItem}
-                      item={coachItem}
-                      value={[coachItem.value]}
-                      key={coachItem.value}
-                    >
-                      {coachItem.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </SelectRoot>
-            </Field>
+            <SelectRoot
+              collection={coachesData}
+              size='sm'
+              color='black'
+              className={styles.select}
+              width='100%'
+              defaultValue={[drawlerForm.trainer]}
+              onChange={(e) => changeHandler(e, 'trainer')}
+            >
+              <SelectTrigger>
+                <SelectValueText value={drawlerForm.trainer} />
+              </SelectTrigger>
+              <SelectContent className={styles.select}>
+                {coachesData.items.map((coachItem) => (
+                  <SelectItem
+                    color='black'
+                    className={styles.selectItem}
+                    item={coachItem}
+                    value={[coachItem.value]}
+                    key={coachItem.value}
+                  >
+                    {coachItem.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </SelectRoot>
           </InputGroup>
-
-          <Box
-            fontWeight='500'
-            color='gray.700'
-            mb='4px'
+          <Heading
+            color='black'
+            fontSize='12px'
+            fontWeight={400}
           >
             Тренировка
-          </Box>
+          </Heading>
           <InputGroup
             mb='16px'
             width='100%'
           >
-            <Field>
-              <SelectRoot
-                collection={groupClassesData}
-                size='sm'
-                color='black'
-                className={styles.select}
-                width='100%'
-                defaultValue={[drawlerForm.training]}
-                onChange={(e) => changeHandler(e, 'training')}
-              >
-                <SelectTrigger>
-                  <SelectValueText value={drawlerForm.training} />
-                </SelectTrigger>
-                <SelectContent className={styles.select}>
-                  {groupClassesData.items.map((coachItem) => (
-                    <SelectItem
-                      color='black'
-                      item={coachItem}
-                      className={styles.selectItem}
-                      key={coachItem.value}
-                      value={coachItem.value}
-                    >
-                      {coachItem.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </SelectRoot>
-            </Field>
+            <SelectRoot
+              collection={groupClassesData}
+              size='sm'
+              color='black'
+              className={styles.select}
+              width='100%'
+              defaultValue={[drawlerForm.training]}
+              onChange={(e) => changeHandler(e, 'training')}
+            >
+              <SelectTrigger>
+                <SelectValueText value={drawlerForm.training} />
+              </SelectTrigger>
+              <SelectContent className={styles.select}>
+                {groupClassesData.items.map((coachItem) => (
+                  <SelectItem
+                    color='black'
+                    item={coachItem}
+                    className={styles.selectItem}
+                    key={coachItem.value}
+                    value={coachItem.value}
+                  >
+                    {coachItem.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </SelectRoot>
           </InputGroup>
 
-          <Box
-            fontWeight='500'
-            color='gray.700'
-            mb='4px'
+          <Heading
+            color='black'
+            fontSize='12px'
+            fontWeight={400}
           >
             Дата
-          </Box>
+          </Heading>
           <Input
             type='date'
             value={drawlerForm.date}
             mb='16px'
+            ref={dateInputRef2}
+            onClick={handleClick2}
             onChange={(e) => changeHandler(e, 'date')}
           />
-
-          <Box
-            fontWeight='500'
-            color='gray.700'
-            mb='4px'
+          <Heading
+            color='black'
+            fontSize='12px'
+            fontWeight={400}
           >
             Время
-          </Box>
+          </Heading>
           <Input
             type='time'
             value={drawlerForm.time}
+            ref={dateInputRef}
+            onClick={handleClick}
             mb='16px'
             onChange={(e) => changeHandler(e, 'time')}
           />
         </DrawerBody>
-
         <DrawerFooter>
           <DrawerActionTrigger asChild>
             <Button variant='outline'>Отменить</Button>

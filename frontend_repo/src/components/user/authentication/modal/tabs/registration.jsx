@@ -124,7 +124,9 @@ function RegistrationTab(props) {
       <RadioGroup
         defaultValue='user'
         onChange={(e) => changeLoginForm(e, 'role')}
-        variant='subtle'
+        variant='outline'
+        colorPalette='gray'
+        size='sm'
         mb='4'
       >
         <HStack

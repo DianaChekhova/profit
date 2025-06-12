@@ -1,5 +1,5 @@
 import {Box, Portal, Stack, Flex, Input, createListCollection} from '@chakra-ui/react';
-import {useState} from 'react';
+import {useRef, useState} from 'react';
 import {SelectContent, SelectItem, SelectRoot, SelectTrigger, SelectValueText} from '../ui/select.jsx';
 import {Field} from '../ui/field.jsx';
 import {Button} from '../ui/button.jsx';
@@ -85,6 +85,18 @@ function TrainingSubscriptionModal({closeModalHandler, individual}) {
     }, 1000);
   };
 
+  const dateInputRef = useRef(null);
+
+  const handleClick = () => {
+    dateInputRef.current.showPicker();
+  };
+
+  const dateInputRef2 = useRef(null);
+
+  const handleClick2 = () => {
+    dateInputRef2.current.showPicker();
+  };
+
   return (
     <Portal>
       <div
@@ -122,7 +134,7 @@ function TrainingSubscriptionModal({closeModalHandler, individual}) {
                 color='black'
                 mb='16px'
               >
-                {!individual ? 'и менеджер свяжется с вам' : 'когда вы хотите записаться'} и
+                {!individual ? 'и менеджер свяжется с вам' : 'когда вы хотите записаться'}
               </Box>
             </Box>
             <Box
@@ -246,6 +258,8 @@ function TrainingSubscriptionModal({closeModalHandler, individual}) {
                   className={styles.formInput}
                   value={form.date}
                   type='date'
+                  ref={dateInputRef}
+                  onClick={handleClick}
                   onChange={(e) => changeForm(e, 'date')}
                   placeholder='Введите дату записи'
                 />
@@ -267,6 +281,8 @@ function TrainingSubscriptionModal({closeModalHandler, individual}) {
                   className={styles.formInput}
                   value={form.time}
                   type='time'
+                  ref={dateInputRef2}
+                  onClick={handleClick2}
                   onChange={(e) => changeForm(e, 'time')}
                   placeholder='Введите время записи'
                 />

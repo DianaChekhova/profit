@@ -11,7 +11,7 @@ import GroupScheduleService from '../../../../../service/adminTab/GroupScheduleS
 const GroupSessions = observer(() => {
   const [isOpen, setOpen] = useState(false);
   const store = useMemo(() => new BaseAdminStore(new GroupScheduleService(), true), []);
-  console.log(store.coachesList);
+
   return (
     <Stack spacing={4}>
       <Skeleton

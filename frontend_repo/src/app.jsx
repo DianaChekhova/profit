@@ -8,6 +8,7 @@ import Contacts from './pages/landing/contacts/index.jsx';
 import Navigator from './components/navigator/index.jsx';
 import AdminPage from './pages/account/admin/index.jsx';
 import CoachPage from './pages/account/coach/index.jsx';
+import UserPage from './pages/account/user/index.jsx';
 
 function App() {
   return (
@@ -44,7 +45,7 @@ function App() {
         />
         <Route
           path='user'
-          element={<CoachPage />}
+          element={<UserPage />}
         />
       </Routes>
     </div>

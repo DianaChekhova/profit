@@ -4,7 +4,7 @@ import {RxCross2} from 'react-icons/rx';
 import {Button} from '../../../components/ui/button.jsx';
 import {InputGroup} from '../../../components/ui/input-group.jsx';
 import {Field} from '../../../components/ui/field.jsx';
-import {useState} from 'react';
+import {useRef, useState} from 'react';
 
 function SubsModal(props) {
   const {closeModalHandler} = props;
@@ -31,6 +31,18 @@ function SubsModal(props) {
     setLoading(true);
     // Здесь можно добавить валидацию и отправку формы
     setTimeout(() => setLoading(false), 1000);
+  };
+
+  const dateInputRef = useRef(null);
+
+  const handleClick = () => {
+    dateInputRef.current.showPicker();
+  };
+
+  const dateInputRef2 = useRef(null);
+
+  const handleClick2 = () => {
+    dateInputRef2.current.showPicker();
   };
 
   return (

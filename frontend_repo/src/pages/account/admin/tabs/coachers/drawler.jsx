@@ -6,7 +6,7 @@ import {
   DrawerFooter,
   DrawerRoot,
 } from '../../../../../components/ui/drawer.jsx';
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Field} from '../../../../../components/ui/field.jsx';
 import {Heading, Input} from '@chakra-ui/react';
 import styles from '../../../../../components/user/authentication/modal/tabs/tabs.module.scss';
@@ -117,44 +117,71 @@ const TrainersDrawler = (props) => {
             Редактировать тренера
           </Heading>
           <Heading color='black'>Личные данные</Heading>
-          <Field label='Имя'>
-            <Input
-              className={styles.formInput}
-              type='text'
-              value={drawlerForm.name}
-              onChange={(e) => changeHandler(e, 'name')}
-              placeholder='Введите имя'
-            />
-          </Field>
-          <Field label='Специализация'>
-            <Input
-              className={styles.formInput}
-              type='text'
-              value={drawlerForm.specialty}
-              onChange={(e) => changeHandler(e, 'specialty')}
-              placeholder='Введите специализацию'
-            />
-          </Field>
-          <Field label='Номер телефона'>
-            <Input
-              className={styles.formInput}
-              type='phone'
-              value={drawlerForm.phone}
-              onChange={(e) => changeHandler(e, 'phone')}
-              placeholder='Введите номер телефона'
-            />
-          </Field>
-          <Field label='Email'>
-            <Input
-              className={styles.formInput}
-              type='email'
-              value={drawlerForm.email}
-              onChange={(e) => changeHandler(e, 'email')}
-              placeholder='Введите Email'
-            />
-          </Field>
+          <Heading
+            color='black'
+            fontSize='12px'
+            fontWeight={400}
+          >
+            Имя
+          </Heading>
+          <Input
+            className={styles.formInput}
+            type='text'
+            value={drawlerForm.name}
+            onChange={(e) => changeHandler(e, 'name')}
+            placeholder='Введите имя'
+          />
+          <Heading
+            color='black'
+            fontSize='12px'
+            fontWeight={400}
+          >
+            Специализация
+          </Heading>
+          <Input
+            className={styles.formInput}
+            type='text'
+            value={drawlerForm.specialty}
+            onChange={(e) => changeHandler(e, 'specialty')}
+            placeholder='Введите специализацию'
+          />
+          <Heading
+            color='black'
+            fontSize='12px'
+            fontWeight={400}
+          >
+            Телефон
+          </Heading>
+          <Input
+            className={styles.formInput}
+            type='phone'
+            value={drawlerForm.phone}
+            onChange={(e) => changeHandler(e, 'phone')}
+            placeholder='Введите номер телефона'
+          />
+          <Heading
+            color='black'
+            fontSize='12px'
+            fontWeight={400}
+          >
+            Email
+          </Heading>
+          <Input
+            className={styles.formInput}
+            type='email'
+            value={drawlerForm.email}
+            onChange={(e) => changeHandler(e, 'email')}
+            placeholder='Введите Email'
+          />
           {!currentId && (
-            <Field label='Пароль'>
+            <>
+              <Heading
+                color='black'
+                fontSize='12px'
+                fontWeight={400}
+              >
+                Пароль
+              </Heading>
               <Input
                 className={styles.formInput}
                 type='password'
@@ -162,7 +189,7 @@ const TrainersDrawler = (props) => {
                 onChange={(e) => changeHandler(e, 'password')}
                 placeholder='Введите пароль'
               />
-            </Field>
+            </>
           )}
         </DrawerBody>
         <DrawerFooter>
