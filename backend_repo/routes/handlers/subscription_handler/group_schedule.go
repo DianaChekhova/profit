@@ -33,14 +33,14 @@ func (c *SubscriptionController) GetGroupSchedule(w http.ResponseWriter, r *http
 	opts := options.Find().SetSort(bson.D{{"startTime", 1}})
 	cursor, err := c.db.Collection("group_sessions").Find(c.ctx, bson.M{}, opts)
 	if err != nil {
-		http.Error(w, "Database error", http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	defer cursor.Close(c.ctx)
 
 	var sessions []GroupSession
 	if err = cursor.All(c.ctx, &sessions); err != nil {
-		http.Error(w, "Database error", http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -122,7 +122,7 @@ func (c *SubscriptionController) UpdateGroupSession(w http.ResponseWriter, r *ht
 
 	var req CreateGroupSessionRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -132,12 +132,12 @@ func (c *SubscriptionController) UpdateGroupSession(w http.ResponseWriter, r *ht
 
 	result, err := c.db.Collection("group_sessions").UpdateOne(c.ctx, bson.M{"_id": objectID}, update)
 	if err != nil {
-		http.Error(w, "Database error", http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	if result.MatchedCount == 0 {
-		http.Error(w, "Session not found", http.StatusNotFound)
+		http.Error(w, err.Error(), http.StatusNotFound)
 		return
 	}
 
