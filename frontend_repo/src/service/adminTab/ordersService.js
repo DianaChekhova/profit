@@ -2,7 +2,7 @@ import $api from '../index.jsx';
 
 export default class OrderService {
   async getItems() {
-    const response = await $api.get(`/users`);
+    const response = await $api.get(`/suggestion`);
     return response.data;
   }
 }

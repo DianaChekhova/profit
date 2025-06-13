@@ -49,33 +49,15 @@ const GroupSessionsDrawler = (props) => {
         })) || [],
     };
   }, [coaches]);
-  console.log(coaches);
+
   const coachesData = createListCollection(prepareCoaches);
-
-  const getDefaultTime = () => {
-    const now = new Date();
-    const currentHours = now.getHours();
-    let defaultDate = now.toISOString().split('T')[0];
-    let defaultTime = '12:00';
-
-    if (currentHours < 16) {
-      const futureTime = new Date(now.getTime() + 2 * 60 * 60 * 1000);
-      const hours = futureTime.getHours().toString().padStart(2, '0');
-      const minutes = futureTime.getMinutes().toString().padStart(2, '0');
-      defaultTime = `${hours}:${minutes}`;
-    }
-
-    return {defaultDate, defaultTime};
-  };
-
-  const {defaultDate, defaultTime} = getDefaultTime();
 
   const [drawlerForm, setForm] = useState({
     id: '',
     trainer: prepareCoaches.items[0]?.value || '',
     training: 'Баланс',
-    date: defaultDate,
-    time: defaultTime,
+    date: '',
+    time: '',
   });
 
   const changeHandler = (e, type) => {
@@ -104,13 +86,12 @@ const GroupSessionsDrawler = (props) => {
         setForm(session);
       }
     } else {
-      const {defaultDate, defaultTime} = getDefaultTime();
       setForm({
         id: '',
         trainer: prepareCoaches.items[0]?.value || '',
         training: 'Баланс',
-        date: defaultDate,
-        time: defaultTime,
+        date: '',
+        time: '',
       });
     }
   }, [currentId, sessions, prepareCoaches.items]);
