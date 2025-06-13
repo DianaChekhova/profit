@@ -127,13 +127,7 @@ func (c *SubscriptionController) UpdateGroupSession(w http.ResponseWriter, r *ht
 	}
 
 	update := bson.M{
-		"$set": bson.M{
-			"name":        req.Name,
-			"description": req.Description,
-			"startTime":   req.StartTime,
-			"endTime":     req.EndTime,
-			"maxClients":  req.MaxClients,
-		},
+		"$set": req,
 	}
 
 	result, err := c.db.Collection("group_sessions").UpdateOne(c.ctx, bson.M{"_id": objectID}, update)

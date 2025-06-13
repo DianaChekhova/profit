@@ -56,6 +56,7 @@ type CreateGroupSessionRequest struct {
 	Trainer     string `json:"trainer" bson:"trainer,omitempty"`
 	Name        string `json:"name" bson:"name"`
 	Description string `json:"description" bson:"description"`
+	Time        string `json:"time" bson:"time"`
 	StartTime   string `json:"startTime" bson:"startTime"`
 	EndTime     string `json:"endTime" bson:"endTime"`
 	Type        string `json:"type" bson:"type"`
