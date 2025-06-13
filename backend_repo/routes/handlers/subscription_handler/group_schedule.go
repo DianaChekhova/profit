@@ -81,7 +81,7 @@ func (c *SubscriptionController) CreateGroupSession(w http.ResponseWriter, r *ht
 		Trainer:      req.Trainer,
 		Name:         req.Name,
 		Description:  req.Description,
-		Time:         req.StartTime,
+		Time:         req.Time,
 		MaxClients:   req.MaxClients,
 		Date:         parsedDate,
 		Status:       "scheduled",
