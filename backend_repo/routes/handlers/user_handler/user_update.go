@@ -2,22 +2,22 @@ package user_handler
 
 import (
 	"encoding/json"
+	"github.com/go-chi/chi/v5"
 	"net/http"
 	"profit/models"
-	"profit/routes/auth/protection"
 	"profit/routes/handlers/backendController"
 )
 
 func (uc *UserController) UserUpdate(w http.ResponseWriter, r *http.Request) {
 	var user models.User
-	userID := r.Context().Value(protection.ContextUserIDKey).(string)
+	id := chi.URLParam(r, "id")
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	user.ID = userID
+	user.ID = id
 
 	if err := uc.userRepo.UpdateUser(r.Context(), &user); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
