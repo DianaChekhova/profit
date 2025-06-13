@@ -6,7 +6,7 @@ import {
   DrawerFooter,
   DrawerRoot,
 } from '../../../../../components/ui/drawer.jsx';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Field} from '../../../../../components/ui/field.jsx';
 import {Heading, Input} from '@chakra-ui/react';
 import styles from '../../../../../components/user/authentication/modal/tabs/tabs.module.scss';
@@ -25,41 +25,9 @@ const TrainersDrawler = (props) => {
   });
 
   const changeHandler = (e, type) => {
-    if (type === 'name') {
-      setForm((prevState) => {
-        return {...prevState, name: e.target.value};
-      });
-    }
-    if (type === 'lastName') {
-      setForm((prevState) => {
-        return {...prevState, lastName: e.target.value};
-      });
-    }
-    if (type === 'status') {
-      setForm((prevState) => {
-        return {...prevState, status: e.target.value};
-      });
-    }
-    if (type === 'specialty') {
-      setForm((prevState) => {
-        return {...prevState, specialty: e.target.value};
-      });
-    }
-    if (type === 'phone') {
-      setForm((prevState) => {
-        return {...prevState, phone: e.target.value};
-      });
-    }
-    if (type === 'email') {
-      setForm((prevState) => {
-        return {...prevState, email: e.target.value};
-      });
-    }
-    if (type === 'password') {
-      setForm((prevState) => {
-        return {...prevState, password: e.target.value};
-      });
-    }
+    setForm((prevState) => {
+      return {...prevState, [type]: e.target.value};
+    });
   };
 
   const handleSubmit = () => {
@@ -76,11 +44,11 @@ const TrainersDrawler = (props) => {
     setForm({
       id: ``,
       name: ``,
-      status: 'active',
-      specialty: '',
+      birth: '',
       phone: '',
       email: '',
-      password: '',
+      passport: '',
+      address: '',
     });
   };
 
@@ -91,15 +59,21 @@ const TrainersDrawler = (props) => {
         setForm({
           id: item.id,
           name: item.name,
-          status: item.status,
-          specialty: item.specialty,
+          passport: item.passport,
+          birth: item.birth,
           phone: item.phone,
           email: item.email,
-          password: '',
+          address: item.address,
         });
       }
     }
   }, [currentId, coaches]);
+
+  const dateInputRef = useRef(null);
+
+  const handleClick = () => {
+    dateInputRef.current.showPicker();
+  };
 
   return (
     <DrawerRoot
@@ -136,20 +110,6 @@ const TrainersDrawler = (props) => {
             fontSize='12px'
             fontWeight={400}
           >
-            Специализация
-          </Heading>
-          <Input
-            className={styles.formInput}
-            type='text'
-            value={drawlerForm.specialty}
-            onChange={(e) => changeHandler(e, 'specialty')}
-            placeholder='Введите специализацию'
-          />
-          <Heading
-            color='black'
-            fontSize='12px'
-            fontWeight={400}
-          >
             Телефон
           </Heading>
           <Input
@@ -158,6 +118,50 @@ const TrainersDrawler = (props) => {
             value={drawlerForm.phone}
             onChange={(e) => changeHandler(e, 'phone')}
             placeholder='Введите номер телефона'
+          />
+          <Heading
+            color='black'
+            fontSize='12px'
+            fontWeight={400}
+          >
+            Дата рождения
+          </Heading>
+          <Input
+            className={styles.formInput}
+            type='date'
+            ref={dateInputRef}
+            onClick={handleClick}
+            value={drawlerForm.birth}
+            onChange={(e) => changeHandler(e, 'birth')}
+            placeholder='Введите дату рождения'
+          />
+          <Heading
+            color='black'
+            fontSize='12px'
+            fontWeight={400}
+          >
+            Паспорт
+          </Heading>
+          <Input
+            className={styles.formInput}
+            type='text'
+            value={drawlerForm.passport}
+            onChange={(e) => changeHandler(e, 'passport')}
+            placeholder='Введите номер паспорта'
+          />
+          <Heading
+            color='black'
+            fontSize='12px'
+            fontWeight={400}
+          >
+            Адрес
+          </Heading>
+          <Input
+            className={styles.formInput}
+            type='text'
+            value={drawlerForm.address}
+            onChange={(e) => changeHandler(e, 'address')}
+            placeholder='Введите адресс'
           />
           <Heading
             color='black'
@@ -173,24 +177,6 @@ const TrainersDrawler = (props) => {
             onChange={(e) => changeHandler(e, 'email')}
             placeholder='Введите Email'
           />
-          {!currentId && (
-            <>
-              <Heading
-                color='black'
-                fontSize='12px'
-                fontWeight={400}
-              >
-                Пароль
-              </Heading>
-              <Input
-                className={styles.formInput}
-                type='password'
-                value={drawlerForm.password}
-                onChange={(e) => changeHandler(e, 'password')}
-                placeholder='Введите пароль'
-              />
-            </>
-          )}
         </DrawerBody>
         <DrawerFooter>
           <DrawerActionTrigger asChild>

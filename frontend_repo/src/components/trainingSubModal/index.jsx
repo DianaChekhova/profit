@@ -82,6 +82,9 @@ function TrainingSubscriptionModal({closeModalHandler, individual}) {
     setTimeout(() => {
       setDone(true);
       setLoading(false);
+      setTimeout(() => {
+        closeModalHandler();
+      }, 500);
     }, 1000);
   };
 

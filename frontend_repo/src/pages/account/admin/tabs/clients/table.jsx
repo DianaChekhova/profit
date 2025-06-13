@@ -35,7 +35,7 @@ const ClientsTable = observer((props) => {
             <Table.ColumnHeader>Статус абонемента</Table.ColumnHeader>
             <Table.ColumnHeader>Дата рождения</Table.ColumnHeader>
             <Table.ColumnHeader>Паспорт</Table.ColumnHeader>
-            <Table.ColumnHeader>Адрес</Table.ColumnHeader>
+            <Table.ColumnHeader textAlign='center'>Адрес</Table.ColumnHeader>
             <Table.ColumnHeader>Телефон</Table.ColumnHeader>
             <Table.ColumnHeader>Email</Table.ColumnHeader>
             <Table.ColumnHeader textAlign='center'>Действия</Table.ColumnHeader>
@@ -46,10 +46,10 @@ const ClientsTable = observer((props) => {
             users.map((item) => (
               <Table.Row key={item.email}>
                 <Table.Cell>{item.name}</Table.Cell>
-                <Table.Cell>{item.status}</Table.Cell>
+                <Table.Cell>{item.subscription?.status === 'active' ? 'Активен' : 'Заморожен'}</Table.Cell>
                 <Table.Cell>{item.birth}</Table.Cell>
                 <Table.Cell>{item.passport}</Table.Cell>
-                <Table.Cell>{item.address}</Table.Cell>
+                <Table.Cell textAlign='center'>{item.address}</Table.Cell>
                 <Table.Cell>{item.phone}</Table.Cell>
                 <Table.Cell>{item.email}</Table.Cell>
                 <Table.Cell width='100px'>

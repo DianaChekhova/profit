@@ -33,9 +33,11 @@ const TrainersTable = observer((props) => {
         <Table.Header>
           <Table.Row>
             <Table.ColumnHeader>ФИО</Table.ColumnHeader>
-            <Table.ColumnHeader>Специализация</Table.ColumnHeader>
+            <Table.ColumnHeader>Дата рождения</Table.ColumnHeader>
+            <Table.ColumnHeader>Паспорт</Table.ColumnHeader>
+            <Table.ColumnHeader textAlign='center'>Адрес</Table.ColumnHeader>
+            <Table.ColumnHeader>Телефон</Table.ColumnHeader>
             <Table.ColumnHeader>Email</Table.ColumnHeader>
-            <Table.ColumnHeader textAlign='center'>Действия</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body className={styles.tableBody}>
@@ -43,7 +45,10 @@ const TrainersTable = observer((props) => {
             coaches.map((item) => (
               <Table.Row key={item.id}>
                 <Table.Cell>{item.name}</Table.Cell>
-                <Table.Cell>{item.specialty}</Table.Cell>
+                <Table.Cell>{item.birth}</Table.Cell>
+                <Table.Cell>{item.passport}</Table.Cell>
+                <Table.Cell textAlign='center'>{item.address}</Table.Cell>
+                <Table.Cell>{item.phone}</Table.Cell>
                 <Table.Cell>{item.email}</Table.Cell>
                 <Table.Cell width='100px'>
                   <Box

@@ -33,7 +33,13 @@ const ClientsDrawler = (props) => {
 
   const changeSubscription = (event, type) => {
     setForm((prevState) => {
-      return {...prevState, subscription: {...prevState.subscription, [type]: event.target.value}};
+      return {
+        ...prevState,
+        subscription: {
+          ...prevState.subscription,
+          [type]: parseInt(event.target.value) ? parseInt(event.target.value) : event.target.value,
+        },
+      };
     });
   };
 

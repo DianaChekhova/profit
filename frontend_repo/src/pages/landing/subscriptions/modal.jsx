@@ -30,7 +30,10 @@ function SubsModal(props) {
   const handleSubmit = () => {
     setLoading(true);
     // Здесь можно добавить валидацию и отправку формы
-    setTimeout(() => setLoading(false), 1000);
+    setTimeout(() => {
+      setLoading(false);
+      closeModalHandler();
+    }, 1000);
   };
 
   const dateInputRef = useRef(null);
