@@ -45,7 +45,7 @@ const GroupSessionsTable = observer((props) => {
               <Table.Row key={session.id}>
                 <Table.Cell>{session.training}</Table.Cell>
                 <Table.Cell>{session.trainer}</Table.Cell>
-                <Table.Cell>{session.date}</Table.Cell>
+                <Table.Cell>{new Date(session.date).toLocaleDateString('ru-RU')}</Table.Cell>
                 <Table.Cell>{session.time}</Table.Cell>
                 <Table.Cell width='100px'>
                   <Box
