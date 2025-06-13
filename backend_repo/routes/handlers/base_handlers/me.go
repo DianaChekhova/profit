@@ -10,6 +10,7 @@ import (
 type MeResponse struct {
 	EntityName string      `json:"entity_name"`
 	Role       models.Role `json:"role"`
+	Oid        string      `json:"oid"`
 }
 
 // Me
@@ -34,6 +35,7 @@ func (ctrl *BaseController) Me(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var entityName string
+	var oidstr string
 	switch role {
 	case models.UserRole:
 		user, err := ctrl.userRepo.GetUserByID(r.Context(), entityOid)
@@ -46,7 +48,7 @@ func (ctrl *BaseController) Me(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		entityName = user.UserName
-
+		oidstr = user.ID
 	case models.TrainerRole:
 		trainer, err := ctrl.trainerRepo.GetTrainerByID(r.Context(), entityOid)
 		if err != nil {
@@ -59,7 +61,7 @@ func (ctrl *BaseController) Me(w http.ResponseWriter, r *http.Request) {
 		}
 
 		entityName = trainer.Name
-
+		oidstr = trainer.ID
 	case models.AdminRole:
 		admin, err := ctrl.adminRepo.GetAdminByOID(r.Context(), entityOid)
 		if err != nil {
@@ -70,10 +72,12 @@ func (ctrl *BaseController) Me(w http.ResponseWriter, r *http.Request) {
 			backendController.WriteJSONResponse(w, 400, "admin not found")
 			return
 		}
+
 		entityName = admin.Name
+		oidstr = admin.ID
 	default:
 		backendController.WriteJSONResponse(w, 400, "invalid role")
 	}
 
-	backendController.WriteJSONResponse(w, 200, &MeResponse{EntityName: entityName, Role: role})
+	backendController.WriteJSONResponse(w, 200, &MeResponse{EntityName: entityName, Role: role, Oid: oidstr})
 }
