@@ -44,6 +44,6 @@ func (s *SuggestRepository) ChangeSuggestionActivity(oid primitive.ObjectID, isA
 }
 
 func (s *SuggestRepository) DeleteSuggestion(oid primitive.ObjectID) error {
-	_, err := s.collection.DeleteOne(context.Background(), bson.M{"oid": oid})
+	_, err := s.collection.DeleteOne(context.Background(), bson.M{"_id": oid})
 	return err
 }
