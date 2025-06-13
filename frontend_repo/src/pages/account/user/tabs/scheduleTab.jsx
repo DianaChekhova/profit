@@ -1,11 +1,14 @@
-import {Heading, Button, HStack, VStack, Box, Grid, Image, Text} from '@chakra-ui/react';
-import React, {useState} from 'react';
+import {Heading, Button, HStack, VStack, Box, Grid, Text} from '@chakra-ui/react';
+import React, {useMemo, useState} from 'react';
 import {observer} from 'mobx-react-lite';
 import GroupSessionsDrawler from '../../admin/tabs/groups/drawler.jsx';
+import BaseAdminStore from '../../admin/tabs/adminStore.jsx';
+import UserPersonalScheduleService from '../../../../service/userTab/scheduleService.jsx';
 
 const ScheduleTab = () => {
-  const cards = ['', '', '', ''];
   const [isOpen, setOpen] = useState(false);
+  const store = useMemo(() => new BaseAdminStore(new UserPersonalScheduleService(), true), []);
+
   return (
     <>
       <VStack>
@@ -46,7 +49,7 @@ const ScheduleTab = () => {
             gap={6}
             alignItems='stretch'
           >
-            {cards.map((coach, idx) => (
+            {store.itemsList.map((coach, idx) => (
               <Box
                 key={idx}
                 bg='white'
@@ -67,13 +70,6 @@ const ScheduleTab = () => {
                   p='20px'
                   pb='0'
                 >
-                  <Box
-                    bg='#E0E0E0'
-                    borderRadius='10px'
-                    boxSize='56px'
-                    minW='56px'
-                    minH='56px'
-                  />
                   <VStack
                     align='flex-start'
                     spacing={1}
@@ -85,7 +81,15 @@ const ScheduleTab = () => {
                       fontWeight={500}
                       mb='2px'
                     >
-                      24.11.2024
+                      {coach.date ? new Date(coach.date).toLocaleDateString('ru-RU') : ''}
+                    </Text>
+                    <Text
+                      fontSize='16px'
+                      color='gray.400'
+                      fontWeight={500}
+                      mb='2px'
+                    >
+                      {coach.time ? coach.time : ''}
                     </Text>
                     <Text
                       fontSize='28px'
@@ -93,7 +97,7 @@ const ScheduleTab = () => {
                       color='black'
                       lineHeight='1'
                     >
-                      Название тренировки
+                      {coach.training || 'Без названия'}
                     </Text>
                   </VStack>
                   <Button
@@ -106,6 +110,9 @@ const ScheduleTab = () => {
                     px={5}
                     py={2}
                     _hover={{bg: '#E9D8FD'}}
+                    onClick={() => {
+                      store.removeItem(coach.id);
+                    }}
                     ml='auto'
                   >
                     Отменить
@@ -125,14 +132,14 @@ const ScheduleTab = () => {
                     fontSize='18px'
                     fontWeight={500}
                   >
-                    Тренер: Фамилия Имя
+                    Тренер: {coach.trainer || 'Не указан'}
                   </Text>
                   <Text
                     color='gray.400'
                     fontSize='18px'
                     fontWeight={500}
                   >
-                    Группа до 20 человек
+                    Индивидуальная тренировка
                   </Text>
                 </HStack>
               </Box>
@@ -140,13 +147,12 @@ const ScheduleTab = () => {
           </Grid>
         </Box>
         <GroupSessionsDrawler
+          sessions={store.itemsList}
+          coaches={store.coachesList}
+          addSession={store.addItem}
+          updateSession={store.updateItem}
           isOpen={isOpen}
           setOpen={setOpen}
-          coaches={coaches}
-          currentId={currentId}
-          sessions={sessions}
-          addSession={updateSession}
-          updateSession={updateSession}
         />
       </VStack>
     </>

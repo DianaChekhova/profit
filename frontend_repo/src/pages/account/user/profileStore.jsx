@@ -21,7 +21,7 @@ export default class ProfileStore {
   }
 
   setProfile = (profile) => {
-    this.profile = profile; // Исправлено с this.Profile на this.profile
+    this.profile = profile;
   };
 
   setLoading = (bool) => {

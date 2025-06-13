@@ -8,6 +8,7 @@ import UserProfile from './aboniment.jsx';
 import ProfileStore from './profileStore.jsx';
 import ProfileService from '../../../service/userTab/profileService.jsx';
 import ScheduleTab from './tabs/scheduleTab.jsx';
+import GroupScheduleTab from './tabs/groupScheduleTab.jsx';
 
 function UserPage() {
   const {store} = useContext(Context);
@@ -79,7 +80,9 @@ function UserPage() {
           <Tabs.Content value='tab-2'>
             <ScheduleTab />
           </Tabs.Content>
-          <Tabs.Content value='tab-3'></Tabs.Content>
+          <Tabs.Content value='tab-3'>
+            <GroupScheduleTab />
+          </Tabs.Content>
         </Tabs.Root>
       </Stack>
     </Box>
