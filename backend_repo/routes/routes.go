@@ -77,7 +77,9 @@ func InitRoutes(db *mongo.Database, ctx context.Context) http.Handler {
 	r.Group(func(r chi.Router) {
 		r.Post("/login", baseController.LoginHandler)
 		r.Post("/register", baseController.RegisterHandler)
-		r.Post("/suggestion", guestController.SaveSuggestion)
+		r.Route("/guest", func(r chi.Router) {
+			r.Post("/suggestion", guestController.SaveSuggestion)
+		})
 	})
 	// Protected routes
 	r.Group(func(r chi.Router) {
