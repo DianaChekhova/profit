@@ -37,7 +37,7 @@ const GroupTable = observer(() => {
               {store.itemsList.length &&
                 store.itemsList.map((item) => (
                   <Table.Row key={item.name}>
-                    <Table.Cell>{item.name}</Table.Cell>
+                    <Table.Cell>{item.training}</Table.Cell>
                     <Table.Cell>{item.date}</Table.Cell>
                     <Table.Cell>{item.time}</Table.Cell>
                   </Table.Row>

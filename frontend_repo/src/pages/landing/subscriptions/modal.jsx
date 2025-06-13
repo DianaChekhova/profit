@@ -4,7 +4,7 @@ import {RxCross2} from 'react-icons/rx';
 import {Button} from '../../../components/ui/button.jsx';
 import {InputGroup} from '../../../components/ui/input-group.jsx';
 import {Field} from '../../../components/ui/field.jsx';
-import {useRef, useState} from 'react';
+import {useState} from 'react';
 
 function SubsModal(props) {
   const {closeModalHandler} = props;
@@ -27,25 +27,28 @@ function SubsModal(props) {
     setForm((prev) => ({...prev, [type]: e.target.value}));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setLoading(true);
-    // Здесь можно добавить валидацию и отправку формы
-    setTimeout(() => {
+    try {
+      const response = await fetch('http://localhost:8080/suggestion', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      });
+      if (response.ok) {
+        setForm({name: '', phone: '', email: ''});
+        closeModalHandler();
+      } else {
+        // Можно добавить обработку ошибки
+        setErrorForm({type: 'server', text: 'Ошибка отправки'});
+      }
+    } catch (e) {
+      setErrorForm({type: 'server', text: 'Ошибка сети'});
+    } finally {
       setLoading(false);
-      closeModalHandler();
-    }, 1000);
-  };
-
-  const dateInputRef = useRef(null);
-
-  const handleClick = () => {
-    dateInputRef.current.showPicker();
-  };
-
-  const dateInputRef2 = useRef(null);
-
-  const handleClick2 = () => {
-    dateInputRef2.current.showPicker();
+    }
   };
 
   return (
@@ -73,16 +76,15 @@ function SubsModal(props) {
                 as='h2'
                 fontWeight='bold'
                 fontSize='24px'
-                color='black'
+                color='gray.900'
                 mb='4px'
               >
                 Пожалуйста, заполните анкету
               </Box>
               <Box
                 as='h2'
-                fontWeight='bold'
                 fontSize='24px'
-                color='black'
+                color='gray.900'
                 mb='16px'
               >
                 и менеджер свяжется с вами
