@@ -21,7 +21,7 @@ const statusData = createListCollection({
 });
 
 export const AbonimentBlock = (props) => {
-  const {needStatus, formData, setForm} = props;
+  const {needStatus, formData, setForm, mainPage} = props;
 
   const handleChange = (e, type) => {
     setForm(e, type);
@@ -33,15 +33,17 @@ export const AbonimentBlock = (props) => {
       borderRadius='lg'
       mt='24px'
     >
-      <Heading
-        as='h2'
-        fontSize='24px'
-        fontWeight={400}
-        color='black'
-        mb={6}
-      >
-        Абонемент
-      </Heading>
+      {!mainPage && (
+        <Heading
+          as='h2'
+          fontSize='24px'
+          fontWeight={400}
+          color='black'
+          mb={6}
+        >
+          Абонемент
+        </Heading>
+      )}
       <VStack
         gap='24px'
         align='stretch'
@@ -50,7 +52,7 @@ export const AbonimentBlock = (props) => {
           <div>
             <Heading
               color='black'
-              fontSize='12px'
+              fontSize={!mainPage ? '12px' : '24px'}
               fontWeight={400}
             >
               Статус абонемента
@@ -86,8 +88,9 @@ export const AbonimentBlock = (props) => {
         <div>
           <Heading
             color='black'
-            fontSize='12px'
+            fontSize={!mainPage ? '12px' : '24px'}
             fontWeight={400}
+            mb={!mainPage ? '' : '24px'}
           >
             Выберите срок абонемента
           </Heading>
@@ -130,9 +133,9 @@ export const AbonimentBlock = (props) => {
             color='black'
             mb='16px'
             fontWeight={400}
-            fontSize='16px'
+            fontSize={!mainPage ? '16px' : '24px'}
           >
-            Выберите время занятий:
+            Выберите время занятий
           </Heading>
           <VStack
             align={'flex-start'}
@@ -167,7 +170,7 @@ export const AbonimentBlock = (props) => {
             color='black'
             mb='16px'
             fontWeight={400}
-            fontSize='16px'
+            fontSize={!mainPage ? '16px' : '24px'}
           >
             Включить ли бассейн:
           </Heading>

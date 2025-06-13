@@ -30,7 +30,7 @@ const groupClassesData = createListCollection({
     {label: 'ABS + стретчинг', value: 'ABS + стретчинг'},
     {label: 'Баланс', value: 'Баланс'},
     {label: 'Йога', value: 'Йога'},
-    {label: 'Функциональные', value: 'Функциональная'},
+    {label: 'Функциональная', value: 'Функциональная'},
     {label: 'Зумба', value: 'Зумба'},
     {label: 'Аэробика', value: 'Аэробика'},
     {label: 'Бокс', value: 'Бокс'},
