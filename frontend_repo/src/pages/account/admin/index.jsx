@@ -8,6 +8,7 @@ import Clients from './tabs/clients/index.jsx';
 import Trainers from './tabs/coachers/index.jsx';
 import GroupClasses from './tabs/groups/index.jsx';
 import {observer} from 'mobx-react-lite';
+import Orders from './tabs/orders/index.jsx';
 
 function AdminPage() {
   const {store} = useContext(Context);
@@ -87,6 +88,12 @@ function AdminPage() {
                 >
                   Групповые тренеровки
                 </Tabs.Trigger>
+                <Tabs.Trigger
+                  fontSize='lg'
+                  value='tab-4'
+                >
+                  Заявки
+                </Tabs.Trigger>
               </Tabs.List>
             </Flex>
           </Theme>
@@ -98,6 +105,9 @@ function AdminPage() {
           </Tabs.Content>
           <Tabs.Content value='tab-3'>
             <GroupClasses />
+          </Tabs.Content>
+          <Tabs.Content value='tab-4'>
+            <Orders />
           </Tabs.Content>
         </Tabs.Root>
       </Stack>
