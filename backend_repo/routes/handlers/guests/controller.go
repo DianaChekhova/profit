@@ -38,11 +38,13 @@ func (g *GuestsController) SaveSuggestion(w http.ResponseWriter, r *http.Request
 	err := decoder.Decode(&suggestion)
 	if err != nil {
 		backendController.WriteJSONResponse(w, 400, err.Error())
+		return
 	}
 
 	err = g.suggestionRepository.SaveSuggestion(suggestion)
 	if err != nil {
 		backendController.WriteJSONResponse(w, 400, err.Error())
+		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
