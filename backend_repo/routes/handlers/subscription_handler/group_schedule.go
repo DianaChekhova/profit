@@ -2,15 +2,13 @@ package subscription_handler
 
 import (
 	"encoding/json"
-	"net/http"
-	"profit/routes/auth/protection"
-	"time"
-
 	"github.com/go-chi/chi/v5"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"net/http"
+	"profit/routes/auth/protection"
 )
 
 type ErrorResponse struct {
@@ -71,11 +69,6 @@ func (c *SubscriptionController) CreateGroupSession(w http.ResponseWriter, r *ht
 	//	http.Error(w, err.Error(), http.StatusBadRequest)
 	//	return
 	//}
-	parsedDate, err := time.Parse("2006-01-02", req.Date) // замените на ваш формат
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
 
 	session := GroupSession{
 		Trainer:      req.Trainer,
@@ -83,7 +76,7 @@ func (c *SubscriptionController) CreateGroupSession(w http.ResponseWriter, r *ht
 		Description:  req.Description,
 		Time:         req.Time,
 		MaxClients:   req.MaxClients,
-		Date:         parsedDate,
+		Date:         req.Date,
 		Status:       "scheduled",
 		TrainingType: req.Training,
 	}

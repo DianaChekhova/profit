@@ -30,16 +30,16 @@ type Membership struct {
 }
 
 type GroupSession struct {
-	ID           string    `json:"id" bson:"_id,omitempty"`
-	Trainer      string    `json:"trainer" bson:"trainer,omitempty"`
-	TrainingType string    `json:"training" bson:"training,omitempty"`
-	Name         string    `json:"name" bson:"name"`
-	Description  string    `json:"description" bson:"description"`
-	Time         string    `json:"time" bson:"time"`
-	Date         time.Time `json:"date" bson:"date"`
-	MaxClients   int       `json:"maxClients" bson:"maxClients"`
-	Status       string    `json:"status" bson:"status"`
-	Type         string    `json:"type" bson:"type"`
+	ID           string `json:"id" bson:"_id,omitempty"`
+	Trainer      string `json:"trainer" bson:"trainer,omitempty"`
+	TrainingType string `json:"training" bson:"training,omitempty"`
+	Name         string `json:"name" bson:"name"`
+	Description  string `json:"description" bson:"description"`
+	Time         string `json:"time" bson:"time"`
+	Date         string `json:"date" bson:"date"`
+	MaxClients   int    `json:"maxClients" bson:"maxClients"`
+	Status       string `json:"status" bson:"status"`
+	Type         string `json:"type" bson:"type"`
 }
 
 type PersonalSession struct {
