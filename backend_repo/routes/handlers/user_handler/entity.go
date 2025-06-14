@@ -39,6 +39,7 @@ type UserResponse struct {
 	BirthDate    string              `json:"birth"`
 	Passport     string              `json:"passport"`
 	Status       string              `json:"status"`
+	Pool         string              `json:"pool"`
 }
 
 func convertModelToUserResponse(user *models.User) *UserResponse {
@@ -53,6 +54,7 @@ func convertModelToUserResponse(user *models.User) *UserResponse {
 		Passport:     user.Passport,
 		Status:       user.Status,
 		PhoneNumber:  user.PhoneNumber,
+		Pool:         user.Pool,
 	}
 }
 

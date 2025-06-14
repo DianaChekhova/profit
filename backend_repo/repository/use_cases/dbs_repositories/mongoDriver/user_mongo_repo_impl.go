@@ -63,13 +63,6 @@ func (repo *UserMongoRepository) UsersList(ctx context.Context) ([]*models.User,
 	return users, cursor.Err()
 }
 
-func convertDtoUserToMgdb(u *models.User) *models.User {
-	return &models.User{
-		ID:       u.ID,
-		Email:    u.Email,
-		Password: u.Password,
-	}
-}
 func (repo *UserMongoRepository) UpdateUser(ctx context.Context, user *models.User) error {
 	oid, err := primitive.ObjectIDFromHex(user.ID)
 	if err != nil {
@@ -91,6 +84,7 @@ func (repo *UserMongoRepository) UpdateUser(ctx context.Context, user *models.Us
 		"birth":        user.BirthDate,
 		"passport":     user.Passport,
 		"status":       user.Status,
+		"pool":         user.Pool,
 	}
 
 	update := bson.M{"$set": updateData}

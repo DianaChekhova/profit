@@ -21,6 +21,7 @@ type User struct {
 	BirthDate    string       `json:"birth" bson:"birth"`
 	Passport     string       `json:"passport" bson:"passport"`
 	Status       string       `json:"status" json:"status"`
+	Pool         string       `bson:"pool" json:"pool"`
 }
 
 func (u User) Validate() error {
