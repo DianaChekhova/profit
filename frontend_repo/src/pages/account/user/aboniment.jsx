@@ -1,14 +1,16 @@
 import {Box, VStack, Heading, Text, Table, Button, Badge, HStack} from '@chakra-ui/react';
-import React from 'react';
+import React, {useMemo} from 'react';
 import styles from '../coach/coach.module.scss';
 import FreezeModal from './dependency/modal/freeze.jsx';
 import {observer} from 'mobx-react-lite';
 import AbonimentDrawler from './dependency/modal/drawler.jsx';
-import {AbonimentBlock} from '../../../components/abonimentBlock/index.jsx';
+import BaseAdminStore from '../admin/tabs/adminStore.jsx';
+import ProfileService from '../../../service/userTab/profileService.jsx';
 
 const UserProfile = ({profileStore}) => {
   const [freezeOpen, setFreezeOpen] = React.useState(false);
   const [drawlerOpen, setDrawlerOpen] = React.useState(false);
+  const store = useMemo(() => new BaseAdminStore(new ProfileService(), false), []);
 
   const closeModalHandler = () => {
     setFreezeOpen(false);
@@ -18,7 +20,8 @@ const UserProfile = ({profileStore}) => {
     setDrawlerOpen(false);
   };
 
-  const profileFields = profileStore.Profile;
+  const profileFields = store.itemsList;
+
   return (
     <>
       <HStack
@@ -59,7 +62,7 @@ const UserProfile = ({profileStore}) => {
                   minH='32px'
                   colorPalette='green'
                 >
-                  Активный
+                  {profileFields?.subscription?.status === 'active' ? 'Активный' : 'Заморожен'}
                 </Badge>
               </HStack>
 
@@ -67,7 +70,12 @@ const UserProfile = ({profileStore}) => {
                 color={'black'}
                 fontSize='16px'
               >
-                Действителен до 15.12.2024
+                Действителен до{' '}
+                {profileFields?.subscription?.duration
+                  ? new Date(
+                      new Date().setMonth(new Date().getMonth() + profileFields.subscription.duration)
+                    ).toLocaleDateString('ru-RU')
+                  : '15.12.2024'}
               </Text>
             </HStack>
 
@@ -80,13 +88,13 @@ const UserProfile = ({profileStore}) => {
                 fontWeight='bold'
                 fontSize='32px'
               >
-                Все включено
+                {profileFields?.subscription?.type === 'morning' ? 'Утренний' : 'Все включено'}
               </Text>
               <Text
                 color={'black'}
                 fontSize='32px'
               >
-                + бассейн
+                {profileFields?.subscription?.pool === 'yes' ? '+ бассейн' : ''}
               </Text>
             </VStack>
             <HStack spacing={4}>
@@ -150,7 +158,9 @@ const UserProfile = ({profileStore}) => {
               </Table.Row>
               <Table.Row>
                 <Table.ColumnHeader color='#969696'>Дата рождения</Table.ColumnHeader>
-                <Table.Cell textAlign='end'>{profileFields?.birth || '29.05.1999'}</Table.Cell>
+                <Table.Cell textAlign='end'>
+                  {profileFields?.birth ? new Date(profileFields.birth).toLocaleDateString('ru-RU') : '29.05.1999'}
+                </Table.Cell>
               </Table.Row>
               <Table.Row>
                 <Table.ColumnHeader color='#969696'>Паспорт</Table.ColumnHeader>
@@ -182,6 +192,8 @@ const UserProfile = ({profileStore}) => {
         <AbonimentDrawler
           setOpen={closeDrawerHandler}
           isOpen={drawlerOpen}
+          setItems={store.updateItem}
+          getItems={profileFields}
         />
       </HStack>
     </>

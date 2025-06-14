@@ -9,6 +9,68 @@ const ScheduleTab = () => {
   const [isOpen, setOpen] = useState(false);
   const store = useMemo(() => new BaseAdminStore(new UserPersonalScheduleService(), true), []);
 
+  const items = [
+    {
+      id: '684d924ab686cc370c60cbd3',
+      trainer: 'Новиков Антон',
+      training: 'Скульптинг',
+      name: '',
+      description: '',
+      time: '21:16',
+      date: '2025-05-27',
+      maxClients: 0,
+      status: 'scheduled',
+      type: '',
+    },
+    {
+      id: '684d92cdb686cc370c60cbd4',
+      trainer: 'Петренко Елена',
+      training: 'Баланс',
+      name: '',
+      description: '',
+      time: '22:18',
+      date: '2025-06-11',
+      maxClients: 0,
+      status: 'scheduled',
+      type: '',
+    },
+    {
+      id: '684d95d0b686cc370c60cbd6',
+      trainer: 'Соколов Михаил',
+      training: 'Йога',
+      name: '',
+      description: '',
+      time: '23:31',
+      date: '2025-06-03',
+      maxClients: 0,
+      status: 'scheduled',
+      type: '',
+    },
+    {
+      id: '684d9aa6570c68d6715668a8',
+      trainer: 'skeezmo@mail.ru',
+      training: 'Баланс',
+      name: 'Соловьёв Николай',
+      description: '',
+      time: '21:52',
+      date: '2025-06-18',
+      maxClients: 0,
+      status: 'scheduled',
+      type: '',
+    },
+    {
+      id: '684c57525dd4b5879ae13526',
+      trainer: 'SADSF',
+      training: 'Скульптинг',
+      name: '',
+      description: '',
+      time: '04:22',
+      date: '2025-06-13',
+      maxClients: 0,
+      status: 'scheduled',
+      type: '',
+    },
+  ];
   return (
     <>
       <VStack>
@@ -49,7 +111,7 @@ const ScheduleTab = () => {
             gap={6}
             alignItems='stretch'
           >
-            {store.itemsList.map((coach, idx) => (
+            {items.map((coach, idx) => (
               <Box
                 key={idx}
                 bg='white'
@@ -59,7 +121,7 @@ const ScheduleTab = () => {
                 display='flex'
                 flexDirection='column'
                 alignItems='stretch'
-                height='175px'
+                height='200px'
                 width='100%'
                 overflow='hidden'
                 border='1px solid #E2E8F0'
@@ -149,7 +211,7 @@ const ScheduleTab = () => {
         <GroupSessionsDrawler
           sessions={store.itemsList}
           coaches={store.coachesList}
-          addSession={store.addItem}
+          addSession={addItem}
           updateSession={store.updateItem}
           isOpen={isOpen}
           setOpen={setOpen}

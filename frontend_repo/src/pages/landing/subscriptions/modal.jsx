@@ -5,6 +5,7 @@ import {Button} from '../../../components/ui/button.jsx';
 import {InputGroup} from '../../../components/ui/input-group.jsx';
 import {Field} from '../../../components/ui/field.jsx';
 import {useState} from 'react';
+import $api from '../../../service/index.jsx';
 
 function SubsModal(props) {
   const {closeModalHandler} = props;
@@ -12,7 +13,7 @@ function SubsModal(props) {
   // Состояния для формы
   const [form, setForm] = useState({
     name: '',
-    phone: '',
+    number: '',
     email: '',
   });
 
@@ -30,15 +31,10 @@ function SubsModal(props) {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:8080/suggestion', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(form),
-      });
-      if (response.ok) {
-        setForm({name: '', phone: '', email: ''});
+      const response = await $api.post(`/guest/suggestion`, form);
+      console.log(response);
+      if (response.status === 200) {
+        setForm({name: '', number: '', email: ''});
         closeModalHandler();
       } else {
         // Можно добавить обработку ошибки
@@ -130,12 +126,12 @@ function SubsModal(props) {
               mb='16px'
               width='100%'
             >
-              <Field invalid={errorForm.type === 'phone'}>
+              <Field invalid={errorForm.type === 'number'}>
                 <Input
                   width='100%'
                   placeholder='+ 7 XXX XXX XX XX'
-                  value={form.phone}
-                  onChange={(e) => changeForm(e, 'phone')}
+                  value={form.number}
+                  onChange={(e) => changeForm(e, 'number')}
                 />
               </Field>
             </InputGroup>

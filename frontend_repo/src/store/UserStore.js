@@ -60,6 +60,7 @@ export default class UserStore {
       const response = await AuthService.me(token);
       this.setAuthenticated(true);
       this.setUser(response.data);
+      localStorage.setItem('oid', response.data.oid);
     } catch (error) {
       console.error('Get me error:', error.response?.data?.message || error.message);
       this.setAuthenticated(false);

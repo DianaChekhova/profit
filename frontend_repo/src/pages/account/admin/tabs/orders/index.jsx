@@ -7,7 +7,7 @@ import OrdersTable from './table.jsx';
 import OrderService from '../../../../../service/adminTab/ordersService.js';
 
 const Orders = observer(() => {
-  const store = useMemo(() => new BaseAdminStore(new OrderService(), true), []);
+  const store = useMemo(() => new BaseAdminStore(new OrderService(), false), []);
 
   return (
     <Stack spacing={4}>
@@ -17,8 +17,8 @@ const Orders = observer(() => {
         className={styles.tableStack}
       >
         <OrdersTable
-          removeSession={store.removeItem}
-          coaches={store.coachesList}
+          removeItem={store.removeItem}
+          coaches={store.itemsList}
         />
       </Skeleton>
       <Skeleton

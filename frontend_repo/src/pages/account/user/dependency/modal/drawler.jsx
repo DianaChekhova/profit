@@ -6,28 +6,44 @@ import {
   DrawerFooter,
   DrawerRoot,
 } from '../../../../../components/ui/drawer.jsx';
-import React, {useState} from 'react';
-import {Badge, Box, createListCollection, Heading, HStack, Text, VStack} from '@chakra-ui/react';
+import React, {useState, useEffect} from 'react';
+import {Badge, Box, Heading, HStack, Text, VStack} from '@chakra-ui/react';
 import {AbonimentBlock} from '../../../../../components/abonimentBlock/index.jsx';
 
 const AbonimentDrawler = (props) => {
-  const {isOpen, setOpen} = props;
-
+  const {isOpen, setOpen, getItems, setItems} = props;
   const [drawlerForm, setForm] = useState({
     subscription: {
-      status: 'freeze',
-      duration: '12',
-      type: 'morning',
-      pool: 'yes',
+      status: getItems?.subscription?.status || 'freeze',
+      duration: getItems?.subscription?.duration || '12',
+      type: getItems?.subscription?.type || 'morning',
+      pool: getItems?.subscription?.pool || 'yes',
     },
   });
+
   const changeSubscription = (event, type) => {
     setForm((prevState) => {
       return {...prevState, subscription: {...prevState.subscription, [type]: event.target.value}};
     });
   };
 
-  const handleSubmit = () => {};
+  useEffect(() => {
+    if (getItems) {
+      setForm({
+        subscription: {
+          status: getItems?.subscription?.status || 'freeze',
+          duration: getItems?.subscription?.duration || '12',
+          type: getItems?.subscription?.type || 'morning',
+          pool: getItems?.subscription?.pool || 'yes',
+        },
+      });
+    }
+  }, [getItems]);
+
+  const handleSubmit = () => {
+    setItems('', {...getItems, subscription: {...drawlerForm.subscription}});
+  };
+
   return (
     <DrawerRoot
       open={isOpen}
@@ -78,13 +94,21 @@ const AbonimentDrawler = (props) => {
                     minH='32px'
                     colorPalette='green'
                   >
-                    12 месяцев
+                    {`${
+                      drawlerForm?.subscription?.duration == 12
+                        ? '12 месяцев'
+                        : drawlerForm?.subscription?.duration == 6
+                          ? '6 месяцев'
+                          : drawlerForm?.subscription?.duration == 3
+                            ? '3 месяца'
+                            : '1 месяц'
+                    } `}
                   </Badge>
                   <Badge
                     minH='32px'
                     colorPalette='purple'
                   >
-                    Безлимит
+                    {`${drawlerForm?.subscription?.type == 'morning' ? 'Утренний' : 'Безлимит'} `}
                   </Badge>
                 </HStack>
               </HStack>
@@ -100,14 +124,14 @@ const AbonimentDrawler = (props) => {
                   fontSize='32px'
                   mb='16px'
                 >
-                  Все включено
+                  {drawlerForm?.subscription?.type === 'morning' ? 'Утренний' : 'Все включено'}
                 </Text>
                 <Text
                   color={'black'}
                   fontWeight='600'
                   fontSize='24px'
                 >
-                  + бассейн
+                  {drawlerForm?.subscription?.pool === 'yes' ? '+ бассейн' : ''}
                 </Text>
               </VStack>
             </VStack>

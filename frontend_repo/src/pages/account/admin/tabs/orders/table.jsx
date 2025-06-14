@@ -5,8 +5,8 @@ import styles from '../../admin.module.scss';
 import {observer} from 'mobx-react-lite';
 
 const OrdersTable = observer((props) => {
-  const {coaches, removeCoach} = props;
-
+  const {coaches, removeItem} = props;
+  console.log(coaches);
   return (
     <Stack>
       <Table.Root
@@ -32,7 +32,7 @@ const OrdersTable = observer((props) => {
             coaches.map((item) => (
               <Table.Row key={item.id}>
                 <Table.Cell>{item.name}</Table.Cell>
-                <Table.Cell>{item.specialty}</Table.Cell>
+                <Table.Cell>{item.number}</Table.Cell>
                 <Table.Cell>{item.email}</Table.Cell>
                 <Table.Cell width='100px'>
                   <Box
@@ -44,7 +44,7 @@ const OrdersTable = observer((props) => {
                       colorScheme='teal'
                       size='sm'
                       variant='plain'
-                      onClick={() => removeCoach(item.id)}
+                      onClick={() => removeItem(item.id)}
                     >
                       <IoTrash
                         color='black'

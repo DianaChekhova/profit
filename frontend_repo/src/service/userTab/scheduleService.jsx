@@ -12,12 +12,12 @@ export default class UserPersonalScheduleService {
   }
 
   async getCoaches() {
-    const response = await $api.get('/admin/trainers');
+    const response = await $api.get('/users/trainers');
     return response.data;
   }
 
   async addItem(trainer_id) {
-    const response = await $api.post(`/subscription/personal/schedule/${trainer_id}/register`);
+    const response = await $api.post(`/subscription/personal/schedule/register`, trainer_id);
     return response.data;
   }
 }

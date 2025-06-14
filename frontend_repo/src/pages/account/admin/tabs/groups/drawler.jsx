@@ -38,7 +38,7 @@ const groupClassesData = createListCollection({
 });
 
 const GroupSessionsDrawler = (props) => {
-  const {isOpen, setOpen, currentId, sessions, addSession, updateSession, coaches} = props;
+  const {isOpen, setOpen, currentId, sessions, addSession, updateSession, withoutCoaches, coaches} = props;
 
   const prepareCoaches = useMemo(() => {
     return {
@@ -68,9 +68,6 @@ const GroupSessionsDrawler = (props) => {
   };
 
   const handleSubmit = () => {
-    if (!drawlerForm.trainer || !drawlerForm.training || !drawlerForm.date || !drawlerForm.time) {
-      return;
-    }
     if (currentId) {
       updateSession(currentId, drawlerForm);
     } else {
@@ -123,44 +120,48 @@ const GroupSessionsDrawler = (props) => {
           >
             {currentId ? 'Редактировать тренировку' : 'Добавить тренировку'}
           </Heading>
-          <Heading
-            color='black'
-            fontSize='12px'
-            fontWeight={400}
-          >
-            Тренер
-          </Heading>
-          <InputGroup
-            mb='24px'
-            width='100%'
-          >
-            <SelectRoot
-              collection={coachesData}
-              size='sm'
-              color='black'
-              className={styles.select}
-              width='100%'
-              defaultValue={[drawlerForm.trainer]}
-              onChange={(e) => changeHandler(e, 'trainer')}
-            >
-              <SelectTrigger>
-                <SelectValueText value={drawlerForm.trainer} />
-              </SelectTrigger>
-              <SelectContent className={styles.select}>
-                {coachesData.items.map((coachItem) => (
-                  <SelectItem
-                    color='black'
-                    className={styles.selectItem}
-                    item={coachItem}
-                    value={[coachItem.value]}
-                    key={coachItem.value}
-                  >
-                    {coachItem.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </SelectRoot>
-          </InputGroup>
+          {!withoutCoaches && (
+            <>
+              <Heading
+                color='black'
+                fontSize='12px'
+                fontWeight={400}
+              >
+                Тренер
+              </Heading>
+              <InputGroup
+                mb='24px'
+                width='100%'
+              >
+                <SelectRoot
+                  collection={coachesData}
+                  size='sm'
+                  color='black'
+                  className={styles.select}
+                  width='100%'
+                  defaultValue={[drawlerForm.trainer]}
+                  onChange={(e) => changeHandler(e, 'trainer')}
+                >
+                  <SelectTrigger>
+                    <SelectValueText value={drawlerForm.trainer} />
+                  </SelectTrigger>
+                  <SelectContent className={styles.select}>
+                    {coachesData.items.map((coachItem) => (
+                      <SelectItem
+                        color='black'
+                        className={styles.selectItem}
+                        item={coachItem}
+                        value={[coachItem.value]}
+                        key={coachItem.value}
+                      >
+                        {coachItem.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </SelectRoot>
+              </InputGroup>
+            </>
+          )}
           <Heading
             color='black'
             fontSize='12px'

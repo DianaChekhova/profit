@@ -12,7 +12,6 @@ import GroupScheduleTab from './tabs/groupScheduleTab.jsx';
 
 function UserPage() {
   const {store} = useContext(Context);
-  const profileStore = useMemo(() => new ProfileStore(new ProfileService()), []);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -57,7 +56,7 @@ function UserPage() {
                   fontSize='lg'
                   value='tab-1'
                 >
-                  Абонимент
+                  Абонемент
                 </Tabs.Trigger>
                 <Tabs.Trigger
                   fontSize='lg'
@@ -75,7 +74,7 @@ function UserPage() {
             </Flex>
           </Theme>
           <Tabs.Content value='tab-1'>
-            <UserProfile profileStore={profileStore} />
+            <UserProfile />
           </Tabs.Content>
           <Tabs.Content value='tab-2'>
             <ScheduleTab />

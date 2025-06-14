@@ -3,13 +3,13 @@ import React, {useMemo, useState} from 'react';
 import {observer} from 'mobx-react-lite';
 import GroupSessionsDrawler from '../../admin/tabs/groups/drawler.jsx';
 import BaseAdminStore from '../../admin/tabs/adminStore.jsx';
-import GroupScheduleService from '../../../../service/adminTab/GroupScheduleService.js';
+import GroupScheduleUserService from '../../../../service/userTab/GroupsScheduleUserService.jsx';
 
 const GroupsScheduleTab = () => {
   const cards = ['', '', '', ''];
   const [isOpen, setOpen] = useState(false);
-  const store = useMemo(() => new BaseAdminStore(new GroupScheduleService(), true), []);
-  console.log(store.itemsList);
+  const store = useMemo(() => new BaseAdminStore(new GroupScheduleUserService(), true), []);
+
   return (
     <>
       <VStack>
@@ -60,7 +60,7 @@ const GroupsScheduleTab = () => {
                 display='flex'
                 flexDirection='column'
                 alignItems='stretch'
-                height='175px'
+                height='200px'
                 width='100%'
                 overflow='hidden'
                 border='1px solid #E2E8F0'

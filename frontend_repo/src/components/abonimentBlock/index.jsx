@@ -27,6 +27,8 @@ export const AbonimentBlock = (props) => {
     setForm(e, type);
   };
 
+  console.log(formData);
+
   return (
     <Box
       width='100%'
@@ -100,7 +102,7 @@ export const AbonimentBlock = (props) => {
             color='black'
             className={styles.select}
             width='100%'
-            defaultValue={[formData.duration]}
+            defaultValue={[`${formData.duration}`]}
             onChange={(e) => handleChange(e, 'duration')}
           >
             <SelectTrigger>

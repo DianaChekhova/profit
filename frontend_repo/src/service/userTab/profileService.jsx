@@ -1,8 +1,13 @@
 import $api from '../index.jsx';
 
 export default class ProfileService {
-  async getProfile() {
-    const response = await $api.get('/profile');
+  async getItems() {
+    const response = await $api.get(`/users/${localStorage.getItem('oid')}`);
+    return response.data;
+  }
+
+  async updateItem(id, data) {
+    const response = await $api.put(`/users/${localStorage.getItem('oid')}`, data);
     return response.data;
   }
 
