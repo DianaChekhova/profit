@@ -74,11 +74,11 @@ func (su *AdminMongoRepository) GetAdminByEmail(ctx context.Context, email strin
 
 		// Преобразование ObjectID в строку
 		oid := admin["_id"].(primitive.ObjectID)
-
 		return &models.Admin{
-			ID:    oid.Hex(),
-			Name:  admin["name"].(string),
-			Email: admin["email"].(string),
+			ID:       oid.Hex(),
+			Name:     admin["name"].(string),
+			Email:    admin["email"].(string),
+			Password: admin["password"].(string),
 		}, nil
 	}
 
