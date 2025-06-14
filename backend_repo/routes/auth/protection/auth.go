@@ -2,6 +2,7 @@ package protection
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"profit/routes/auth/jwt_token"
 	"strings"
@@ -9,6 +10,7 @@ import (
 
 func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("REGISTERING PROTECTED ROUTES...")
 		// Извлекаем токен из заголовка Authorization
 		authHeader := r.Header.Get("Authorization")
 		if authHeader == "" {
