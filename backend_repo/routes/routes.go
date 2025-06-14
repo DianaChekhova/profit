@@ -89,7 +89,7 @@ func InitRoutes(db *mongo.Database, ctx context.Context) http.Handler {
 		// User routes
 		r.Route("/users", func(r chi.Router) {
 			r.Get("/", userController.UserList)
-
+			r.Get("/trainers", trainerController.TrainerList)
 			r.Get("/{id}", userController.GetUser)
 			r.Delete("/{id}", userController.DeleteUser)
 
@@ -112,7 +112,6 @@ func InitRoutes(db *mongo.Database, ctx context.Context) http.Handler {
 		// Trainer routes
 		r.Route("/trainer", func(r chi.Router) {
 			r.Use(middleware.TrainerMiddleware)
-
 			r.Get("/schedule/personal", trainerController.GetPersonalSchedule)
 			r.Put("/schedule/personal/{id}", trainerController.UpdatePersonalSession)
 			r.Get("/schedule/group", trainerController.GetTrainerGroupSchedule)
