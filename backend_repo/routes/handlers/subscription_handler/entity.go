@@ -2,20 +2,28 @@ package subscription_handler
 
 import (
 	"context"
+	"profit/repository/use_cases"
+	"profit/repository/use_cases/dbs_repositories/mongoDriver"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type SubscriptionController struct {
-	ctx context.Context
-	db  *mongo.Database
+	ctx             context.Context
+	userRepo        use_cases.UserRepository
+	db              *mongo.Database
+	trainerRepo     use_cases.TrainerRepository
+	PersonalSession use_cases.ScheduleRepository
 }
 
 func NewSubscriptionController(ctx context.Context, db *mongo.Database) *SubscriptionController {
 	return &SubscriptionController{
-		ctx: ctx,
-		db:  db,
+		ctx:             ctx,
+		trainerRepo:     mongoDriver.NewTrainerMongoRepository(db, ctx),
+		userRepo:        mongoDriver.NewUserMongoRepository(db, ctx),
+		PersonalSession: mongoDriver.NewScheduleMongoRepository(db, ctx),
+		db:              db,
 	}
 }
 
@@ -72,7 +80,8 @@ type CreateMembershipRequest struct {
 }
 
 type CreatePersonalSessionRequest struct {
-	StartTime   time.Time `json:"startTime"`
-	EndTime     time.Time `json:"endTime"`
-	Description string    `json:"description"`
+	StartTime    time.Time `json:"startTime"`
+	EndTime      time.Time `json:"endTime"`
+	Description  string    `json:"description"`
+	TrainerEmail string    `json:"trainer_email" bson:"trainer_email"`
 }

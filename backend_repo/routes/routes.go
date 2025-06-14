@@ -134,8 +134,8 @@ func InitRoutes(db *mongo.Database, ctx context.Context) http.Handler {
 
 			r.Route("/personal", func(r chi.Router) {
 				r.Get("/schedule", subscriptionController.GetPersonalSchedule)
-				r.Post("/schedule/{id}/register", subscriptionController.RegisterForPersonalSession)
-				r.Delete("/schedule/{id}/register", subscriptionController.UnregisterFromPersonalSession)
+				r.Post("/schedule/register", subscriptionController.RegisterForPersonalSession)
+				r.Delete("/schedule/register", subscriptionController.UnregisterFromPersonalSession)
 			})
 		})
 		r.Route("/suggestion", func(r chi.Router) {

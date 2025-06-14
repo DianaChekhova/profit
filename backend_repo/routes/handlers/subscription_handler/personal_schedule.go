@@ -3,7 +3,6 @@ package subscription_handler
 import (
 	"encoding/json"
 	"net/http"
-	"profit/models"
 	"profit/routes/auth/protection"
 
 	"github.com/go-chi/chi/v5"
@@ -61,12 +60,12 @@ func (c *SubscriptionController) GetPersonalSchedule(w http.ResponseWriter, r *h
 // @Failure 404 {object} ErrorResponse
 // @Router /subscription/personal/schedule/{trainer_id}/register [post]
 func (c *SubscriptionController) RegisterForPersonalSession(w http.ResponseWriter, r *http.Request) {
-	trainerID := chi.URLParam(r, "trainer_id")
-	trainerObjectID, err := primitive.ObjectIDFromHex(trainerID)
-	if err != nil {
-		http.Error(w, "Invalid trainer ID", http.StatusBadRequest)
-		return
-	}
+	//trainerID := chi.URLParam(r, "trainer_id")
+	//trainerObjectID, err := primitive.ObjectIDFromHex(trainerID)
+	//if err != nil {
+	//	http.Error(w, "Invalid trainer ID", http.StatusBadRequest)
+	//	return
+	//}
 
 	userID := r.Context().Value(protection.ContextUserIDKey).(string)
 	userObjectID, err := primitive.ObjectIDFromHex(userID)
@@ -81,24 +80,18 @@ func (c *SubscriptionController) RegisterForPersonalSession(w http.ResponseWrite
 		return
 	}
 
-	// Check if trainer exists
-	var trainer models.User
-	err = c.db.Collection("users").FindOne(c.ctx, bson.M{
-		"_id":  trainerObjectID,
-		"role": "trainer",
-	}).Decode(&trainer)
+	trainer, err := c.trainerRepo.GetTrainerByEmail(c.ctx, req.TrainerEmail)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
 			http.Error(w, "Trainer not found", http.StatusNotFound)
 			return
 		}
-		http.Error(w, "Database error", http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Check if time slot is available
 	count, err := c.db.Collection("personal_sessions").CountDocuments(c.ctx, bson.M{
-		"trainerId": trainerObjectID,
+		"email": req.TrainerEmail,
 		"$or": []bson.M{
 			{
 				"startTime": bson.M{
@@ -110,8 +103,9 @@ func (c *SubscriptionController) RegisterForPersonalSession(w http.ResponseWrite
 			},
 		},
 	})
+
 	if err != nil {
-		http.Error(w, "Database error", http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	if count > 0 {
@@ -120,7 +114,7 @@ func (c *SubscriptionController) RegisterForPersonalSession(w http.ResponseWrite
 	}
 
 	session := PersonalSession{
-		TrainerID:   trainerObjectID.Hex(),
+		TrainerID:   trainer.ID,
 		ClientID:    userObjectID.Hex(),
 		Status:      "scheduled",
 		Description: req.Description,
