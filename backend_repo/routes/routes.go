@@ -88,7 +88,7 @@ func InitRoutes(db *mongo.Database, ctx context.Context) http.Handler {
 
 		// User routes
 		r.Route("/users", func(r chi.Router) {
-			r.Use(middleware.AdminMiddleware)
+			r.Use(middleware.UserMiddleware)
 			r.Get("/", userController.UserList)
 
 			r.Get("/{id}", userController.GetUser)
