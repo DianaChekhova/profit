@@ -8,8 +8,7 @@ import UserPersonalScheduleService from '../../../../service/userTab/scheduleSer
 const ScheduleTab = () => {
   const [isOpen, setOpen] = useState(false);
   const store = useMemo(() => new BaseAdminStore(new UserPersonalScheduleService(), true), []);
-
-  const items = [
+  const [items, setItems] = useState([
     {
       id: '684d924ab686cc370c60cbd3',
       trainer: 'Новиков Антон',
@@ -70,7 +69,20 @@ const ScheduleTab = () => {
       status: 'scheduled',
       type: '',
     },
-  ];
+  ]);
+
+  const handleRemoveItem = (id) => {
+    setItems(items.filter((item) => item.id !== id));
+  };
+
+  const handleAddItem = (newItem) => {
+    setItems([...items, newItem]);
+  };
+
+  const handleUpdateItem = (updatedItem) => {
+    setItems(items.map((item) => (item.id === updatedItem.id ? updatedItem : item)));
+  };
+
   return (
     <>
       <VStack>
@@ -173,7 +185,7 @@ const ScheduleTab = () => {
                     py={2}
                     _hover={{bg: '#E9D8FD'}}
                     onClick={() => {
-                      store.removeItem(coach.id);
+                      handleRemoveItem(coach.id);
                     }}
                     ml='auto'
                   >
@@ -209,10 +221,10 @@ const ScheduleTab = () => {
           </Grid>
         </Box>
         <GroupSessionsDrawler
-          sessions={store.itemsList}
+          sessions={items}
           coaches={store.coachesList}
-          addSession={addItem}
-          updateSession={store.updateItem}
+          addSession={handleAddItem}
+          updateSession={handleUpdateItem}
           isOpen={isOpen}
           setOpen={setOpen}
         />
