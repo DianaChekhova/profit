@@ -11,7 +11,6 @@ const Index = () => {
   const {store} = useContext(Context);
   const isAuthenticated = store.getAuthenticated();
   const user = store.getUser();
-  console.log(user);
 
   useEffect(() => {
     if (!user.entity_name) {

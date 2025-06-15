@@ -16,7 +16,7 @@ const ClientsTable = observer((props) => {
     setCurrentId(id);
     setOpen(true);
   }, []);
-  console.log(users);
+
   return (
     <Stack>
       <Table.Root

@@ -32,7 +32,7 @@ function SubsModal(props) {
     setLoading(true);
     try {
       const response = await $api.post(`/guest/suggestion`, form);
-      console.log(response);
+
       if (response.status === 200) {
         setForm({name: '', number: '', email: ''});
         closeModalHandler();

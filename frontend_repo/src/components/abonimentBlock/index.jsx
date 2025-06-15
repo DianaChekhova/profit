@@ -27,8 +27,6 @@ export const AbonimentBlock = (props) => {
     setForm(e, type);
   };
 
-  console.log(formData);
-
   return (
     <Box
       width='100%'

@@ -6,7 +6,7 @@ import {observer} from 'mobx-react-lite';
 
 const OrdersTable = observer((props) => {
   const {coaches, removeItem} = props;
-  console.log(coaches);
+
   return (
     <Stack>
       <Table.Root

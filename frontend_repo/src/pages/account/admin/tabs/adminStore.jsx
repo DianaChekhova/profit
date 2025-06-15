@@ -45,12 +45,10 @@ export default class BaseAdminStore {
       this.setItems(response?.length > 0 || response?.id ? response : []);
 
       if (this.needTraining) {
-        console.log('Какого хуя');
         const coaches = await this.service.getCoaches();
 
         this.setCoaches(coaches);
       }
-      console.log(this.coaches);
       this.setLoading(false);
     } catch (error) {
       console.error('Error fetching items:', error);
@@ -61,7 +59,6 @@ export default class BaseAdminStore {
   };
 
   removeItem = async (itemId = 0) => {
-    console.log(itemId);
     try {
       await this.service.removeItem(itemId);
       await this.fetchItems();
@@ -71,8 +68,6 @@ export default class BaseAdminStore {
   };
 
   updateItem = async (id, itemData) => {
-    console.log(id);
-    console.log(itemData);
     try {
       await this.service.updateItem(id, itemData);
       await this.fetchItems();
@@ -84,7 +79,6 @@ export default class BaseAdminStore {
   addItem = async (id, itemData) => {
     const payload = {...itemData};
     delete payload.id;
-    console.log(id, itemData);
     try {
       await this.service.addItem(id, payload);
       await this.fetchItems();

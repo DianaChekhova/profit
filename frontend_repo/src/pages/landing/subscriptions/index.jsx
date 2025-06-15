@@ -253,10 +253,9 @@ export default function Subscriptions() {
     setOpen(false);
   };
   const openModalHandler = () => {
-    console.log('jopa');
     setOpen(true);
   };
-  console.log(openModal);
+
   return (
     <>
       <Box

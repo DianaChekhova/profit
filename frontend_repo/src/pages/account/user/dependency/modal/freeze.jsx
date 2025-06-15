@@ -8,7 +8,6 @@ const FreezeModal = ({closeModalHandler, freezeHandler}) => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
-    console.log('s');
     setLoading(true);
     await freezeHandler();
     setLoading(false);

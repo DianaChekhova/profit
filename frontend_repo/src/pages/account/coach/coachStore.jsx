@@ -31,7 +31,7 @@ export default class CoachStore {
   fetchItems = async () => {
     try {
       this.setLoading(true);
-      console.log(this.type);
+
       const response = await this.service.getItems(this.type);
       this.setItems(response?.length > 0 ? response : []);
       this.setLoading(false);
