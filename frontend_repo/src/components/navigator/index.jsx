@@ -31,7 +31,7 @@ const Index = () => {
         gap='32px'
         className={`${styles.text} ${styles.flex}`}
       >
-        <Link to='/subscriptions'>Абонименты</Link>
+        <Link to='/subscriptions'>Абонементы</Link>
         <Link to='/coaches'>Тренеры</Link>
         <Link to='/groups'>Групповые занятия</Link>
         <Link to='/contacts'>Контакты</Link>
